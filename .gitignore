@@ -3,3 +3,4 @@ backups/
 .env
 *.log
 projects/levelup-crm/app/
+projects/email-automation/app/
