@@ -4,3 +4,4 @@ backups/
 *.log
 projects/levelup-crm/app/
 projects/email-automation/app/
+projects/levelup-crm/app-main/
