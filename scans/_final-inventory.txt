@@ -1,4 +1,4 @@
-# Final inventory 2026-11-03
+# Final inventory 2026-11-04
 
 ## claude plugin list
 Installed plugins:
@@ -15,7 +15,7 @@ Installed plugins:
     Status: ✔ enabled
 
   ❯ frontend-design@anthropic-plugin-directory
-    Version: 1.1.1-a7ba5b93db0c
+    Version: 1.1.1-a2e251d9b97b
     Scope: user
     Status: ✔ enabled
 
@@ -29,6 +29,11 @@ Installed plugins:
     Scope: user
     Status: ✔ enabled
     Note: The packages it lists were not installed, because its bun.lock does not list the plugin as its only workspace
+
+  ❯ impeccable@impeccable
+    Version: 4.8.0
+    Scope: user
+    Status: ✔ enabled
 
   ❯ playwright@anthropic-plugin-directory
     Version: 7d7dbbd9bc87-be1b3418
@@ -78,6 +83,8 @@ apple-design
 ask-sonner
 break-ui
 canvas-design
+cold-email
+cold-email-deliverability
 emil-design-eng
 ffmpeg-skill
 find-animation-opportunities
@@ -106,6 +113,7 @@ n8n-workflow-patterns
 pick-ui-library
 playwright-cli
 prototype
+pwa-development
 react-best-practices
 remotion-best-practices
 remotion-captions
@@ -122,7 +130,9 @@ remotion-studio
 remotion-upgrade
 remove-animations
 review-animations
+scrapling-official
 shadcn
+tauri-v2
 text-to-lottie
 threejs-animation
 threejs-asset-pipeline
@@ -143,8 +153,6 @@ web-design-guidelines
 webapp-testing
 write-swift
 
-## ~/.claude/settings.json env
-{'SUPERPOWERS_DISABLE_TELEMETRY': '1', 'HYPERFRAMES_NO_TELEMETRY': '1', 'CHROME_DEVTOOLS_MCP_NO_USAGE_STATISTICS': '1'}
-
 ## tools
 playwright-cli 0.1.23
+Scrapling, version 0.5

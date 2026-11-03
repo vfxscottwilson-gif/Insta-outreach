@@ -43,3 +43,4 @@ None yet. API keys (Firecrawl, Apify, Gemini, n8n) go only in `.env` (gitignored
 ## Status / next step
 - 2026-11-03: Plan approved (all phases; Council + RedTeam only; no Caveman; free tools now, keyed tools later). Config backed up.
 - 2026-11-03: Phase 0 done: uv, FFmpeg, yt-dlp, Deno, SkillSpector (+MCP), /watch installed and checked. Next: Build session runs Phases 1-4; Skill Scout session takes the user's links.
+- 2026-11-04: Phases 1-4 done: impeccable + Scrapling installed and verified. Open: context7 and supabase MCP need /mcp sign-in; skillspector MCP times out on connect (CLI works). Keyed tools still waiting for keys.
