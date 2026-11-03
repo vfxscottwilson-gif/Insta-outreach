@@ -35,12 +35,12 @@ Facts behind 7, 11 and 12 are in `FACTS-CHECKED.md` (checked 2026-11-03).
    ```
    Save it. (It is gitignored, so it never reaches GitHub.)
 6. **Do not** copy the `service_role` key anywhere. I will ask you to run one command for it later (Phase 0 step 6), and it goes straight into Supabase.
-7. Install the Supabase CLI and log in. In PowerShell:
+7. Log in to the Supabase CLI (it runs through `npx`, nothing to install globally). In PowerShell:
    ```powershell
-   npm install -g supabase
+   cd "F:\Github Repos\projects\levelup-crm\app"
    ```
    ```powershell
-   supabase login
+   npx supabase login
    ```
    A browser opens. Click **Authorize**. The terminal then shows "You are now logged in".
 8. Tell me in chat: "Supabase ready" plus the **project ref**. The ref is the `xxxx` part of `https://xxxx.supabase.co`. It is not secret.
