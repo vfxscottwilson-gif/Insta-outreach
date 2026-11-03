@@ -110,3 +110,13 @@ ClickUp's name, logo, illustrations and "Brain" branding. ClickUp Assist (human 
 3. Video calls: Jitsi embed.
 4. Inbound email into tasks: skip.
 5. SMS 2FA, HIPAA: skip (TOTP 2FA included).
+
+## Workspace customization (user request, 2026-11-03)
+Brand name: **Level Up VFX**. In Settings → Branding & apps, the admin can change:
+- the CRM name
+- the logo
+- the theme colour
+- the default theme
+- the left-side apps: show/hide, rename, icon, order. Settings can't be hidden.
+
+Stored in localStorage now; moves to the Supabase `workspace_settings` table (migration 0009).
