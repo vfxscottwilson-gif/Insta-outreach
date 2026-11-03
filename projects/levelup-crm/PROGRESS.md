@@ -13,5 +13,5 @@
 | Dev tools | Lead architect | WSL2 + Docker Desktop installed; Supabase CLI + Playwright in app | 90 | 2026-11-03 | **User must restart PC** | After restart: start Docker, `npx supabase start`, `supabase test db` |
 | P0.4-P0.7 auth UI, admin fn, Tasks, pilot proof | — | Not started | 0 | 2026-11-03 | Supabase project + Resend (INPUTS.md) | After P0.3 |
 | Phase 0 rest (P0.8-P0.9) | — | Not started | 0 | 2026-11-03 | Pilot sign-off | — |
-| Old CRM online (GitHub private + Vercel prod from `main`) | Lead architect | gh 2.103.3 + Vercel CLI 65.10.0 installed, telemetry off; `main` builds (worktree `app-main`) | 40 | 2026-11-03 | User: `gh auth login`, `vercel login`, confirm private repo | Push upgrade/clickup, `vercel --prod` from app-main, screenshot |
+| Old CRM online (GitHub public + Vercel prod from `main`) | Lead architect | Done: https://levelup-vfx-crm.vercel.app (200, screenshot proof/vercel-prod-login-2026-11-03.png); `upgrade/clickup` pushed → preview only | 100 | 2026-11-03 | — | Old app opens straight into Admin (no real login) until Phase 0 ships |
 | Phases 1-4 | — | Not started | 0 | 2026-11-03 | Phase 0 sign-off | — |
