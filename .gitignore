@@ -2,3 +2,4 @@ repos/
 backups/
 .env
 *.log
+projects/levelup-crm/app/
