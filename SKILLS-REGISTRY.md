@@ -18,6 +18,8 @@ Verdict = SkillSpector score/verdict + manual review. Route: `plugin` (claude pl
 | shadcn | 2 | shadcn-ui/ui (skills/shadcn) | 4aaea19 | copy | 100/100 static | SAFE: docs for the shadcn CLI/MCP (flags = CLI flags, mcp config docs, chat UI examples); 1 local helper script (fs only) | yes 2026-11-03 | Runs 'npx shadcn@latest' in projects when used |
 | react-best-practices | 2 | vercel-labs/agent-skills | 1a2c79d | copy | 59/100 | SAFE: markdown rules; HIGH OH1 = dangerouslySetInnerHTML code examples | yes 2026-11-03 | |
 | web-design-guidelines | 2 | vercel-labs/agent-skills | 1a2c79d | copy | 0/100 SAFE | SAFE, note: fetches its rules at run time from raw.githubusercontent.com/vercel-labs/web-interface-guidelines (content can change after this review) | yes 2026-11-03 | |
+| playwright (MCP) | 2 | anthropics/claude-plugins-official (external_plugins/playwright) | 7d7dbbd (Anthropic-reviewed) | plugin (playwright@anthropic-plugin-directory) | n/a (no skill files; .mcp.json only) | SAFE: runs Microsoft's npx @playwright/mcp@latest locally | yes 2026-11-03 | Unpinned @latest: npm fetches newest on start |
+| context7 (MCP) | 2 | anthropics/claude-plugins-official (external_plugins/context7) | a7ba5b9 | plugin (context7@anthropic-plugin-directory) | n/a (.mcp.json only) | SAFE: remote HTTP MCP https://mcp.context7.com (docs lookup); library names you query are sent to Upstash | yes 2026-11-03 | Free without key (rate-limited); key optional later |
 
 ## Queue (approved, waiting to install)
 _Skill Scout appends here while the Build session is running._
