@@ -103,3 +103,10 @@ ClickUp's name, logo, illustrations and "Brain" branding. ClickUp Assist (human 
 3. **Video calls**: Jitsi embed (free, Jitsi-branded) / LiveKit (free tier, own UI) / skip.
 4. **Receive email into tasks**: needs a paid inbound email service. Yes / skip.
 5. **SMS 2FA** (per-SMS cost) and **HIPAA** (contracts): skip unless needed?
+
+## Decisions (user, 2026-11-03: "use the defaults")
+1. AI: later (no API key now).
+2. Sign-in: email + password only.
+3. Video calls: Jitsi embed.
+4. Inbound email into tasks: skip.
+5. SMS 2FA, HIPAA: skip (TOTP 2FA included).

@@ -15,5 +15,5 @@
 | Phase 0 rest (P0.8-P0.9) | — | Not started | 0 | 2026-11-03 | Pilot sign-off | — |
 | Old CRM online (GitHub public + Vercel prod from `main`) | Lead architect | Done: https://levelup-vfx-crm.vercel.app (200, screenshot proof/vercel-main.png); `upgrade/clickup` pushed → preview https://levelup-vfx-crm-git-upgrade-clickup-vfxscottwilson-gif.vercel.app | 100 | 2026-11-03 | — | Old app opens straight into Admin (no real login) until Phase 0 ships |
 | Phase 1-UI (ClickUp look + motion) | Lead architect | Plan written (UI-PLAN.md) | 5 | 2026-11-03 | User approval | U1 shell |
-| ClickUp paid-feature map | Lead architect | FEATURES.md written (all paid features → Phases 1-6) | 100 | 2026-11-03 | 5 decisions (AI key, SSO, video, inbound email, SMS/HIPAA) | User answers |
+| ClickUp paid-feature map | Lead architect | FEATURES.md written (all paid features → Phases 1-6) | 100 | 2026-11-03 | — | Decided: defaults (see FEATURES.md) |
 | Phases 1-4 | — | Not started | 0 | 2026-11-03 | Phase 0 sign-off | — |
