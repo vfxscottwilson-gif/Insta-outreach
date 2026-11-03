@@ -16,3 +16,13 @@ Design consequences:
 - Resend + verified domain is mandatory before any employee can get a reset code.
 - A business CRM on Vercel Hobby breaks Vercel's terms → Vercel Pro ($20/user/mo, per Hobby page; not 3-source verified) or another host.
 - Supabase Free pauses after 1 week idle → Pro for daily production use.
+
+## Dev tools (checked 2026-11-03, official pages; third-party corroboration not done)
+
+| Tool | Free? | License | Notes |
+|---|---|---|---|
+| Docker Desktop | Free if company < 250 employees AND < $10M revenue | Proprietary (Docker SSA) | Supports Win 10 Pro 22H2 (build 19045) today; needs WSL ≥ 2.1.5, 8 GB RAM. Win 10 is out of Microsoft support → may be dropped later. Fallback: Rancher Desktop / Podman (open source, listed by Supabase docs). |
+| Supabase CLI 3.0.0 | Free | MIT | Installed per-project as npm devDependency (`npx supabase ...`). |
+| Playwright 1.64.1 | Free | Apache-2.0 | Installed + Chromium. |
+| Local mail catcher | Free | — | `supabase start` includes Mailpit at http://127.0.0.1:54324: reset codes readable locally, no Resend needed for dev. |
+| pgTAP (`supabase test db`) | Free | — | Runs pg_prove in a container → needs Docker even for `--linked`. |
