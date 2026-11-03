@@ -35,6 +35,7 @@ Verdict = SkillSpector score/verdict + manual review. Route: `plugin` (claude pl
 | impeccable 4.8.0 | 2 | pbakaus/impeccable | 9fadc41 | plugin (not installed) | 100/100 | CAUTION: SessionStart + every Edit/Write + Stop hooks run a prebuilt Rust engine binary downloaded from GitHub releases into ~/.impeccable (sha256-checked, source in crates/, no telemetry hosts found); live mode injects a script into your browser page | no — asked user 2026-11-03 | |
 | Scrapling skill (scrapling-official) | 4 | D4Vinci/Scrapling | 95cf901 | copy (not installed) | 61/100 | CAUTION: skill files are docs only (safe for the PC), but the tool is built to bypass anti-bot systems (Cloudflare Turnstile, stealth browsers, proxy rotation); needs pip install scrapling[all] + browser download | no — asked user 2026-11-03 | |
 | Firecrawl, Apify, Nano Banana/Gemini MCP, n8n-mcp, ElevenLabs | 4 | various | n/a | - | not scanned | waiting for key (user: keyed tools later) | no | Gate each when the key is added |
+| ffmpeg-skill 3.1.1 | 3 | kajisho5/ffmpeg-skill | 1ce2c18 | copy (installer payload: SKILL.md, scripts, templates, references, docs, mcp) | 100/100 static (repo root) | SAFE: stdlib Python calling local ffmpeg/ffprobe, refuses URL inputs, no network. HIGH = tests/.github CI files (not installed), upgrade-hint strings, doc text | yes 2026-11-03 | doctor: ok, 73 capabilities, 0 required missing. MCP server not registered (skill scripts are enough) |
 
 ## Queue (approved, waiting to install)
 _Skill Scout appends here while the Build session is running._
