@@ -8,6 +8,8 @@ Verdict = SkillSpector score/verdict + manual review. Route: `plugin` (claude pl
 | uv, FFmpeg 9.0.2, yt-dlp 2026.10.26, Deno 2.9.8 | 0 | winget | n/a | tool | n/a (official packages) | n/a | yes 2026-11-03 | user scope |
 | SkillSpector 2.12.0 (+MCP) | 0 | NVIDIA/SkillSpector | e14c450 | tool (uv) + mcp (user) | n/a (the scanner) | hatchling build, no install hooks | yes 2026-11-03 | LLM stage off: claude CLI not signed in |
 | watch (/watch) 0.3.2 | 0 | bradautomates/claude-video | 03ceb42 | plugin | 100/100 static, DO NOT INSTALL | SAFE: all HIGH = expected capabilities (yt-dlp download, own API keys, optional Gemini upload, local whisperx env). SessionStart hook = advisory setup check only | yes 2026-11-03 | `setup.py --json` = ready; captions only until WhisperX or a Groq/OpenAI key |
+| Council | 1 | danielmiessler/Personal_AI_Infrastructure (LifeOS/install/skills/Council) | b7efec9 | copy | 0/100 SAFE | SAFE: markdown only, no scripts/hooks. Cross-vendor lane needs LifeOS Inference.ts + codex (not installed) | yes 2026-11-03 | Added standalone note: run members as Agent subagents (Anthropic only) |
+| RedTeam | 1 | danielmiessler/Personal_AI_Infrastructure (LifeOS/install/skills/RedTeam) | b7efec9 | copy | 17/100 SAFE | SAFE: markdown only; 1 HIGH PE3 = example text about auth design (AdversarialValidation.md:47) | yes 2026-11-03 | Same standalone note; world models saved under ~/.claude/LIFEOS/MEMORY when used |
 
 ## Queue (approved, waiting to install)
 _Skill Scout appends here while the Build session is running._
