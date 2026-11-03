@@ -10,8 +10,8 @@
 | Brief + Phase 0 plan | Lead architect | Done (approved) | 100 | 2026-11-03 | — | — |
 | P0.1 scaffold | Lead architect | Done (app `75f57b7`) | 100 | 2026-11-03 | — | — |
 | P0.2-P0.3 schema + RLS + hardening + review fixes | Lead architect (Opus subagents) | Done offline (app `7bfa622`, check:db 101 PASS / 0 FAIL) | 90 | 2026-11-03 | Docker (restart) | Run 48 pgTAP on local Supabase; app must call rpc('claim_session') |
-| Dev tools | Lead architect | WSL2 + Docker Desktop installed; Supabase CLI + Playwright in app | 90 | 2026-11-03 | **User must restart PC** | After restart: start Docker, `npx supabase start`, `supabase test db` |
+| Dev tools | Lead architect | WSL2 + Docker Desktop installed but unused (user: no restart); Supabase CLI + Playwright in app | 100 | 2026-11-03 | — | pgTAP to run against hosted Supabase later |
 | P0.4-P0.7 auth UI, admin fn, Tasks, pilot proof | — | Not started | 0 | 2026-11-03 | Supabase project + Resend (INPUTS.md) | After P0.3 |
 | Phase 0 rest (P0.8-P0.9) | — | Not started | 0 | 2026-11-03 | Pilot sign-off | — |
-| Old CRM online (GitHub public + Vercel prod from `main`) | Lead architect | Done: https://levelup-vfx-crm.vercel.app (200, screenshot proof/vercel-prod-login-2026-11-03.png); `upgrade/clickup` pushed → preview only | 100 | 2026-11-03 | — | Old app opens straight into Admin (no real login) until Phase 0 ships |
+| Old CRM online (GitHub public + Vercel prod from `main`) | Lead architect | Done: https://levelup-vfx-crm.vercel.app (200, screenshot proof/vercel-main.png); `upgrade/clickup` pushed → preview https://levelup-vfx-crm-git-upgrade-clickup-vfxscottwilson-gif.vercel.app | 100 | 2026-11-03 | — | Old app opens straight into Admin (no real login) until Phase 0 ships |
 | Phases 1-4 | — | Not started | 0 | 2026-11-03 | Phase 0 sign-off | — |
