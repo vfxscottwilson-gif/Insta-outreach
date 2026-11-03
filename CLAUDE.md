@@ -21,6 +21,17 @@
 4. SAFE → install globally. CAUTION → ask the user. DO NOT INSTALL → block.
 5. Turn telemetry off where possible. Log in `SKILLS-REGISTRY.md`, commit.
 
+**Reading the scan:** the static scan gives 100/100 "DO NOT INSTALL" to almost any skill that uses the network, files or subprocesses (even `/watch`). The score alone decides nothing. Open every HIGH/CRITICAL finding at its file:line and classify it:
+- **Expected capability** (downloads what the skill is for, reads its *own* API key, calls its own documented API, runs ffmpeg/node) → fine.
+- **Red flag** → CAUTION/BLOCK: sends data to undocumented hosts, reads other secrets (~/.ssh, browser stores, all env vars sent out), obfuscated/encoded code, `curl|bash` / `irm|iex` at runtime, hidden instructions in SKILL.md that tell Claude to ignore the user, hooks that do more than they claim.
+
+**SkillSpector on Windows:** no `--output`; redirect stdout instead. Use `--no-llm` until the Claude CLI is signed in.
+```powershell
+$env:Path = [Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [Environment]::GetEnvironmentVariable('Path','User')
+$env:PYTHONIOENCODING = 'utf-8'
+skillspector scan "F:\Github Repos\repos\<owner>__<repo>\<skill dir>" --no-llm --format markdown 2>$null | Out-File -Encoding utf8 "F:\Github Repos\scans\<owner>__<repo>.md"
+```
+
 ## How to run
 - Bundled Claude CLI (for plugin installs): `C:\Users\Khizar Malik\AppData\Roaming\Claude\claude-code\2.1.309\9078b9c1d466\claude.exe` (path changes when the app updates: find it under `%APPDATA%\Claude\claude-code\`).
 - Plugins: `claude.exe plugin marketplace add <owner/repo>` then `claude.exe plugin install <name>@<marketplace>` (user scope).
@@ -30,4 +41,5 @@
 None yet. API keys (Firecrawl, Apify, Gemini, n8n) go only in `.env` (gitignored), added later when needed.
 
 ## Status / next step
-- 2026-11-03: Plan approved (all phases; Council + RedTeam only; no Caveman; free tools now, keyed tools later). Config backed up. Next: Phase 0 (uv, FFmpeg, yt-dlp, Deno, SkillSpector, /watch).
+- 2026-11-03: Plan approved (all phases; Council + RedTeam only; no Caveman; free tools now, keyed tools later). Config backed up.
+- 2026-11-03: Phase 0 done: uv, FFmpeg, yt-dlp, Deno, SkillSpector (+MCP), /watch installed and checked. Next: Build session runs Phases 1-4; Skill Scout session takes the user's links.

@@ -5,6 +5,9 @@ Verdict = SkillSpector score/verdict + manual review. Route: `plugin` (claude pl
 | Skill / tool | Phase | Source repo | Commit | Route | Scan | Manual review | Installed | Notes |
 |---|---|---|---|---|---|---|---|---|
 | find-skills | pre | vercel-labs/skills | n/a | copy | not scanned | n/a | yes (before 2026-11-03) | already present |
+| uv, FFmpeg 9.0.2, yt-dlp 2026.10.26, Deno 2.9.8 | 0 | winget | n/a | tool | n/a (official packages) | n/a | yes 2026-11-03 | user scope |
+| SkillSpector 2.12.0 (+MCP) | 0 | NVIDIA/SkillSpector | e14c450 | tool (uv) + mcp (user) | n/a (the scanner) | hatchling build, no install hooks | yes 2026-11-03 | LLM stage off: claude CLI not signed in |
+| watch (/watch) 0.3.2 | 0 | bradautomates/claude-video | 03ceb42 | plugin | 100/100 static, DO NOT INSTALL | SAFE: all HIGH = expected capabilities (yt-dlp download, own API keys, optional Gemini upload, local whisperx env). SessionStart hook = advisory setup check only | yes 2026-11-03 | `setup.py --json` = ready; captions only until WhisperX or a Groq/OpenAI key |
 
 ## Queue (approved, waiting to install)
 _Skill Scout appends here while the Build session is running._
