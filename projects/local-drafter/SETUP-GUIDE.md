@@ -18,7 +18,19 @@ File mode (CSV/XLSX in, CSV out) needs no account at all.
 All local: a Python program (`app\`) plus an Ollama server on this PC using the GPU. Cloud: only Google Sheets (and YouTube if you add a key). No frontend, no hosted backend, no database.
 
 ## 4. Folder map
-See `README.md`.
+Full table: `README.md`. In short: `install\` (installer), `app\` (code and settings: `config.yaml`, `rules.md`, `templates.yaml`), `secrets\` (keys, never shared), `GUIDE\` (chapters below), `docs\` (spec), `archive\` (old zips), `database\` (no database), `backups\` (`backup.ps1`).
+
+Backend vs frontend: the "backend" is Python in `app\` plus Ollama on this PC; there is no frontend (you use `run.bat` and the Google Sheet tabs); the only database is the sheet itself plus `app\state.json`.
+
+## Guide chapters (read in this order)
+| File | Read it when |
+|---|---|
+| `GUIDE\00-START-HERE.md` | installing and the first run |
+| `GUIDE\01-ROADMAP.md` | you want to know what is done and what is still yours to do |
+| `GUIDE\02-ARCHITECTURE.md` | you want to know how a lead becomes a draft |
+| `GUIDE\03-HOW-TO-CHANGE-THINGS.md` | you want to change a setting, model or wording |
+| `GUIDE\04-TROUBLESHOOTING.md` | a message or Log Reason confuses you |
+| `GUIDE\05-ACCOUNTS-AND-KEYS.md` | Google service account, keys, Apps Script hand-off |
 
 ## 5. First-time install
 1. Open the `install\` folder and double-click `INSTALL.cmd`. Click **Yes** if Windows asks.
@@ -53,6 +65,14 @@ app\run.bat
 ```
 No model installed? Add `--backend mock` to rehearse with a fake AI (output is labelled MOCK).
 
+Rules for these commands:
+- Before step 2 switch `config.yaml` to your own sheet or file (`GUIDE\03`, recipe 1); the default input is a fake sample file.
+- Pilot before scale: after the 5-lead dry run do `app\run.bat --limit 5`, check the tabs, then `app\run.bat --limit 50`, then `app\run.bat`. Resume is automatic: already-handled addresses are skipped.
+- The Desktop shortcut "Local Drafter" is the same as plain `app\run.bat` (full run, writes results). Use it only after the pilot.
+- Ctrl+C once = finish the current draft and save. The window stays open (`pause`) when it ends.
+- What a good run prints: `Detected columns: ...`, `AI: ollama, model qwen3:8b; 100% of the model is on the GPU.`, a progress bar, then `Finished. written: N, needs review: N, skipped: N. Repairs: N.`
+- Where results go: Google Sheet tabs `Ready to Send`, `Needs Review`, `Log` (sheet mode) or `app\output\*.csv` (file mode).
+
 ## 8. How to change common things
 | I want to... | Do this |
 |---|---|
@@ -63,7 +83,16 @@ No model installed? Add `--backend mock` to rehearse with a fake AI (output is l
 | Use LM Studio | Set `AI_BACKEND: lmstudio` in `config.yaml` |
 
 ## 9. Troubleshooting
-See `GUIDE\04-TROUBLESHOOTING.md`.
+Full list with exact messages, exit codes and Log "Reason" meanings: `GUIDE\04-TROUBLESHOOTING.md`. The five most common:
+| You see | Do |
+|---|---|
+| `Cannot reach the model server` | Start Ollama (Start menu), run again |
+| `Another run is already active` | Close the other window; if none, delete `app\.lock` |
+| `SpreadsheetNotFound` / `403` | Share the sheet with the service-account e-mail |
+| `No email column found` | Add an "Email" header or set `COLUMN_OVERRIDES` |
+| Many "needs review" rows | Read the Log "Reason" column; try a bigger model |
+
+Backups: `backups\backup.ps1` zips the folder (outputs are git-ignored). The zip contains `secrets\` (your keys): keep it private, never share or upload it. Your lead data lives in your Google Sheet, so copy that separately if it matters (not handled by this folder).
 
 ## 10. Move to a new PC
 1. Copy the whole `local-drafter` folder (with `secrets\`).

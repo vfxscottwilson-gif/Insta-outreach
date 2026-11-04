@@ -1,0 +1,40 @@
+C: used 171 GB, free 305 GB
+D: used 12 GB, free 234 GB
+F: used 17 GB, free 95 GB
+    1.71 GB  C:\Users\Khizar Malik\.claude
+    0.63 GB  C:\Users\Khizar Malik\.claude\projects
+    0.00 GB  C:\Users\Khizar Malik\.ollama
+    0.10 GB  C:\Users\Khizar Malik\.cache
+    0.00 GB  C:\Users\Khizar Malik\.docker
+    0.56 GB  C:\Users\Khizar Malik\.local
+   16.70 GB  C:\Users\Khizar Malik\AppData\Local\Temp
+    2.18 GB  C:\Users\Khizar Malik\AppData\Local\Temp\claude
+    0.87 GB  C:\Users\Khizar Malik\AppData\Local\ms-playwright
+    2.30 GB  C:\Users\Khizar Malik\AppData\Local\npm-cache
+    0.58 GB  C:\Users\Khizar Malik\AppData\Local\uv
+    0.21 GB  C:\Users\Khizar Malik\AppData\Local\pip
+    0.73 GB  C:\Users\Khizar Malik\AppData\Local\Claude-Data
+    0.00 GB  C:\Users\Khizar Malik\AppData\Roaming\Claude
+   20.16 GB  C:\Users\Khizar Malik\AppData\Local\Google\Chrome
+    0.89 GB  C:\Users\Khizar Malik\AppData\Local\Microsoft\Edge
+    2.70 GB  C:\Users\Khizar Malik\AppData\Local\Programs
+    0.05 GB  C:\Users\Khizar Malik\Downloads
+    0.00 GB  C:\Users\Khizar Malik\Documents
+    0.00 GB  C:\Users\Khizar Malik\Desktop
+    0.06 GB  C:\Users\Khizar Malik\Videos
+    0.00 GB  C:\Users\Khizar Malik\OneDrive
+--- top AppData\Local folders
+
+   GB Path                                             
+   -- ----                                             
+20.16 C:\Users\Khizar Malik\AppData\Local\Google       
+16.69 C:\Users\Khizar Malik\AppData\Local\Temp         
+ 3.32 C:\Users\Khizar Malik\AppData\Local\Packages     
+ 2.98 C:\Users\Khizar Malik\AppData\Local\Microsoft    
+  2.7 C:\Users\Khizar Malik\AppData\Local\Programs     
+  2.3 C:\Users\Khizar Malik\AppData\Local\npm-cache    
+ 0.87 C:\Users\Khizar Malik\AppData\Local\ms-playwright
+ 0.73 C:\Users\Khizar Malik\AppData\Local\Claude-Data  
+
+
+

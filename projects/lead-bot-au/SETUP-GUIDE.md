@@ -56,6 +56,19 @@ Use `main` instead of `master` if `git branch` shows `main`. This publishes the 
 - Daily: nothing to do. Open the Google Sheet(s) and work the leads. Never sort or delete rows.
 - The outreach bot reads the sheet(s) following `docs\CONTRACT.md`.
 
+### What a good first run looks like
+- On GitHub: `setup` green, then six `collect (...)` jobs one after another (`nsw-act`, `vic-tas`, `qld`, `wa-sa-nt`, `youtube`, `imports`), then `finish` green.
+- In the log of "Run the bot (...)": first the key report (`registered: ...` / `ignored: ...`), last a line starting `Done:`.
+- In the Google Sheet: tab 1 is `Stats`, new tabs per niche with rows, a new row in `Run Log`, and 8 extra Australian columns at the end (ABN, entity, GST ...).
+- A first run can find few leads (the bot keeps only ICP 7/10 or higher). Judge after 2-3 days.
+
+### Costs and limits (from the workflow file and the code)
+- Everything works at $0: free OpenStreetMap, free website reading, free Google Sheets. Optional keys add AI text and more data. The free ABN Lookup needs a GUID (`ABN_GUID`).
+- Six jobs of up to about 45 minutes, two runs a day: use a PUBLIC repo (workflow comment). A private repo has 2,000 free minutes a month (workflow comment; GitHub's current number is not verified): set variable `LEAD_MATRIX` to `{"include":[{"name":"all","regions":"","sources":""}]}` and delete the second `cron` line.
+- The six jobs run one at a time on purpose: they all write the same sheet.
+- Google Sheets: 60 reads per minute per robot account; the bot slows down and retries by itself.
+- The public repo holds only code. Keys stay in GitHub secrets and in `secrets\`.
+
 ## 8. How to change common things
 See `GUIDE\03-HOW-TO-CHANGE-THINGS.md`.
 

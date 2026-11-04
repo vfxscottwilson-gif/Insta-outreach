@@ -20,7 +20,15 @@ Freelancer.com, LinkedIn Jobs, Remotive and YTJobs need no account.
 Cloud: GitHub Actions runs `python -m src.leadbot` (Python 3.12, workflow `app\.github\workflows\run-lead-bot.yml`), reads job sources, calls YouTube/Gemini/Groq APIs, writes to your Google Sheet. Local (this folder): a test copy for dry runs. No database other than the Sheet.
 
 ## 4. Folder map
-See `README.md`.
+See `README.md`. Detailed chapters:
+| Chapter | Read it for |
+|---|---|
+| `GUIDE\00-START-HERE.md` | Install, first dry run, what you should see |
+| `GUIDE\01-ROADMAP.md` | Done / open / next, known limits |
+| `GUIDE\02-ARCHITECTURE.md` | How a run works, files, storage, APIs, schedule |
+| `GUIDE\03-HOW-TO-CHANGE-THINGS.md` | Recipes with exact files and settings |
+| `GUIDE\04-TROUBLESHOOTING.md` | Real error messages, exit codes, how to read logs |
+| `GUIDE\05-ACCOUNTS-AND-KEYS.md` | Every secret NAME, where to get it |
 
 ## 5. First-time install (local test copy)
 1. Open `install\` and double-click `INSTALL.cmd`. To look first without changing anything:
@@ -53,6 +61,8 @@ git push -u origin main
 4. Optional tuning: same page, Variables tab: DAILY_LEAD_TARGET, MIN_SUBS, MAX_DAYS_SINCE_UPLOAD, YT_SEARCH_BUDGET.
 5. Actions tab > "YT creator lead bot" > Run workflow with `dry_run` ticked and `max_leads` 10. Open the run log: you should see leads printed and nothing written.
 6. Run again with `dry_run` unticked and `max_leads` 10 (pilot). Check the Sheet. Then leave the schedule on.
+7. What you should see in the Sheet after the pilot: tabs `Master Dashboard`, `YouTube_Video_Editing_Leads`, `YouTube_Thumbnail_Design_Leads`, `Blacklist`, `Run Log` (the bot creates them; `_State` is hidden), and at most 10 new lead rows. In the run log, the last line `SUMMARY written N` tells you how many rows were added. A green run with `written 0` is possible: see `GUIDE\04-TROUBLESHOOTING.md`.
+8. Before step 3 you also need an empty Google Sheet shared with the service account `client_email` as Editor; its id is `SHEET_ID` (`app\SETUP_GUIDE.md` Part 3).
 
 **Local dry run (no Sheet writes)**: double-click the Desktop shortcut "YT Creator Finder (dry run)". It saves `proof\dryrun-leads.csv`. Or:
 ```
@@ -81,7 +91,8 @@ See `GUIDE\04-TROUBLESHOOTING.md`.
 ```
 INSTALL.cmd -Check
 ```
-Every line should say OK.
+Every line should say OK or SKIP (on a PC where it was already installed).
+4. Back up first if you wish: `backups\backup.ps1` makes a zip of the folder (it contains `secrets\`, keep it private). The Sheet is backed up from Google (`database\README.md`).
 
 ## Not verified
 The bot has not been run against a real Sheet, and the Upwork path has not been tested live (needs an approved key). Offline tests passed earlier (22).

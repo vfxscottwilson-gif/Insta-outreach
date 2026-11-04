@@ -56,6 +56,18 @@ Use `main` instead of `master` if `git branch` shows `main`. This publishes the 
 - Daily: nothing to do. Open the Google Sheet(s) and work the leads. Never sort or delete rows.
 - The outreach bot reads the sheet(s) following `docs\CONTRACT.md`.
 
+### What a good first run looks like
+- On GitHub: `setup` green, then `collect (us)` etc. green, then `finish` green. Jobs for countries with no sheet secret print `SKIP ...` and are green too.
+- In the log of "Run the bot (us)": first the key report (`registered: ...` / `ignored: ...`), last a line starting `Done:`.
+- In the Google Sheet: tab 1 is `Stats` (the US sheet has `Master Dashboard` and `US Stats`), new tabs per niche with rows, a new row in `Run Log`.
+- A first run can find few leads (the bot keeps only ICP 7/10 or higher). Judge after 2-3 days.
+
+### Costs and limits (from the workflow file and the code)
+- Everything works at $0: free OpenStreetMap, free website reading, free Google Sheets. Optional keys add AI text and more data.
+- Two daily runs of ten jobs need about 900 runner-minutes a day (workflow comment), so use a PUBLIC repo. A private repo has 2,000 free minutes a month (workflow comment; GitHub's current number is not verified): set variable `LEAD_MATRIX` to `{"include":[{"name":"us","country":"US"}]}` and delete the second `cron` line.
+- Google Sheets: 60 reads per minute per robot account, shared by all jobs; the bot slows down and retries by itself.
+- The public repo holds only code. Keys stay in GitHub secrets and in `secrets\`.
+
 ## 8. How to change common things
 See `GUIDE\03-HOW-TO-CHANGE-THINGS.md`.
 

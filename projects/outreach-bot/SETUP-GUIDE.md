@@ -76,3 +76,20 @@ powershell -ExecutionPolicy Bypass -File install\run-bot.ps1 -SelfTest
 The GitHub repo and its secrets live in the cloud; copying this folder does not move them.
 
 Not verified: a live run against Google Sheets and the AI APIs (needs your logins). Only the offline self-test (58 checks) was run.
+
+## 11. Deeper chapters (read these when you need detail)
+| Question | Chapter |
+|---|---|
+| What happens in one run, which tabs and columns exist, how the AI keys rotate | `GUIDE\02-ARCHITECTURE.md` |
+| Exact settings, files and tabs for each change (rules, limits, schedule, countries, keys, models) | `GUIDE\03-HOW-TO-CHANGE-THINGS.md` |
+| Error messages and fixes (dead keys 401, quota, sheet sharing, how to read the log) | `GUIDE\04-TROUBLESHOOTING.md` |
+| Order of work and what is parked | `GUIDE\01-ROADMAP.md` |
+
+Key facts to remember:
+- Option priority: GitHub Variable > Options tab > default.
+- Targets: DAILY_TARGET 400, RUN_LIMIT 700, MAX_RUN_MIN 50. Real output is limited by the free AI quota (about 400-700 drafts a day).
+- The Outreach sheet must be a separate, new sheet. The bot never writes to lead sheets and refuses to start if both are the same.
+- Local install check (changes nothing):
+```
+powershell -ExecutionPolicy Bypass -File install\install.ps1 -Check
+```

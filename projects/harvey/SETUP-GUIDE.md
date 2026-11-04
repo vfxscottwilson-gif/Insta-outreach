@@ -33,6 +33,15 @@ You should see `[OK]` lines; `[DRY]` lines are what the installer will do. A `[W
 3. It installs Python 3.12 if missing, creates `app\.venv`, runs `pip install -e`, asks for keys (hidden typing; press Enter to skip any), copies `secrets\.env` to `app\.env`, creates a Desktop shortcut "Harvey Dashboard" and runs a health check.
 4. You should end with `===== CHECKLIST =====` and `Done.` (no FAIL lines). It takes about 2 to 5 minutes.
 
+Installer options (all optional; `-Check` changes nothing; the installer is safe to re-run):
+| Option | Effect |
+|---|---|
+| `-Check` (same as `-DryRun`) | Shows what would happen |
+| `-NoPrompt` | Never asks for keys; you edit `secrets\.env` yourself |
+| `-Uninstall` | Removes only the Desktop and Start-menu shortcuts; folder, `.venv`, data and keys stay |
+| `-WithBrowser` | Also downloads Chromium (about 150 MB) |
+| `-RunTests` | Runs the test suite |
+
 Optional extras (run in PowerShell in the `install` folder):
 ```
 .\install.ps1 -RunTests
@@ -70,8 +79,21 @@ More in `GUIDE\03-HOW-TO-CHANGE-THINGS.md`.
 | `harvey` not recognised | Use `app\.venv\Scripts\harvey.exe` (or the .cmd files in `install\`) |
 | Claude CLI not found / not logged in | `npm install -g @anthropic-ai/claude-code`, then `claude login` |
 | Codex / ChatGPT brain | Not supported on Windows; use Claude |
+| Where are the logs? | There is no log file. The `harvey run` window is the log; `harvey status` and the dashboard Activity tab show the rest |
+| Nothing is sent | Normal at first: emails wait in the Outbox for your approval (default). Also see `harvey status` |
 
 More in `GUIDE\04-TROUBLESHOOTING.md`.
+
+## 9b. Reading the guides
+| File | Use it for |
+|---|---|
+| `GUIDE\00-START-HERE.md` | Install, keys, Claude login, first run, what you should see |
+| `GUIDE\01-ROADMAP.md` | What is done, open, not verified, next |
+| `GUIDE\02-ARCHITECTURE.md` | How data flows from finding a business to a reply |
+| `GUIDE\03-HOW-TO-CHANGE-THINGS.md` | 12 recipes with exact files and commands |
+| `GUIDE\04-TROUBLESHOOTING.md` | Messages, causes, fixes, how to read status |
+| `GUIDE\05-ACCOUNTS-AND-KEYS.md` | Key NAMES only |
+| `app\CLAUDE.md`, `app\README.md`, `app\docs\` | Upstream reference (large; not copied here) |
 
 ## 10. Move to a new PC
 1. Copy the whole `harvey` folder (include `secrets\`; `app\.venv` need not be copied).

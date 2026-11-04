@@ -1,0 +1,935 @@
+{
+ "measure": {
+  "method": "Real Postgres, not arithmetic: PGlite 0.5.15 (PostgreSQL 18.6 compiled to WASM, on-disk dataDir, pg_trgm loaded) taken from the CRM's node_modules and run with node 26 from C:\\Users\\KHIZAR~1\\AppData\\Local\\Temp\\claude\\4b2e0699dcdbc578\\a8f5ffba-fd8f-465e-b033-54e03564bfec\\scratchpad\\storage-measure (scripts: gen.cjs generator, lib.cjs DDL, measure_leads.cjs, measure_scale.cjs, measure_other.cjs, project.cjs; results-*.json and projection-table.md kept; scratch DBs deleted). Page layout check: an int4-only table fits 226 rows/page (2,260 rows = 10 pages), identical to a 64-bit server. Steps: (1) 20,000 synthetic leads from a seeded generator whose value lengths and shapes follow the lead bot code (defaults.py 74 headers, leadbot.py row builder, insight.py templates and clips, score.py gap strings, niche pitch templates). (2) LEAN (30 typed fields) and FULL (LEAN + all 74 columns as a jsonb document, non-empty keys only) loaded in 1,000-row batches with all indexes already present (incremental build, the conservative case), then VACUUM (ANALYZE), then pg_total_relation_size = heap + TOAST + FSM/VM + indexes divided by rows. Also measured: FULL with blank keys kept, FULL worst case (all 74 columns at max observed length), and bulk-load-then-CREATE INDEX. (3) Scale check to 100,000 rows (checkpoints 10k/20k/50k/100k) because per-row cost falls with table size. (4) Update churn: 3 status updates per lead, VACUUM after each 20% of rows (emulates default autovacuum), size before vs after. (5) 20,000 rows each for audit_event, sync_log, daily_stats, notification, deletion_request (3-8 lead ids, mean 5) and a slim lead_status_event; plus an EMPTY schema (12 tables, 32 indexes, 9 TOAST tables). (6) project.cjs: monthly model, piecewise-linear lead size through the measured checkpoints, last slope beyond 100k. Per-lead cost used in the projection is therefore the measured curve (about 658 B marginal LEAN, 2,526 B marginal FULL at scale), times the measured churn factor, not the 20k average. Other measured row sizes: deletion_request 499 B (heap 358 + 3 indexes 139), lead_status_event (slim) 129 B. MB = MiB (1,048,576 B); thresholds are APP data (450 MB = Free 500 minus the ~50 MB baseline; 1 GB = 1,024 MB; 8 GB = 8,192 MB).",
+  "bytes_per_lead_lean": 867,
+  "bytes_per_lead_full": 2729,
+  "baseline_empty_db_mb": 0.58,
+  "bytes_per_audit_event": 681,
+  "bytes_per_sync_log_row": 160,
+  "bytes_per_daily_stats_row": 122,
+  "bytes_per_notification": 340,
+  "index_list": "LEAD TABLE (both designs; B/row at 20,000 rows, LEAN / FULL): PK(id uuid) 43 / 39; UNIQUE(sheet_id, place_id) 62 / 62; (canonical_email) 46 / 47; (sheet_id, lead_added_on) 11 / 11; (country_code, state) 10 / 11; (niche_id) 11 / 11; (status) 7 / 9; (assigned_to) 9 / 12; GIN pg_trgm on (company) 263 / 279 (falls to 111 / 131 at 100,000 rows; 62 / 74 if built after a bulk load). Index total 464 / 483 B per lead. Trigram judgement: I judge it needed for the search box (employees type a piece of a name; a btree on lower(company) with text_pattern_ops only does starts-with and still costs 45 B/row), but it is the single biggest index: it is 30% of a LEAN lead at 20k rows and 16% at 100k. It can be skipped until about 50k-100k rows (LEAN without it: 603 B at 20k, 589 B at 100k; FULL: 2,450 / 2,440 B). Not included in the planned set: lower(company) btree (measured, then dropped). OTHER TABLES (B/row): audit_event PK(id bigint) 23, (entity_id, ts) 57, (actor_id, ts) 66, BRIN(ts) 1 = 149 index + 530 heap; sync_log PK 23 + (sheet_id, started DESC) 55; daily_stats PK(day, sheet_id, niche_id, country_code) 31 + (sheet_id, day) 13; notification PK 23 + (user_id, created_at DESC) 73; deletion_request PK(uuid) 39 + (status, created_at) 33 + (requested_by, created_at) 67; lead_status_event PK(lead_id, ts) 58 (optional slim table). Small tables: profiles (PK, UNIQUE email), niches (PK, UNIQUE name), sheets (PK, UNIQUE google_sheet_id), tabs (PK, UNIQUE sheet_id+name), sheet_access (PK user_id+sheet_id). Whole schema: 12 tables, 32 indexes, 9 TOAST tables; empty it is 385,024 bytes of relation files (376 KB) and grows pg_database_size by 606,208 bytes (0.58 MB, catalogs included); a bare PG18 database is 7.2 MB (that is not the Supabase ~50 MB baseline, which also holds the auth/storage/realtime schemas). The empty size is the same for LEAN and FULL because LEAN also has a TOAST table.",
+  "columns_used": "NO real lead data exists (BRIEF section 12; no sheet or CSV from the lead bot on disk). Lengths come from the bot code; fill rates are my ASSUMPTIONS and are what the result rests on. On average 45.8 of the 74 columns are non-empty per lead. Provenance of lengths: Place Id forms 'ChIJ'+23 chars (27, tests use this), 'osm:node/N' (about 19), 'yt:UC'+22 (27) from leadbot.py ~L1195, osm.py:78, yt.py:76 (mean 25.8); Lead Insight = insight.py fact template (3-4 lines, each clipped to 160, real PAINS strings) for 50% of rows and the AI form (3-4 lines, max 45 words, each clipped to 200) for 50%: mean 269, max 434 chars; Pitch Angle = real niche templates from defaults.py L282-300 filled in: mean 158, max 211; Social Gap = real score.py strings: mean 48; Website Summary clipped to 350 in optional.py:159, filled for 30% of rows, mean 276; Map Url 'https://maps.google.com/?cid='+19 digits = 48; Notes = real leadbot.py strings, mean 79; Lead Added On/Last Checked 10; ICP '7.4' 3; emails 25-28; social URLs 33-46; Phone 15.5; Website 30.5; Full Address 48. Assumed fill rates: personal email 25%, generic 60%, phone 70%, website 87%, decision maker 35%, Instagram 50%, Facebook 55%, LinkedIn 25%, website summary 30%, rating/reviews 60%, 9% of rows from the YouTube sheet. Cross-check: SAMPLE_LEADS_live_2026-11-01.csv is a different automation (job-board leads, 49 columns, 50 rows) with shorter text (AI_Lead_Insight mean 128, max 169; Recommended_Pitch_Angle mean 110, max 122); if real Lead Insight and Pitch Angle are that short, FULL drops by roughly 150-200 B/row and LEAN by about 5 B. LEAN (30 fields) from bot columns: Place Id -> place_id; Company Name -> company (trimmed to 120, mean 19.9); Decision Maker Name/Role -> dm_name, dm_role; Personal Email, Generic Email, Phone, Website (trimmed 200), City, State, Country Code char(2); Niche -> niche_id smallint; Segment -> smallint code; ICP Score /10 -> numeric(3,1); Tier -> \"char\"; Status -> smallint; Lead Added On -> date; first_seen timestamptz (app clock, new); plus app-owned/derived: lead id uuid, sheet_id, tab_id, canonical_email (best email lowercased, 70% filled, mean 26), domain (website host, mean 17), assigned_to uuid (filled for 100% of rows = 'assign everything'), tags text[] (20% of rows have 1-2 tags), notes (first line of Lead Insight trimmed to 160, mean 78), flags int, row_hash bytea(16), updated_at, deleted_at. Everything else (Suburb, Postcode, Map Url, Full Address, Other Emails, socials, Lead Insight, Pitch Angle, Website Summary, YT/IG metrics, quality columns, Notes, Enrichment, etc.) exists only in FULL's jsonb. FULL jsonb: typical 1,997 chars of JSON (2,087 as jsonb text), stored 1,667 B after pglz TOAST compression; with blank keys kept 2,666 chars text, 1,838 B stored, 2,934 B/lead total; worst case (all 74 columns at the maximum length observed) 4,372 chars, 3,129 B stored, 5,035 B/lead total. LEAN heap tuple averages 388 B.",
+  "employee_overhead": "Assumptions: 5 employees; every logged action = one audit_event row of 681 B (incl. its 3 indexes; before/after jsonb of about 196 chars each); assignment is a column on the lead plus ONE batch event per assignment, never a row per lead per action; +20 admin/batch events per day (assignments, approvals, edits); month = 30.4 days. Measured result, MB per month for the 5 employees: 100 actions/employee/day = 15,808 events = 10.3 MB/month unpruned (2.1 MB per employee); with 90-day pruning the audit table stops growing at a plateau of 37 MB (3 months x 10.3 x 1.2 bloat allowance). 300/day = 46,208 events = 30.0 MB/month unpruned (6.0 per employee); pruned plateau 108 MB. 1,000/day = 152,608 events = 99.1 MB/month unpruned (19.8 per employee); pruned plateau 357 MB (79% of the Free 450 MB by itself). Other recurring costs that do not depend on employees: sync_log at 5,000 rows/day (10 sheets x about 500 logged scans) = 23.2 MB/month unpruned, plateau 27.9 MB with 30-day pruning; notifications at 100/day = 0.98 MB/month; deletion requests at 10/day = 0.14 MB/month; daily_stats 0.25-0.95 MB/month (at most 270 rows/day x 122 B). Status history: 3 events per NEW lead stored as audit rows = 2,043 B per lead, which is 2.4 times the LEAN lead row itself; a slim lead_status_event table (129 B per event) would make it 386 B. Backlog leads get no history at import (a sheet stores only the current status); their later changes are the employee actions counted above. If you also charged 3 events to each of 50,000 backlog leads it would add about 97 MB once (gone after 90 days when pruned). Key finding: below about 5,000 new leads/month, logging (sync_log + audit) is the main storage cost, not the leads. 5 employees assigned everything add one column (assigned_to, 9 B/row of index) and nothing else per lead.",
+  "projection_table": "HOW TO READ: months until APP data reaches the threshold (450 MB = Free minus ~50 MB baseline; 1 GB = 1,024 MB; 8 GB = 8,192 MB), 5 employees, base case 300 logged actions/employee/day (columns '@100' and '@1000' only vary that for the 450 MB column). 'Pruned' = audit kept 90 days AND sync_log kept 30 days. Lead storage = measured curve x measured update-churn factor (LEAN x1.143, FULL x1.226). Includes trigram search index, status history (3 audit events per new lead), employee events, sync_log, daily_stats, notifications, deletion requests, empty-schema baseline. Backlog 50,000 = already in the table at month 0, bulk-imported, no history.\n\n| New leads / month | Backlog | Design | Pruned (audit 90 d, sync_log 30 d) | Months to 450 MB @300 actions/emp/day | @100 | @1000 | Months to 1 GB @300 | Months to 8 GB @300 | App data at month 12 (MB) @300 |\n|---|---|---|---|---|---|---|---|---|---|\n| 2,500 | 0 | LEAN | no | 7.3 | 10.7 | 3.4 | 16.6 | 134 (11.1 y) | 741 |\n| 2,500 | 0 | LEAN | yes | 92 (7.7 y) | 114 (9.5 y) | 13.4 | 273 (22.7 y) | >1200 (100+ y) | 197 |\n| 2,500 | 0 | FULL | no | 6.6 | 9.4 | 3.3 | 15.2 | 122 (10.2 y) | 808 |\n| 2,500 | 0 | FULL | yes | 33 (2.8 y) | 41 (3.4 y) | 4.8 | 99 (8.2 y) | 917 (76.4 y) | 264 |\n| 2,500 | 50,000 | LEAN | no | 6.7 | 9.9 | 3.1 | 16.0 | 133 (11.1 y) | 776 |\n| 2,500 | 50,000 | LEAN | yes | 81 (6.7 y) | 103 (8.6 y) | 3.0 | 261 (21.8 y) | >1200 (100+ y) | 232 |\n| 2,500 | 50,000 | FULL | no | 4.4 | 6.3 | 2.2 | 13.0 | 120 (10.0 y) | 956 |\n| 2,500 | 50,000 | FULL | yes | 16.3 | 24 (2.0 y) | 2.0 | 82 (6.8 y) | 900 (75.0 y) | 412 |\n| 5,000 | 0 | LEAN | no | 6.5 | 9.2 | 3.2 | 15.0 | 120 (10.0 y) | 823 |\n| 5,000 | 0 | LEAN | yes | 53 (4.4 y) | 67 (5.6 y) | 4.9 | 165 (13.7 y) | >1200 (100+ y) | 238 |\n| 5,000 | 0 | FULL | no | 5.6 | 7.5 | 3.0 | 12.8 | 103 (8.6 y) | 957 |\n| 5,000 | 0 | FULL | yes | 16.7 | 21.1 | 2.8 | 52 (4.3 y) | 491 (40.9 y) | 373 |\n| 5,000 | 50,000 | LEAN | no | 6.0 | 8.5 | 3.0 | 14.4 | 120 (10.0 y) | 858 |\n| 5,000 | 50,000 | LEAN | yes | 46 (3.9 y) | 60 (5.0 y) | 2.8 | 158 (13.1 y) | >1200 (100+ y) | 274 |\n| 5,000 | 50,000 | FULL | no | 3.7 | 5.0 | 2.0 | 11.0 | 101 (8.4 y) | 1105 |\n| 5,000 | 50,000 | FULL | yes | 7.7 | 12.0 | 1.8 | 43 (3.6 y) | 482 (40.1 y) | 520 |\n| 20,000 | 0 | LEAN | no | 4.1 | 5.0 | 2.5 | 9.4 | 75 (6.3 y) | 1308 |\n| 20,000 | 0 | LEAN | yes | 10.3 | 14.7 | 2.3 | 45 (3.8 y) | 484 (40.3 y) | 477 |\n| 20,000 | 0 | FULL | no | 2.9 | 3.3 | 2.0 | 6.6 | 53 (4.5 y) | 1845 |\n| 20,000 | 0 | FULL | yes | 2.9 | 3.9 | 1.8 | 12.2 | 130 (10.8 y) | 1015 |\n| 20,000 | 50,000 | LEAN | no | 3.8 | 4.6 | 2.3 | 9.1 | 75 (6.3 y) | 1344 |\n| 20,000 | 50,000 | LEAN | yes | 8.1 | 12.5 | 2.1 | 43 (3.6 y) | 482 (40.1 y) | 513 |\n| 20,000 | 50,000 | FULL | no | 1.9 | 2.2 | 1.3 | 5.7 | 52 (4.4 y) | 1993 |\n| 20,000 | 50,000 | FULL | yes | 1.9 | 2.2 | 1.2 | 9.7 | 127 (10.6 y) | 1163 |\n| 60,000 | 0 | LEAN | no | 2.1 | 2.3 | 1.6 | 4.7 | 38 (3.2 y) | 2588 |\n| 60,000 | 0 | LEAN | yes | 1.9 | 2.1 | 1.4 | 10.2 | 169 (14.1 y) | 1103 |\n| 60,000 | 0 | FULL | no | 1.3 | 1.3 | 1.1 | 2.9 | 23.4 | 4199 |\n| 60,000 | 0 | FULL | yes | 1.2 | 1.3 | 1.0 | 2.8 | 43 (3.5 y) | 2714 |\n| 60,000 | 50,000 | LEAN | no | 1.9 | 2.1 | 1.4 | 4.6 | 38 (3.2 y) | 2624 |\n| 60,000 | 50,000 | LEAN | yes | 1.7 | 1.9 | 1.3 | 9.4 | 168 (14.0 y) | 1139 |\n| 60,000 | 50,000 | FULL | no | 0.8 | 0.9 | 0.7 | 2.5 | 23.0 | 4347 |\n| 60,000 | 50,000 | FULL | yes | 0.8 | 0.8 | 0.6 | 2.4 | 42 (3.5 y) | 2862 |\n\nANSWER TO 'HOW LONG TO FILL 500 MB' using the bot's own volume estimate (about 10,000 leads in month 1, then about 2,500/month; 5 employees at 300 actions/day, no backlog): LEAN not pruned = 450 MB in 6.9 months, 1 GB in 16.3, 8 GB in 133 (11.1 y); month 12 = 761 MB. LEAN pruned = 450 MB in 90 months (7.5 y), 1 GB in 271 (22.6 y), 8 GB never in practice; month 12 = 202 MB, month 24 = 240 MB. FULL not pruned = 450 MB in 6.1 months, 1 GB in 14.7; month 12 = 845 MB. FULL pruned = 450 MB in 31 months (2.6 y), 1 GB in 96 (8.0 y), 8 GB in 914 (76 y); month 12 = 287 MB, month 24 = 392 MB. Reading: at the bot's real volume, 500 MB is lasting for years ONLY if audit (90 d) and sync_log (30 d) are pruned; without pruning the logs, not the leads, fill it in 6-7 months. A 1 GB free database buys roughly double the time. Sensitivities: if sync_log writes only on change or error (about 1,000 rows/day) LEAN 2,500/month not pruned reaches 450 MB in 10.4 months instead of 7.3 (FULL 9.2 instead of 6.6); with the slim 129 B status-history table instead of audit rows, LEAN 20,000/month not pruned reaches 450 MB in 5.8 months instead of 4.1. If the 50 MB baseline is also counted against the 1 GB and 8 GB lines, subtract about 0.1-0.8 months from the 1 GB column.",
+  "caveats": [
+   "NO real lead data: fill rates are assumptions (45.8 of 74 columns non-empty) and lengths come from the bot code; the only lead CSV on disk is a different automation (job-board leads) and was used for a text-length cross-check only (its Lead Insight is shorter: mean 128 vs my 269). Re-measure with the pilot sheets: run select pg_total_relation_size('leads')/count(*) after the first import.",
+   "PGlite is PostgreSQL 18.6 on 32-bit WASM; Supabase runs 15 or 17. Page layout verified identical (226 int4 rows per 8 KB page), pglz is the default TOAST compression in both, so expect within a few percent. Not tested: lz4 TOAST compression, which could shrink the FULL jsonb. Run-to-run variation of two identical runs was 0.2-0.7% (random uuids), churn 1.143 to 1.154.",
+   "Per-row cost falls with table size, so the 20k figures overstate large tables: LEAN 867 B/row at 20k, 700 at 100k, marginal 658 beyond 50k; FULL 2,729 / 2,571 / marginal 2,526. The trigram GIN index is the reason (263 B/row at 20k, 111 at 100k) and depends on how diverse real company names are (+-30%); my synthetic names come from a small vocabulary. The projection uses the measured curve, not the 20k average. Built after a bulk load instead of row-by-row the GIN index is 62 B/row at 20k, so REINDEX after the backlog import saves about 25% of LEAN (634 vs 867 B at 20k).",
+   "Update churn is included: 3 status updates per lead with autovacuum emulated by a VACUUM after every 20% of rows gives LEAN x1.143 (heap +20%, indexes +9%) and FULL x1.226 (the raw jsonb is rewritten on each status change, so TOAST grows 31%). It plateaus after the first pass, but only while autovacuum keeps up (default 20%); the status index prevents HOT updates. Keeping the raw jsonb in a separate table that is not rewritten on status-only changes would give FULL the LEAN churn factor.",
+   "Status history is the biggest per-lead cost when stored as audit rows: 3 x 681 B = 2,043 B per lead, more than the LEAN lead itself (867 B). The projection charges it as audit rows as requested; a slim table (129 B per event, measured) cuts it to 386 B. Backlog leads are charged no history (see employee_overhead for the +97 MB if you charge them).",
+   "sync_log is assumed at 5,000 rows/day (10 sheets x about 500 logged scans) and that alone is 23.2 MB/month; the real figure depends on what the scanner logs. Pruned tables are given +20% bloat because DELETE frees space for reuse but never shrinks the file; monthly partitions (drop a partition) avoid it. VACUUM FULL or pg_repack is needed to give disk back.",
+   "Thresholds are app data in MiB: the ~50 MB Supabase baseline is not included, WAL is not counted, and only the 12 planned tables were measured (no Storage objects, no auth.users, no pg_cron history, no Realtime). A 1 GB or 8 GB plan changes only the threshold, not the growth.",
+   "Measured variants beyond the two requested: FULL with blank keys kept = 2,934 B/lead (+7%); FULL worst case with all 74 columns at their maximum observed length = 5,035 B/lead (+85%). The AU-only edition has 82 columns; the 8 extra keys add an estimated 150-200 B of jsonb per AU-only lead (estimated from lengths, not measured).",
+   "Synthetic text is built from a 1,413-word vocabulary (taken from the lead-bot docs) with Zipf-like weights, so compressibility is similar to English prose but real scraped text could differ by +-10% in the FULL TOAST size. No concurrency, no replication slots and no index bloat from deletes were modelled; the ix_status and ix_assigned indexes are plain (not partial), which is the conservative choice.",
+   "Nothing under F:\\Github Repos was edited and no secret files were opened. Only non-secret docs of the lead bot (CONTRACT.md, SHEETS_SETUP.md, README.md, UPGRADE_V3-V5.md) were read to build the word list, plus the source files named in the task."
+  ]
+ },
+ "pgs": {
+  "group": "Postgres-compatible / SQL options with a free tier of at least 1 GB (13 providers, checked 2026-11-04)",
+  "providers": [
+   {
+    "provider": "Neon",
+    "plan": "Free (no card, no expiry)",
+    "free_storage": "1 GB Postgres per project (raised from 0.5 GB on 2026-10-02), up to 100 projects, 20 GB total. Writes are blocked above 1 GB; data is not deleted.",
+    "expiry_pause_or_deletion": "Compute scales to zero after 5 min idle and this cannot be turned off on Free. Free projects are not paused or deleted for inactivity (agentdeals notes only that Free projects in 3 deprecated Azure regions inactive 90+ days may be deleted after 2026-10-05).",
+    "backups": "6-hour instant-restore window capped at 1 GB of changes, 1 manual snapshot, no scheduled snapshots.",
+    "commercial_use_ok": "Not stated on Neon pricing, plans docs, blog or ToS pages I read. A third-party directory says allowed; not verified. Plan is described as for prototypes, side projects, small teams.",
+    "has_auth_realtime_cron": "Auth: yes, Neon Auth (60K MAU on Free). Realtime: none found. Cron: pg_cron exists but runs only while compute is active, so it is unreliable with scale-to-zero. Neon Functions can run on a cron Function Trigger (any plan, usage-limited, 4 AWS regions, GA/beta not stated).",
+    "sql_postgres": "Real Postgres (serverless, separated storage/compute).",
+    "other_free_limits": "100 CU-hours per project per month (about 400 h of a 0.25 CU compute), autoscaling up to 2 CU (8 GB RAM), 5 GB transfer per project, 10 branches per project. When CU-hours run out compute stays suspended until next billing month.",
+    "fit_for_this_app": "Storage fits, compute does not. A 1-minute scanner keeps compute awake 24/7: about 730 h x 0.25 CU = about 182 CU-h vs 100 CU-h free, so it runs out around day 17 and the DB goes offline until next month (my arithmetic). pg_cron cannot wake a suspended compute. No Realtime, so the Realtime counters would need a rewrite. Not a drop-in replacement for Supabase.",
+    "date_checked": "2026-11-04",
+    "verified": "verified-3-sources",
+    "sources": [
+     "https://neon.com/pricing",
+     "https://neon.com/docs/introduction/plans",
+     "https://neon.com/blog/neon-free-plan-1-gb-per-project",
+     "https://neon.com/docs/changelog/2026-10-02",
+     "https://neon.com/docs/extensions/pg_cron",
+     "https://agentdeals.dev/vendor/neon",
+     "https://getvoroa.com/blog/free-postgres-database/"
+    ]
+   },
+   {
+    "provider": "Aiven (free PostgreSQL)",
+    "plan": "Free plan (no card, no time limit)",
+    "free_storage": "1 GB disk (cut from 5 GB in May 2025 per a third-party summary), 1 CPU, 1 GB RAM, single node, no high availability. One free service per engine.",
+    "expiry_pause_or_deletion": "No time limit, but the service is powered off after a period of inactivity (length not published) with an email and in-platform notice first; Aiven says 'unused instances will be stopped'. You can power it back on. Docs give no deletion timeline.",
+    "backups": "Included per Aiven FAQ ('covers your VM, backups, and networking'); a third-party source says only a single backup is kept with no rollback window. Retention not published.",
+    "commercial_use_ok": "No commercial clause found. Aiven FAQ says the free plan is NOT for production: 'designed for learning, prototyping, and small projects - not high-traffic production'. Aiven may change cloud/region of free services.",
+    "has_auth_realtime_cron": "None built in (plain managed Postgres). pg_cron is in Aiven's Postgres extension list; whether it is enabled on the free plan was not verified.",
+    "sql_postgres": "Real PostgreSQL on a dedicated VM.",
+    "other_free_limits": "Connection limit not published for Free; a third-party source and the Developer-tier docs give max_connections 20 with no pooling (not confirmed for Free). Region not selectable.",
+    "fit_for_this_app": "Only option here that is a true always-on 1 GB with no time limit. A 1-minute scanner would likely count as activity (not verified). But it is bare Postgres: Auth, single-session logic, emailed reset codes, Realtime and RLS-through-an-API must all be rebuilt in your own backend. 20 connections, single node, 'not for production'. Large rewrite from the Supabase stack.",
+    "date_checked": "2026-11-04",
+    "verified": "verified-3-sources",
+    "sources": [
+     "https://aiven.io/free-postgresql-database",
+     "https://aiven.io/docs/platform/concepts/free-plan",
+     "https://github.com/prisma/web/pull/8638",
+     "https://freetier.co/directory/products/aiven",
+     "https://www.selfhost.dev/blog/best-free-postgresql-hosting/",
+     "https://getvoroa.com/blog/free-postgres-database/",
+     "https://aiven.io/docs/products/postgresql/reference/list-of-extensions"
+    ]
+   },
+   {
+    "provider": "CockroachDB (Basic / free)",
+    "plan": "Basic free allowance CLOSED to new orgs on 2026-09-15; new orgs get a 30-day trial only",
+    "free_storage": "New organizations: none. Trial is $400 credit for 30 days. Legacy Basic (clusters created before 2026-09-15) kept 10 GiB + 50M Request Units per month.",
+    "expiry_pause_or_deletion": "Trial ends after 30 days or when the $400 is used; clusters are then paused, and deleted if no payment method is added within 30 days. Billing is by provisioned/stored amounts, so idle clusters still cost money.",
+    "backups": "Not stated for free. Only paid example is hourly policy with 30-day retention.",
+    "commercial_use_ok": "Not stated for free; not applicable to new orgs (trial/paid).",
+    "has_auth_realtime_cron": "None built in. CockroachDB is wire-compatible with Postgres but is a different database, so some features and extensions will not work.",
+    "sql_postgres": "Postgres wire-compatible distributed SQL, not real Postgres.",
+    "other_free_limits": "New pricing: Standard from $0.092 per vCPU-hour, Mission Critical $0.162 per vCPU-hour. Some third-party pages (srvrlss, Tinybird, docs page plan-your-cluster-basic) still show the old $15 / 10 GiB benefit and are stale or legacy.",
+    "fit_for_this_app": "Not usable. No permanent free tier for new accounts since 2026-09-15 and it is not real Postgres (no Supabase-compatible stack).",
+    "date_checked": "2026-11-04",
+    "verified": "verified-3-sources",
+    "sources": [
+     "https://www.cockroachlabs.com/pricing/",
+     "https://www.cockroachlabs.com/cockroachdb/pricing/",
+     "https://github.com/robhunter/agentdeals/issues/1933",
+     "https://cloudinsight.cc/en/blog/free-cloud-database",
+     "https://docs.cockroachlabs.com/docs/cockroachcloud/plan-your-cluster-basic"
+    ]
+   },
+   {
+    "provider": "Xata",
+    "plan": "No free plan (14-day trial, then pay-as-you-go)",
+    "free_storage": "None. Old free tier (15 GB) was retired; managed free tier gone by April 2026 per one source. Only the open-source core (Apache-2.0) is free, if self-hosted.",
+    "expiry_pause_or_deletion": "Trial lasts 14 days, no card needed (about $100 credit per one source). Scale-to-zero is offered on paid; no deletion policy published.",
+    "backups": "Not stated.",
+    "commercial_use_ok": "Not applicable (no free managed plan). Self-hosted open source is Apache-2.0.",
+    "has_auth_realtime_cron": "None found for the managed Postgres.",
+    "sql_postgres": "Real Postgres with branching.",
+    "other_free_limits": "Xata Cloud about $0.012 per hour plus $0.28 per GB-month of storage; plans listed from $9/month by one tracker. Some old pages (softwares.com, perkstack) still show a free tier and are stale.",
+    "fit_for_this_app": "Not usable as a free database.",
+    "date_checked": "2026-11-04",
+    "verified": "verified-3-sources",
+    "sources": [
+     "https://xata.io/pricing",
+     "https://layerbase.com/blog/xata-alternatives",
+     "https://www.saas4that.com/tools/xata",
+     "https://getvoroa.com/blog/free-postgres-database/"
+    ]
+   },
+   {
+    "provider": "Tiger Data (Timescale) - Tiger Cloud free service",
+    "plan": "Free service (beta, launched Oct 2025)",
+    "free_storage": "About 750 MB per service, 2 free services (from podcast transcript, Bytebase, Layerbase). Official docs confirm the free service exists and goes read-only at its storage limit but do NOT print the number.",
+    "expiry_pause_or_deletion": "Not stated in docs I could read (no inactivity or deletion policy found). Docs: two free services included on all plans; free services are in beta.",
+    "backups": "Not specified for free services.",
+    "commercial_use_ok": "No explicit clause. Docs call free services good for 'schema explorations, syntax validations, and other small-scale testing'; Layerbase says TigerData states it is not for production.",
+    "has_auth_realtime_cron": "None built in. Includes TimescaleDB and vector extensions; no pooling, replication, exporters, metrics or VPC on free. Built-in cron/Auth/Realtime not confirmed.",
+    "sql_postgres": "Real Postgres with TimescaleDB.",
+    "other_free_limits": "Fixed to us-east-1, pre-configured CPU/RAM. Paid plans have a 30-day trial.",
+    "fit_for_this_app": "Fails the 1 GB requirement (about 750 MB), beta, not for production, read-only when full. No Auth/Realtime.",
+    "date_checked": "2026-11-04",
+    "verified": "partly",
+    "sources": [
+     "https://www.tigerdata.com/docs/deploy/tiger-cloud/tiger-cloud-aws/pricing-and-account-management",
+     "https://www.tigerdata.com/docs/get-started/quickstart/create-service",
+     "https://www.bytebase.com/blog/postgres-hosting-options-pricing-comparison/",
+     "https://layerbase.com/blog/timescale-alternatives",
+     "https://thedataexchange.media/postgres-for-agents-tiger-data/",
+     "https://www.tigerdata.com/pricing"
+    ]
+   },
+   {
+    "provider": "Render Postgres",
+    "plan": "Free Postgres (time-limited)",
+    "free_storage": "1 GB fixed (cannot be expanded), 256 MB RAM / 0.1 CPU per third-party sources.",
+    "expiry_pause_or_deletion": "EXPIRES 30 days after creation and becomes inaccessible; 14-day grace period to upgrade, then the database and data are deleted. Only one free Postgres per workspace. Render may restart it at any time.",
+    "backups": "None ('no backups of any kind').",
+    "commercial_use_ok": "Official docs: 'Do not use them for production applications.'",
+    "has_auth_realtime_cron": "None built in. Free DBs have no managed connection pooling.",
+    "sql_postgres": "Real Postgres.",
+    "other_free_limits": "Third-party: about 100 connections. Cheapest paid Postgres about $6/month (256 MB RAM, 1 GB storage).",
+    "fit_for_this_app": "Not usable. 30-day expiry and no backups.",
+    "date_checked": "2026-11-04",
+    "verified": "verified-3-sources",
+    "sources": [
+     "https://render.com/docs/free",
+     "https://agentdeals.dev/vendor/render",
+     "https://www.selfhost.dev/blog/best-free-postgresql-hosting/",
+     "https://getvoroa.com/blog/free-postgres-database/",
+     "https://pethost.dev/blog/railway-vs-render-vs-fly-io-pricing/"
+    ]
+   },
+   {
+    "provider": "Koyeb",
+    "plan": "Free Postgres instance (included in paid plans; no free plan for new users since Feb 2026)",
+    "free_storage": "1 GB (0.25 vCPU, 1 GB RAM, about 112 connections).",
+    "expiry_pause_or_deletion": "Compute sleeps after 5 min of inactivity and wakes on next query. Free compute is capped at 5 hours per month. Deleting the service is permanent. No expiry stated.",
+    "backups": "Not stated.",
+    "commercial_use_ok": "Not stated.",
+    "has_auth_realtime_cron": "None built in.",
+    "sql_postgres": "Real Postgres (serverless).",
+    "other_free_limits": "Koyeb pricing page (fetched 2026-11-04) lists only Pro ($29/month plus compute, $10 compute included), Scale and Enterprise. Free Starter plan withdrawn for new users 2026-02-26 per agentdeals (tracker only); card required (FAQ). Older Koyeb docs/FAQ still mention a free web service and 'One free PostgreSQL database limited to 5 hours of active time and 1GB of storage'.",
+    "fit_for_this_app": "Not usable. 5 compute hours per month cannot run a 1-minute scanner and new users must pay at least $29/month plus a card.",
+    "date_checked": "2026-11-04",
+    "verified": "verified-3-sources",
+    "sources": [
+     "https://www.koyeb.com/docs/databases",
+     "https://www.koyeb.com/docs/faqs/pricing",
+     "https://www.koyeb.com/pricing",
+     "https://agentdeals.dev/vendor/koyeb",
+     "https://github.com/robhunter/agentdeals/issues/2218",
+     "https://getvoroa.com/blog/free-postgres-database/"
+    ]
+   },
+   {
+    "provider": "Railway",
+    "plan": "Trial ($5 once) then Free plan ($1/month credit); Hobby $5/month",
+    "free_storage": "No free database as such: Postgres runs as a normal service paid from credit. Volume limit 0.5 GB on Free/Trial, so under 1 GB.",
+    "expiry_pause_or_deletion": "Trial credit valid up to 30 days; then Free plan with $1 credit per month that does not roll over. Services stop when credit runs out. Volumes created by Trial accounts are deleted 30 days after credit expiry; Free/Trial volume data deleted 30 days after the plan expires.",
+    "backups": "Not stated for free.",
+    "commercial_use_ok": "Not addressed on the pages I read; refers to ToS.",
+    "has_auth_realtime_cron": "None built in.",
+    "sql_postgres": "Real Postgres (self-managed template service).",
+    "other_free_limits": "Trial: 1 GB RAM, shared vCPU, 5 services per project. Free plan capped at 1 vCPU / 0.5 GB RAM per service. Hobby: $5/month with $5 usage included, volume $0.15 per GB-month.",
+    "fit_for_this_app": "Not usable on free (0.5 GB volume, $1/month credit would not keep a database running 24/7). Hobby at $5/month is paid.",
+    "date_checked": "2026-11-04",
+    "verified": "verified-3-sources",
+    "sources": [
+     "https://docs.railway.com/reference/pricing/plans",
+     "https://docs.railway.com/reference/pricing/free-trial",
+     "https://www.srvrlss.io/provider/railway/",
+     "https://pethost.dev/blog/railway-vs-render-vs-fly-io-pricing/",
+     "https://getvoroa.com/blog/free-postgres-database/"
+    ]
+   },
+   {
+    "provider": "Fly.io Postgres",
+    "plan": "No free tier for new organizations",
+    "free_storage": "None. New accounts get $1 trial credit for Machines/Sprites/Managed Postgres, valid 7 days.",
+    "expiry_pause_or_deletion": "Trial credit lasts 7 days or until used; a card is then required. Unmanaged Fly Postgres is not free (about $2/month single node).",
+    "backups": "Managed Postgres includes backups on paid plans; none on free (no free).",
+    "commercial_use_ok": "Not applicable (no free plan).",
+    "has_auth_realtime_cron": "None built in.",
+    "sql_postgres": "Real Postgres (Managed Postgres, or self-run in a Machine).",
+    "other_free_limits": "Managed Postgres from $38/month (Basic, 1 GB RAM) plus $0.28 per GB-month storage. Volumes $0.15 per GB-month provisioned. First 10 GB of snapshots/month free.",
+    "fit_for_this_app": "Not usable as a free database.",
+    "date_checked": "2026-11-04",
+    "verified": "verified-3-sources",
+    "sources": [
+     "https://docs.fly.io/about/pricing",
+     "https://docs.fly.io/mpg",
+     "https://pethost.dev/blog/railway-vs-render-vs-fly-io-pricing/",
+     "https://getvoroa.com/blog/free-postgres-database/"
+    ]
+   },
+   {
+    "provider": "Prisma Postgres",
+    "plan": "Free (no card; fixed at $0 spend)",
+    "free_storage": "2 GB, shared across the whole workspace (not per database); 50 databases; 200k operations per month on the pricing page (each query = 1 operation). Raised from 1.01 GB to 2 GB (PR merged 2026-10-14).",
+    "expiry_pause_or_deletion": "No inactivity pause or deletion stated. When the monthly query allowance is used up, the database 'stops accepting read and write requests' until next calendar month or upgrade (one 24-hour grace period per workspace). Data is not deleted.",
+    "backups": "None on Free (snapshots on paid plans only).",
+    "commercial_use_ok": "Prisma FAQ: Free is 'intended for evaluation only and is not meant for production workloads'.",
+    "has_auth_realtime_cron": "None found on the pages I read (no built-in auth, realtime or cron verified).",
+    "sql_postgres": "Real Postgres (serverless).",
+    "other_free_limits": "Support: community. Starter is $10/month. Conflicting numbers: some stale sources still show 500 MB / 100k operations (Voroa, Deno docs, freetier.co); the official pricing page shows 2 GB / 200k / 50 databases.",
+    "fit_for_this_app": "Storage fits (2 GB) but operations do not: 11 sheets synced once a minute is about 475k queries/month, plus about 43k for a 1-minute scanner, versus 200k cap (my estimate, assumes 1 query per sheet sync). It would be blocked mid-month. Evaluation-only licence. No Auth/Realtime/cron.",
+    "date_checked": "2026-11-04",
+    "verified": "verified-3-sources",
+    "sources": [
+     "https://www.prisma.io/pricing",
+     "https://www.prisma.io/docs/postgres/faq",
+     "https://github.com/prisma/web/pull/8497",
+     "https://github.com/prisma/web/pull/8638",
+     "https://www.bytebase.com/blog/postgres-hosting-options-pricing-comparison/"
+    ]
+   },
+   {
+    "provider": "Nile",
+    "plan": "Free (no card)",
+    "free_storage": "1 GB (extra $1.50 per GB), 50M serverless query tokens (extra $0.06 per million), max 500 connections, unlimited databases and tenants.",
+    "expiry_pause_or_deletion": "Pricing page and FAQ: 'No pauses, always available', no cold start. No deletion-for-inactivity policy found.",
+    "backups": "None on Free (database and tenant backups listed as '-').",
+    "commercial_use_ok": "Not stated; positioned for prototyping and side projects.",
+    "has_auth_realtime_cron": "Nile Auth (open source, MIT, data stored in your Nile Postgres, unlimited users on all tiers) per Nile docs. Tenant isolation built in at database level. Realtime: not found. pg_cron: not confirmed.",
+    "sql_postgres": "Postgres re-engineered for multi-tenant B2B (tenant virtualization).",
+    "other_free_limits": "Pro $15/month (5 GB, 150M tokens, 10k connections, per ShipGarden). No Asian region (US/EU only, per Voroa).",
+    "fit_for_this_app": "Meets 1 GB, always-on, no pause. But no backups, tenant model does not map to per-sheet RLS, no Realtime, cron unconfirmed, 50M query-token cap unknown against a sync every minute. Partial fit; needs significant redesign.",
+    "date_checked": "2026-11-04",
+    "verified": "verified-3-sources",
+    "sources": [
+     "https://www.thenile.dev/pricing",
+     "https://agentdeals.dev/vendor/nile",
+     "https://getvoroa.com/blog/free-postgres-database/",
+     "https://www.thenile.dev/docs/auth/introduction",
+     "https://github.com/niledatabase/nile-auth"
+    ]
+   },
+   {
+    "provider": "Vercel Postgres / Marketplace",
+    "plan": "Vercel Postgres discontinued; Postgres now comes through Marketplace providers",
+    "free_storage": "Vercel has none of its own. Existing Vercel Postgres databases were moved to Neon in Dec 2024. Free storage is whatever the chosen Marketplace provider gives (Neon Free 1 GB per project; Prisma Postgres Free 2 GB).",
+    "expiry_pause_or_deletion": "Same as the underlying provider (see Neon, Prisma Postgres).",
+    "backups": "Same as the underlying provider.",
+    "commercial_use_ok": "Same as the underlying provider.",
+    "has_auth_realtime_cron": "Depends on provider. Marketplace lists Neon, Prisma Postgres, Supabase, Aurora PostgreSQL, Nile and Thin Backend. Only Prisma Postgres is described as free on the marketplace page.",
+    "sql_postgres": "Real Postgres via partners.",
+    "other_free_limits": "Vercel docs say the integration injects credentials as env vars into the project.",
+    "fit_for_this_app": "Not an independent option; it is a billing and credentials wrapper over Neon, Prisma Postgres or Supabase.",
+    "date_checked": "2026-11-04",
+    "verified": "verified-3-sources",
+    "sources": [
+     "https://vercel.com/docs/postgres",
+     "https://vercel.com/marketplace?category=storage&search=postgres",
+     "https://getvoroa.com/blog/free-postgres-database/"
+    ]
+   },
+   {
+    "provider": "Heroku Postgres",
+    "plan": "No free plan (cheapest: Essential-0)",
+    "free_storage": "None. Free Postgres was removed 28 Nov 2022. Essential-0 costs $5/month for 1 GB.",
+    "expiry_pause_or_deletion": "Not applicable (no free plan). Databases that were not upgraded in 2022 were deleted.",
+    "backups": "Essential tiers include continuous physical backups and daily logical PG Backups (retention not listed). No rollback on Essential.",
+    "commercial_use_ok": "Not applicable (paid).",
+    "has_auth_realtime_cron": "None built in.",
+    "sql_postgres": "Real Postgres (managed).",
+    "other_free_limits": "Essential-0: 1 GB, 20 connections, 4,000 tables, 99.5% expected uptime. Essential-1: 10 GB, Essential-2: 32 GB.",
+    "fit_for_this_app": "Not free. $5/month for 1 GB is the cheapest paid option, but 20 connections and no Auth/Realtime.",
+    "date_checked": "2026-11-04",
+    "verified": "verified-3-sources",
+    "sources": [
+     "https://www.heroku.com/pricing",
+     "https://devcenter.heroku.com/articles/heroku-postgres-plans",
+     "https://elements.heroku.com/addons/heroku-postgresql",
+     "https://getvoroa.com/blog/free-postgres-database/",
+     "https://www.bytebase.com/blog/postgres-hosting-options-pricing-comparison/"
+    ]
+   }
+  ],
+  "notes": "BOTTOM LINE (my judgment, not a sourced fact): free + at least 1 GB + no expiry exists at only four providers: Neon (1 GB per project, but only 100 CU-hours so it cannot run a 1-minute scanner 24/7), Prisma Postgres (2 GB but 200k operations per month, evaluation-only), Aiven (1 GB, always-on VM, bare Postgres, not for production) and Nile (1 GB, always-on, no backups, tenant model). Render (30-day expiry), Koyeb (5 h compute and paid signup), Railway/Fly/Heroku (no free DB), CockroachDB (free closed 2026-09-15), Xata (no free plan), Tiger Data (about 750 MB, beta) and Vercel (just a wrapper) fail. None of them gives the Supabase bundle (Auth + Realtime + Edge Functions + pg_cron) with 1 GB free, so choosing any of them means rebuilding Auth, single-session, emailed reset, Realtime and the scanner scheduler yourself. Supabase (not in my list, one source only, Voroa 2026-10-16: 500 MB, paused after 1 week of low activity, not paused if the 1-minute scanner keeps it active) remains the only full-stack fit; a Neon+Aiven hybrid is possible but is a rewrite.\n\nCONFLICTS FLAGGED: Neon storage is 1 GB per project since 2026-10-02 (official pricing, plans docs, blog, changelog, Voroa agree); selfhost.dev, Bytebase, cloudinsight and some search snippets still say 0.5 GB and are stale. Prisma Postgres: official pricing page says 2 GB / 200k ops / 50 DBs; Voroa and older PR diffs show 500 MB / 100k ops (stale). CockroachDB: srvrlss.io still lists the free allowance, contradicted by the official pricing notice 'Such pricing is no longer available for purchase'. Koyeb: older official FAQ/docs still mention a free Starter plan; the pricing page and trackers say it is closed to new users since Feb 2026 (exact date 2026-02-26 is from agentdeals only).\n\nNOT VERIFIED / SKIPPED: (1) Tiger Data 750 MB is not printed on any official page I could read (marked partly). (2) Commercial-use clauses are mostly 'not stated' on vendor pages; I did not read each provider's full ToS or master agreement. (3) Aiven inactivity period and whether a 1-minute job prevents power-off are not published. (4) Auth/Realtime/cron coverage for Prisma Postgres, Tiger Data and Nile (pg_cron) is 'not found', not 'confirmed absent'. (5) Operation and CU-hour estimates for this app are my arithmetic from stated assumptions (11 sheets, one sync per minute), not measured. (6) Supabase itself was out of scope and not independently verified. Page text was summarised by a small model; key numbers were cross-checked across multiple pages, but quote-level wording should be re-read before publishing. All dates checked: 2026-11-04."
+ },
+ "others": {
+  "group": "Non-Postgres and infrastructure free-tier options for the Database lead-tracking app (all figures checked 2026-11-04)",
+  "providers": [
+   {
+    "provider": "Firebase Firestore (Google)",
+    "plan": "Spark (no-cost) plan, Firestore Standard edition",
+    "free_storage": "1 GiB total stored data; exactly one free database per project. Meets the 1 GB floor on size alone.",
+    "expiry_pause_or_deletion": "No idle pause or deletion rule found on the pages read. Google says the Free Tier has no end date but may change it with 30 days notice. Daily quotas reset about midnight Pacific.",
+    "sql_postgres": "No. NoSQL document database. Only count/sum/avg aggregation queries, no SQL, no joins.",
+    "other_free_limits": "50K reads/day, 20K writes/day, 20K deletes/day, 10 GiB/month egress. Cloud Functions are 'Not applicable' on Spark (every function metric is blank), so no server code at all without upgrading to Blaze. Enterprise edition on Spark: 40K write units/day, 50K read units/day, 50K realtime update units/day.",
+    "backups": "None free. Firestore quotas page: PITR, backup, restore and clone have no free usage and need billing.",
+    "commercial_use_ok": "Not verified (terms of service not read). Spark needs no payment method per the pricing page.",
+    "has_auth_realtime_cron": "Realtime listeners and Firebase Auth exist (known capability, not re-checked today). Per-collection access rules exist (Security Rules). Scheduled jobs and any server-side session revocation are blocked on Spark because Cloud Functions are unavailable.",
+    "fit_for_this_app": "Poor. 20K writes/day against roughly 7,920 (2-min) to 15,840 (1-min) sync cycles/day across 11 sheets (computed): one refresh of a 2,000-row sheet would use 10% of the day's writes. No scheduled scanner on Spark, no SQL aggregates, no emailed-code reset flow built in (Firebase uses reset links; not re-checked). Would need a full rewrite and a paid Blaze plan to work.",
+    "date_checked": "2026-11-04",
+    "sources": [
+     "https://firebase.google.com/pricing",
+     "https://firebase.google.com/docs/firestore/quotas",
+     "https://docs.cloud.google.com/free/docs/free-cloud-features"
+    ],
+    "verified": "verified-3-sources"
+   },
+   {
+    "provider": "Cloudflare D1",
+    "plan": "Workers Free plan",
+    "free_storage": "5 GB total per account across at most 10 databases, BUT 500 MB maximum per database on Free (paid: 10 GB per database). A single database cannot reach 1 GB; you would have to shard into 2+ databases.",
+    "expiry_pause_or_deletion": "No idle pause or deletion found. Daily limits reset 00:00 UTC; after hitting a daily limit queries are refused until reset. When storage is full, inserts and schema changes are blocked (tracker, not Cloudflare wording).",
+    "sql_postgres": "SQL, but SQLite dialect, not Postgres.",
+    "other_free_limits": "5M rows read/day, 100K rows written/day, 10 databases, 50 queries per Worker invocation (a db.batch() counts as one). Workers Free: 100K requests/day, 10 ms CPU per request and per cron run, 5 Cron Triggers per account, 50 subrequests.",
+    "backups": "Time Travel point-in-time restore, 7 days on Free (30 days paid).",
+    "commercial_use_ok": "Not verified (terms not read).",
+    "has_auth_realtime_cron": "No built-in auth, no row-level security, no realtime push. D1 is only reachable from Workers (or the REST API). Cron: Workers Cron Triggers (5 per account, 10 ms CPU each). Durable Objects on Free not verified.",
+    "fit_for_this_app": "Poor to partial. Storage per database fails the 1 GB request. 100K row-writes/day is enough only if the mirror writes diffs, not full sheets. You would have to build auth, per-sheet access rules, single-session control, emailed reset codes and realtime counters yourself in Workers, and cross-database aggregates are not possible if sharded.",
+    "date_checked": "2026-11-04",
+    "sources": [
+     "https://developers.cloudflare.com/d1/platform/pricing/",
+     "https://developers.cloudflare.com/d1/platform/limits/",
+     "https://agentdeals.dev/vendor/cloudflare-d1",
+     "https://developers.cloudflare.com/workers/platform/limits/",
+     "https://freetier.co/directory/products/cloudflare-d1"
+    ],
+    "verified": "verified-3-sources"
+   },
+   {
+    "provider": "Turso (libSQL)",
+    "plan": "Free plan (no credit card)",
+    "free_storage": "5 GB total, up to 100 databases.",
+    "expiry_pause_or_deletion": "CONFLICT. Turso docs (docs.turso.tech group unarchive) still say free-plan databases are archived after 10 days of inactivity and must be unarchived via CLI/API. A Turso blog post (effective 2025-03-31) says free databases stay responsive regardless of inactivity. Treat as unresolved; a 1-minute scanner would keep the database active anyway. Over any single metric the database is BLOCKED until the next month.",
+    "sql_postgres": "SQL, SQLite/libSQL dialect, not Postgres.",
+    "other_free_limits": "500M rows read/month (about 16.7M/day), 10M rows written/month (about 333K/day), 3 GB sync/month. Row reads count every row scanned: a COUNT(*) over a 50K-row table every minute is 72M reads/day, more than the whole average daily read allowance (computed), so counters must be indexed or incremental.",
+    "backups": "Point-in-time recovery of the last 24 hours on Free (docs.turso.tech); paid plans 10/30/90 days.",
+    "commercial_use_ok": "Not verified (terms not read). Note: Supabase announced it is acquiring Turso on 2026-10-02; Turso says service continues unchanged, no commitment on future plans or the free tier.",
+    "has_auth_realtime_cron": "None. It is only a database: no auth, no row-level security, no realtime, no scheduler.",
+    "fit_for_this_app": "Partial at best. Storage and write budget fit comfortably, but you would build auth, per-sheet access control, single-session logic, emailed reset codes, realtime counters and the 1-minute scanner elsewhere. It abandons the Supabase stack the other two apps use.",
+    "date_checked": "2026-11-04",
+    "sources": [
+     "https://turso.tech/pricing",
+     "https://turso.tech/blog/turso-cloud-debuts-the-new-developer-plan",
+     "https://agentdeals.dev/vendor/turso",
+     "https://freetier.co/directory/products/turso",
+     "https://docs.turso.tech/cli/group/unarchive",
+     "https://docs.turso.tech/features/point-in-time-recovery",
+     "https://turso.tech/blog/turso-is-joining-supabase"
+    ],
+    "verified": "verified-3-sources"
+   },
+   {
+    "provider": "MongoDB Atlas M0",
+    "plan": "Free (M0) shared cluster",
+    "free_storage": "512 MB (0.5 GB) including indexes. Below the 1 GB floor.",
+    "expiry_pause_or_deletion": "Paused after 30 days of zero connections (resumable); Atlas may also deactivate idle free clusters under its terms. One free cluster per project.",
+    "sql_postgres": "No. Document database (BSON), no SQL.",
+    "other_free_limits": "500 connections, 100 operations/second (throttled above), 10 GB in and 10 GB out per rolling 7 days, 32 MB sort memory.",
+    "backups": "CONFLICT between official pages: Atlas docs say backups can be enabled on Free clusters (daily snapshot, up to 4 kept); the MongoDB pricing FAQ says backup services are not available for the Free tier.",
+    "commercial_use_ok": "Not verified (docs read do not address it).",
+    "has_auth_realtime_cron": "No built-in app auth or row-level rules: MongoDB deprecated Atlas Device Sync (end of life 2025-09-30), Data API/HTTPS endpoints, GraphQL, and App Services auth/rules. Change streams exist with restricted filters. Atlas Triggers status not verified.",
+    "fit_for_this_app": "Fail. Under 1 GB, no SQL aggregates, no auth, no row-level access, no realtime to the browser without a custom server.",
+    "date_checked": "2026-11-04",
+    "sources": [
+     "https://www.mongodb.com/docs/atlas/reference/free-shared-limitations/",
+     "https://www.mongodb.com/pricing",
+     "https://agentdeals.dev/vendor/mongodb-atlas",
+     "https://www.mongodb.com/docs/device-sync-deprecation/"
+    ],
+    "verified": "verified-3-sources"
+   },
+   {
+    "provider": "Convex",
+    "plan": "Free & Starter (cloud)",
+    "free_storage": "0.5 GB database (rows plus indexes; vector storage shared), 1 GB file storage. Below the 1 GB floor.",
+    "expiry_pause_or_deletion": "No pause or deletion rule found. Free has hard caps: once reached, new mutations may fail. (Starter is pay-as-you-go over the included amount.)",
+    "sql_postgres": "No SQL. TypeScript query/mutation functions over a document-relational store.",
+    "other_free_limits": "1M function calls/month (client calls, scheduled executions, subscription updates and file accesses all count), 20 GB-hours action compute, 1 GB database I/O, 1 GB file egress, 40 deployments. Syncing 11 sheets every 2 minutes alone is about 237,600 calls/month, plus about 43,200 for a 1-minute scanner, before any realtime subscription updates (computed).",
+    "backups": "Daily backups not included on Free & Starter.",
+    "commercial_use_ok": "Not verified for cloud. Self-host backend is open source under FSL Apache 2.0 per Convex docs/search; terms not read.",
+    "has_auth_realtime_cron": "Realtime (reactive queries) and cron jobs are built in. Auth via libraries/providers (not re-checked). Access rules are written in function code, not declarative RLS.",
+    "fit_for_this_app": "Cloud tier fails the 1 GB floor and burns its call budget quickly. Self-hosting the open-source backend (Docker, SQLite or Postgres) removes the cap but means a full rewrite away from SQL/Supabase and still needs a host (see Oracle VM entry). Not recommended.",
+    "date_checked": "2026-11-04",
+    "sources": [
+     "https://www.convex.dev/pricing",
+     "https://docs.convex.dev/production/state/limits",
+     "https://agentdeals.dev/vendor/convex",
+     "https://docs.convex.dev/open-source",
+     "https://github.com/get-convex/convex-backend/blob/main/self-hosted/README.md"
+    ],
+    "verified": "verified-3-sources"
+   },
+   {
+    "provider": "Appwrite Cloud",
+    "plan": "Free",
+    "free_storage": "2 GB storage (shared by files, databases and, from 2026-09-01 per a forum report, function/site deployments), 5 GB bandwidth, 2 projects, 1 database + 1 bucket + 2 functions per project, 75K monthly active users, 750K executions.",
+    "expiry_pause_or_deletion": "Free projects are paused after 1 week of inactivity (pricing page). Paused for 90 days = deleted with all resources (changelog 2026-06-29; email warning first). Tracker says only Console activity resets the idle timer, user traffic does not; a forum thread reports a pause despite 20+ active users (later fixed). At any resource limit the project freezes and the Console goes read-only until next billing cycle.",
+    "sql_postgres": "No. TablesDB is a relational-style API, not SQL. Real PostgreSQL/MySQL only as dedicated compute from $10/month.",
+    "other_free_limits": "Database 500K reads and 250K writes per month (about 8.3K writes/day) from one tracker only, not confirmed on the official page. Function cron schedules need a paid plan from 2026-10-19 (tracker only).",
+    "backups": "None on Free (daily backups start on the $10 Start plan per pricing page).",
+    "commercial_use_ok": "Not verified (terms not read). Appwrite says Free organizations are 100% free.",
+    "has_auth_realtime_cron": "Auth, realtime and per-document permissions exist (known capability). Scheduled functions effectively unavailable on Free after 2026-10-19 (single source).",
+    "fit_for_this_app": "Poor. Weekly pause and 90-day deletion are unacceptable for a production lead tracker, write quota is below the sync volume, and there is no real SQL or free cron.",
+    "date_checked": "2026-11-04",
+    "sources": [
+     "https://appwrite.io/pricing",
+     "https://appwrite.io/changelog/entry/2026-06-29",
+     "https://agentdeals.dev/vendor/appwrite-cloud",
+     "https://appwrite.io/docs/advanced/billing/free",
+     "https://github.com/robhunter/agentdeals/pull/2367"
+    ],
+    "verified": "partly"
+   },
+   {
+    "provider": "PocketBase (self-host)",
+    "plan": "Open source, MIT license; runs on your own free host",
+    "free_storage": "No vendor cap: one SQLite file (pb_data) on the host disk. Free hosts that persist disk: Oracle Always Free (200 GB block+boot combined) and Google Cloud e2-micro (30 GB standard disk, 1 GB RAM, US regions only). Render free has an ephemeral filesystem and spins down after 15 minutes idle; Fly.io has no free tier for new orgs ($1 credit for 7 days, volumes $0.15/GB/month).",
+    "expiry_pause_or_deletion": "Nothing from PocketBase itself. Risk is the host: Oracle idle reclaim and account rules (see Oracle VM entry), Render spin-down and data loss on restart.",
+    "sql_postgres": "SQLite embedded; no client-side SQL. Aggregates need custom routes or hooks.",
+    "other_free_limits": "Single process on one VM, so no high availability. May need raised file-descriptor limit for many realtime connections; GOMEMLIMIT advised on small hosts.",
+    "backups": "Built-in full ZIP backups of pb_data (scheduled), stored locally or on S3-compatible storage; performance dips during backup.",
+    "commercial_use_ok": "Yes on the code side: MIT license (verified on GitHub). Host terms separate.",
+    "has_auth_realtime_cron": "Built-in users/auth (OTP and MFA per production docs), collection API rules (row-level filters), realtime subscriptions, JS hooks and a jobs-scheduling feature (cron page exists, content not read). Single active session per login is not built in; needs a custom hook.",
+    "fit_for_this_app": "Medium. Everything lives in one free binary and storage is no issue, but it is SQLite and PocketBase rules, not Postgres RLS, so the CRM/Outreach code patterns do not carry over. Status risks: pre-1.0 (latest v0.40.6 on 2026-10-23), docs say not recommended for production-critical apps, and the GitHub repo is now ARCHIVED with a README notice that development moved to ganigeorgiev.com (verified via GitHub API; link not followed).",
+    "date_checked": "2026-11-04",
+    "sources": [
+     "https://pocketbase.io/docs/",
+     "https://www.pocketbase.io/docs/going-to-production/",
+     "https://github.com/pocketbase/pocketbase",
+     "https://render.com/docs/free",
+     "https://docs.fly.io/about/pricing",
+     "https://docs.cloud.google.com/free/docs/free-cloud-features"
+    ],
+    "verified": "verified-3-sources"
+   },
+   {
+    "provider": "Back4App",
+    "plan": "Free",
+    "free_storage": "250 MB database, 1 GB file storage, 1 GB data transfer. Below the 1 GB floor.",
+    "expiry_pause_or_deletion": "No inactivity policy stated on the pricing page or tracker.",
+    "sql_postgres": "Parse Server backend (MongoDB-style); PostgreSQL support not stated on the pricing page.",
+    "other_free_limits": "25K requests/month (about 833/day) which one day of sheet mirroring would exceed. Apps: plan table says 1 app, FAQ says up to five projects (page contradicts itself).",
+    "backups": "Blank for Free on the pricing page (not offered).",
+    "commercial_use_ok": "Not stated.",
+    "has_auth_realtime_cron": "Parse users, live queries and cloud jobs exist (known capability, not re-checked); not usable at 25K requests/month.",
+    "fit_for_this_app": "Fail. 250 MB and 25K requests/month are far below the need.",
+    "date_checked": "2026-11-04",
+    "sources": [
+     "https://www.back4app.com/pricing/backend-as-a-service",
+     "https://agentdeals.dev/vendor/back4app",
+     "https://toolquestor.com/tool/back4app"
+    ],
+    "verified": "verified-3-sources"
+   },
+   {
+    "provider": "Oracle Cloud Autonomous Database (Always Free)",
+    "plan": "Always Free, up to 2 databases per tenancy",
+    "free_storage": "20 GB per database (2 databases = 40 GB), 1 fixed OCPU, cannot be scaled.",
+    "expiry_pause_or_deletion": "Auto-stops after 7 days of inactivity (data kept; a SQL connection resets the timer). A database stopped for a cumulative 90 days may be reclaimed and permanently deleted. Home region only. Account sign-up needs phone and a credit card (not charged unless upgraded).",
+    "sql_postgres": "SQL, Oracle dialect (19c or 26ai), not Postgres.",
+    "other_free_limits": "Max 30 simultaneous sessions; HTTP/ORDS/APEX rate-limited to about 3-6 simultaneous users (HTTP 429 beyond). No private endpoint/VCN. Cannot move 19c Always Free to 26ai. Wait about 5 minutes after a restart before ORDS/APEX works.",
+    "backups": "None. Oracle docs: no long-term backups, no manual backups to Object Storage, no restore on Always Free; needs a paid instance (min 4 ECPUs, 1 TB).",
+    "commercial_use_ok": "Not stated on the pages read; not verified.",
+    "has_auth_realtime_cron": "No Supabase-style auth, realtime or RLS. Scheduler (DBMS_SCHEDULER) behaviour on Always Free not covered by the docs read: not verified.",
+    "fit_for_this_app": "Poor. Large free storage, but Oracle SQL means rewriting everything, there is no backup/restore (a data-loss risk for a lead tracker), and the HTTP layer tops out around 3-6 simultaneous users.",
+    "date_checked": "2026-11-04",
+    "sources": [
+     "https://docs.oracle.com/en-us/iaas/Content/FreeTier/freetier_topic-Always_Free_Resources.htm",
+     "https://docs.oracle.com/en-us/iaas/autonomous-database-serverless/doc/autonomous-always-free.html",
+     "https://www.rackspace.com/blog/introduction-to-always-free-autonomous-database",
+     "https://docs.oracle.com/iaas/Content/FreeTier/freetier.htm"
+    ],
+    "verified": "verified-3-sources"
+   },
+   {
+    "provider": "Oracle Cloud Arm VM (Always Free) + self-hosted Supabase or Postgres",
+    "plan": "Always Free Ampere A1 compute + block storage",
+    "free_storage": "200 GB combined boot+block volume, 5 volume backups total, 2 OCPU and 12 GB RAM across A1 instances (1,500 OCPU-hours and 9,000 GB-hours/month; halved from 4 OCPU/24 GB in 2026 without announcement per InfoQ/heise/Oracle docs). Also 2 AMD micro VMs (1 GB RAM each), 10 TB/month outbound, 20 GB object storage (free-only state).",
+    "expiry_pause_or_deletion": "Idle reclaim: an instance is idle if over 7 days CPU p95 <20%, network <20% and (A1 only) memory <20%; idle Always Free instances may be reclaimed. A Supabase stack idling near 3 GB of 12 GB RAM would likely be above 20% memory (inference, not Oracle-confirmed). Over-allocated A1 instances are disabled and deleted after 30 days. Unresolved: Site2US cites an Oracle FAQ saying accounts idle 30+ days may be suspended; Oracle docs read do not mention it. Anecdotal reports of sudden account termination exist. A1 capacity is sometimes unavailable at creation.",
+    "sql_postgres": "Full Postgres if you self-host (plain Postgres or the Supabase Docker stack).",
+    "other_free_limits": "Supabase self-host minimum is 4 GB RAM, 2 cores, 40 GB SSD (8 GB+, 4 cores, 80 GB recommended); 2 OCPU/12 GB meets it. Docs do not state arm64 support for all images and do not mention pg_cron on self-host; both must be tested. Stack includes Auth, Realtime, Edge Functions (Deno), Storage. You own TLS, secrets, monthly stable-snapshot updates, monitoring.",
+    "backups": "Self-managed (pg_dump to off-box storage or the 20 GB object storage); only 5 volume backups free.",
+    "commercial_use_ok": "Not stated on the Oracle pages read; not verified.",
+    "has_auth_realtime_cron": "Yes if you run the full Supabase stack: Postgres + Auth + Realtime + Edge Functions; scheduling via pg_cron/pg_net is documented for hosted Supabase and must be tested on self-host.",
+    "fit_for_this_app": "Best technical match for a free 1 GB+ requirement: same stack as the CRM and Outreach apps, up to roughly 150 GB usable, RLS and realtime intact. Costs: single-VM availability, reclaim and termination risk, arm64 and pg_cron unverified, and you carry all operations and backups. Worth a 1-day pilot before committing.",
+    "date_checked": "2026-11-04",
+    "sources": [
+     "https://docs.oracle.com/en-us/iaas/Content/FreeTier/resourceref.htm",
+     "https://docs.oracle.com/en-us/iaas/Content/FreeTier/freetier_topic-Always_Free_Resources.htm",
+     "https://www.infoq.com/news/2026/07/oracle-cloud-free-tier-limits/",
+     "https://site2us.com/en/servers/oracle-cloud-free-tier",
+     "https://supabase.com/docs/guides/self-hosting/docker",
+     "https://docs.oracle.com/iaas/Content/FreeTier/freetier.htm"
+    ],
+    "verified": "verified-3-sources"
+   },
+   {
+    "provider": "Google Cloud Free Tier (database-relevant parts)",
+    "plan": "Always-free Free Tier (needs a billing account with a card); not the 90-day $300 trial",
+    "free_storage": "Firestore 1 GiB; BigQuery 10 GiB storage + 1 TiB queries/month (analytics warehouse, not an app database); Cloud Storage 5 GB-months (us-east1, us-west1, us-central1 only); e2-micro VM (1 GB RAM) with 30 GB-months standard disk in us-west1/us-central1/us-east1. Cloud SQL has NO always-free tier (30-day trial only); Spanner is a 90-day trial with 10 GB.",
+    "expiry_pause_or_deletion": "Free Tier has no end date but Google may change it with 30 days notice. Trial products (Cloud SQL, Spanner, $300 credit for 90 days) expire.",
+    "sql_postgres": "No free managed SQL. Postgres only by self-installing on the e2-micro.",
+    "other_free_limits": "Cloud Run 2M requests/month, Cloud Run functions (1st gen) 2M invocations/month, Pub/Sub 10 GiB/month, Firestore 50K reads/20K writes/20K deletes per day.",
+    "backups": "Not provided for free tier resources on the pages read.",
+    "commercial_use_ok": "Not verified (terms not read). Usage over limits is billed to the card.",
+    "has_auth_realtime_cron": "Components exist separately (Cloud Run, Pub/Sub, Firestore listeners) but nothing is integrated; Cloud Scheduler free status not found.",
+    "fit_for_this_app": "Poor as a managed option. The e2-micro's 1 GB RAM is too small for Supabase (needs 4 GB) but could host plain Postgres or PocketBase with 30 GB; otherwise the Firestore limits apply.",
+    "date_checked": "2026-11-04",
+    "sources": [
+     "https://docs.cloud.google.com/free/docs/free-cloud-features",
+     "https://firebase.google.com/pricing",
+     "https://firebase.google.com/docs/firestore/quotas"
+    ],
+    "verified": "verified-3-sources"
+   },
+   {
+    "provider": "AWS DynamoDB (always-free allowance) and AWS Free Plan rules",
+    "plan": "Always-free monthly allowance; new accounts (since 2025-07-15) choose Free plan or Paid plan",
+    "free_storage": "DynamoDB: 25 GB storage, 25 provisioned WCU, 25 provisioned RCU, 25 rWCU, 2.5M Streams read requests, 1 GB data transfer out per month (per Region, per payer account; provisioned capacity, Standard table class). Lambda 1M requests and 400K GB-seconds also always free. RDS, EC2, S3 and API Gateway are not on the always-free list; they draw down credits.",
+    "expiry_pause_or_deletion": "The allowances do not expire. BUT a Free-plan account closes after 6 months or when its $100 sign-up credit (plus up to $100 earned) is used, whichever is first; data is retained 90 days, then deleted unless you upgrade to a Paid plan (pay-as-you-go, card). Storage over 25 GB costs $0.25/GB-month in the page's examples.",
+    "sql_postgres": "No. NoSQL key-value/document. SQL-like PartiQL only; no joins or SQL aggregates.",
+    "other_free_limits": "Trackers estimate roughly 200M requests/month from 25 RCU/WCU (not an AWS statement).",
+    "backups": "PITR is not free: $0.20 per GB-month; restore $0.15/GB (pricing page example).",
+    "commercial_use_ok": "Not verified (terms not read).",
+    "has_auth_realtime_cron": "Not integrated. Cron via EventBridge/Lambda and auth via Cognito are separate services whose free limits were not verified here; no row-level SQL security; realtime would need Streams plus another service.",
+    "fit_for_this_app": "Poor. 25 GB is plentiful, but it needs a full rewrite to NoSQL, assembling 4+ AWS services for auth, realtime and scheduling, and the account must be upgraded to Paid after 6 months to survive.",
+    "date_checked": "2026-11-04",
+    "sources": [
+     "https://aws.amazon.com/dynamodb/pricing/",
+     "https://builder.aws.com/content/3IQ2c19Fk9N0wQdSXz5zvpp4QwK/aws-free-tier-whats-free-and-how-to-start",
+     "https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/free-tier-plans.html",
+     "https://aws.amazon.com/free/"
+    ],
+    "verified": "verified-3-sources"
+   },
+   {
+    "provider": "AWS Aurora DSQL",
+    "plan": "Monthly free allowance (applied to the bill automatically)",
+    "free_storage": "1 GB-month storage and 100,000 DPUs per month, per account (per management account in AWS Organizations). Exactly at the 1 GB floor; beyond it you are billed ($0.33/GB-month, $8 per million DPUs in US East), not blocked.",
+    "expiry_pause_or_deletion": "AWS pages give no end date (third-party trackers call it permanent; AWS wording not found). Storage is billed even when idle. Interaction with the 6-month Free-plan account closure is not verified.",
+    "sql_postgres": "Postgres-compatible SQL. Per AWS docs: no triggers, no PL/pgSQL, no temporary tables, no TRUNCATE (use DELETE), one built-in database per cluster, C collation only, Repeatable Read only, a transaction can change at most 3,000 rows, connections time out after 1 hour, optimistic concurrency with retries. Extensions (pg_cron), row-level security and LISTEN/NOTIFY are not confirmed by the pages read.",
+    "other_free_limits": "AWS benchmark: 100K DPUs is about 700,000 TPC-C transactions; whether 11 sheets mirrored every 1-2 minutes plus a 1-minute scanner fit is not computable from published numbers.",
+    "backups": "Not stated on the pages read.",
+    "commercial_use_ok": "Not verified.",
+    "has_auth_realtime_cron": "No built-in auth (IAM-token connections), no realtime, no scheduler.",
+    "fit_for_this_app": "Poor. Postgres-like but missing triggers, PL/pgSQL and (unconfirmed) RLS, a 3,000-row transaction cap complicates bulk sheet mirrors, and every Supabase feature (Auth, Realtime, cron) would have to be rebuilt on AWS.",
+    "date_checked": "2026-11-04",
+    "sources": [
+     "https://aws.amazon.com/rds/aurora/dsql/pricing/",
+     "https://aws.amazon.com/rds/aurora/dsql/faqs/",
+     "https://freetier.co/directory/products/amazon-aurora-dsql",
+     "https://docs.aws.amazon.com/aurora-dsql/latest/userguide/working-with-postgresql-compatibility-unsupported-features.html"
+    ],
+    "verified": "verified-3-sources"
+   },
+   {
+    "provider": "Azure SQL Database free offer",
+    "plan": "Free tier, General Purpose serverless, lifetime of the subscription (not the 12-month free account)",
+    "free_storage": "Per database per month: 32 GB data, 32 GB backup storage, 100,000 vCore-seconds; up to 10 free databases per subscription.",
+    "expiry_pause_or_deletion": "Not time-limited. Choose at the limit: AutoPause (database inaccessible until the next calendar month) or bill overage (cannot switch back). Database also auto-pauses after 15 minutes idle (fixed). Open connections block auto-pause. No SLA; Microsoft recommends it mainly for dev/proof of concept. Free tier only on new databases, not convertible.",
+    "sql_postgres": "SQL, T-SQL (SQL Server dialect), not Postgres.",
+    "other_free_limits": "100,000 vCore-seconds is only 27.8 vCore-hours (computed). A 1-minute scanner keeps the database awake, so the allowance lasts about 1.2 days at 1 vCore or 2.3 days at 0.5 vCore (computed; minimum vCore for the free offer not verified), after which AutoPause locks the app out until next month.",
+    "backups": "Point-in-time restore up to 7 days on AutoPause setting, locally redundant; no long-term retention. Elastic Jobs and Data Sync not available.",
+    "commercial_use_ok": "Microsoft FAQ: no SLA, recommended primarily for development and proof-of-concept; otherwise not stated.",
+    "has_auth_realtime_cron": "None integrated. Elastic Jobs unavailable on free; scheduling would be Azure Functions or similar (limits not verified).",
+    "fit_for_this_app": "Fail for an always-on workload: compute allowance is exhausted in days. Also T-SQL rewrite and no auth/realtime/RLS parity.",
+    "date_checked": "2026-11-04",
+    "sources": [
+     "https://learn.microsoft.com/en-us/azure/azure-sql/database/free-tier?view=azuresql",
+     "https://learn.microsoft.com/en-us/azure/azure-sql/database/free-tier-faq?view=azuresql",
+     "https://azure.microsoft.com/en-us/pricing/details/azure-sql-database/single/"
+    ],
+    "verified": "verified-3-sources"
+   },
+   {
+    "provider": "Azure Cosmos DB free tier",
+    "plan": "Lifetime free tier (opt in at account creation; provisioned/autoscale accounts, not serverless)",
+    "free_storage": "First 1,000 RU/s and 25 GB storage free for the life of the account; one free-tier account per subscription. Usage above that is billed at normal prices (not blocked).",
+    "expiry_pause_or_deletion": "No expiry for the account's discount. Pricing page's billing FAQ is inconsistent (mentions 400 RU/s and 5 GB 'each month'); the free-tier page and pricing page headline say 1,000 RU/s and 25 GB.",
+    "sql_postgres": "NoSQL (document API); not SQL aggregates comparable to Postgres.",
+    "other_free_limits": "Shared-throughput database limited to 1,000 RU/s free, max 25 containers. Egress still billed per one guide.",
+    "backups": "Not verified for the free tier.",
+    "commercial_use_ok": "Microsoft says free tier can run small production workloads; terms not otherwise verified.",
+    "has_auth_realtime_cron": "No app auth or row-level rules; change feed gives a realtime source only via extra code; scheduling needs Azure Functions (limits not verified).",
+    "fit_for_this_app": "Poor. Plenty of storage, but a NoSQL rewrite with every Supabase capability to be rebuilt, and 1,000 RU/s is tight for continuous sheet mirroring.",
+    "date_checked": "2026-11-04",
+    "sources": [
+     "https://learn.microsoft.com/en-us/azure/cosmos-db/free-tier",
+     "https://azure.microsoft.com/en-us/pricing/details/cosmos-db/autoscale-provisioned/",
+     "https://freetier.co/directory/products/azure-cosmos-db",
+     "https://learn.microsoft.com/en-us/azure/cosmos-db/concepts-limits"
+    ],
+    "verified": "verified-3-sources"
+   }
+  ],
+  "notes": "BOTTOM LINE (checked 2026-11-04): No non-Postgres managed free tier is a good fit. Only two routes give at least 1 GB free AND the full auth + row-level access + realtime + scheduler + SQL aggregate set: (1) self-host Supabase or Postgres on the Oracle Always Free Arm VM (2 OCPU, 12 GB RAM, 200 GB disk; best match, but you carry operations, backups, and Oracle reclaim/termination risk; arm64 images and pg_cron on self-host are unverified, so pilot first), or (2) stay on hosted Supabase Free at 500 MB (not re-verified in this pass; belongs to the Postgres research agent). Managed options with 1 GB or more of free storage each fail on something else: Turso (5 GB, SQLite, database only, no auth/RLS/realtime/cron), D1 (5 GB per account but 500 MB per database), Azure SQL free (32 GB but 100,000 vCore-seconds/month runs out in days), Oracle Autonomous DB (20 GB, Oracle SQL, no backups), Aurora DSQL (exactly 1 GB, missing triggers/PL/pgSQL), Firestore (1 GiB but 20K writes/day and no scheduled jobs on Spark), DynamoDB/Cosmos (NoSQL rewrite, DynamoDB account closes after 6 months on the Free plan). Below 1 GB or paused: MongoDB M0 512 MB, Convex 0.5 GB, Back4App 250 MB, Appwrite (2 GB but pauses after 1 week idle, deletes after 90 days paused).\n\nWORKLOAD MATH USED (computed, not from vendors): 11 sheets mirrored every 2 min = 7,920 sync cycles/day; every 1 min = 15,840/day; a 1-minute scanner = 1,440 runs/day = 43,200/month.\n\nNOTES ON EVIDENCE: A source counts if I read the page or a search result attributed the figure to it; official pages listed first. 'partly' on Appwrite because DB read/write quotas and the cron-needs-paid-plan rule rest on one third-party tracker (agentdeals.dev); its 2 GB, 1-week pause and 90-day deletion are confirmed on appwrite.io. Commercial-use terms (ToS) were NOT read for any provider; every 'Not verified' there is deliberate. Conflicts left unresolved: Turso free-plan archiving after 10 days idle (docs) vs 'always responsive' (blog); MongoDB M0 backups (docs say yes, pricing FAQ says no); Oracle account-idle suspension window (30 days per one third-party page citing the FAQ, not in the Oracle docs read); Cosmos DB billing FAQ numbers. Oracle's A1 allowance was cut to 2 OCPU/12 GB in 2026; older guides and one search summary still say 4/24. Whether Pay-As-You-Go tenancies are exempt is disputed (InfoQ).\n\nOTHER FINDINGS WORTH KNOWING: (a) PocketBase GitHub repo is archived (confirmed via GitHub API) with a README notice that the project moved to ganigeorgiev.com; latest release v0.40.6 (2026-10-23), still pre-1.0 and the docs say not recommended for production-critical apps. I did not follow the new link. (b) Supabase announced on 2026-10-02 it is acquiring Turso (Turso blog, SiliconANGLE); free-tier continuity not promised. (c) One secondary source (layerbase.com via search summary) says Neon doubled its free storage to 1 GB per project on 2026-10-02; this is outside my scope and unverified, so the Postgres research agent should check it first-hand because it would meet the 1 GB request with a Postgres database. (d) No file in F:\\Github Repos was touched and no secrets files were opened."
+ },
+ "supa": {
+  "group": "Supabase specifics: Free plan limits, Pro, upgrade path, size reduction, programs, and self-hosting (Hetzner / Oracle). Checked 2026-11-04.",
+  "providers": [
+   {
+    "provider": "Supabase Free: what happens past 500 MB (questions 1 and 6 baseline)",
+    "plan": "Free, $0. 2 active free projects. Nano compute (shared CPU, up to 0.5 GB RAM).",
+    "free_storage": "500 MB database-size quota. Per the current docs it is a billing quota for the organisation (summed over all projects in the org), not a disk limit. Free disk is fixed at 2 GB and does not autoscale. A fresh project already uses about 40-60 MB (extensions, default schemas), so about 440-460 MB is usable. Also 1 GB file storage and 5 GB egress.",
+    "expiry_pause_or_deletion": "Nothing is deleted at 500 MB. Order of events per the official docs: (a) email notice plus a grace period; the length is NOT published (user-posted notices show roughly 2-3 weeks, e.g. notice 3 Nov 2025 with grace to 26 Nov 2025; another ended 10 Nov 2026). (b) After grace, if the org is still over quota, a Fair Use restriction: every API request for ALL projects in the org returns HTTP 402. The check uses the AVERAGE daily DB size over the billing cycle, so deleting data does not lift it at once; it clears when the quota refills next cycle, or immediately on upgrade to Pro or by disabling the spend cap (Pro only). Users report 402 lingering up to about 24h after a cycle reset (Discussion 46758, June 2026). (c) Read-only mode is a separate, disk-based trigger: at 95% of the 2 GB disk the DB goes read-only (writes fail with SQLSTATE 25006) and returns to read-write once usage is under 95%; at 100% Postgres stops until you upgrade. To free a read-only DB: run set session characteristics as transaction read write, delete, vacuum, then set default_transaction_read_only off. CONFLICT: the docs said read-only at 500 MB until a fix merged on 13 Apr 2026 (issue 43487, PR 44457), and third-party blogs dated as late as 7 Oct 2026 still say read-only at 500 MB. Plan for both outcomes. Separately, Free projects are paused after more than a week of too little database activity (never on Pro); restore window is not stated on the official FAQ (third-party says 90 days older / 1 year newer: not verified). Free has no automatic backups.",
+    "other_free_limits": "Unused-for-a-week pause; 5 GB egress; 50,000 MAU; storage 1 GB; no backups; no SLA. Disk does not shrink after deletes unless vacuumed or the project is upgraded or migrated.",
+    "has_auth_realtime_cron": "Yes: Auth, Realtime, Edge Functions and pg_cron (Supabase Cron runs jobs from every second to once a year; docs recommend at most 8 concurrent jobs, each under 10 minutes).",
+    "sql_postgres": "Real Postgres (Supabase managed), full SQL and RLS.",
+    "backups": "None on Free. Docs tell Free users to export regularly with the CLI db dump command. Pro gets daily backups kept 7 days.",
+    "commercial_use_ok": "No Free-plan commercial ban found in the Terms of Service or Acceptable Use Policy; a community answer (not staff, Feb 2024) says allowed. Supabase recommends Pro for production. Not officially stated, so partly.",
+    "fit_for_this_app": "Works only while average DB size stays under 500 MB. Set an alert at about 350 MB (pg_database_size) and treat 402 as app-down. A 1-minute pg_cron scanner also writes to cron.job_run_details (never auto-cleaned), so add a daily cleanup job. Note: the user's CRM (ref laxxqmtwowitopbqnejs) and Outreach (ref bnivytzudrpjlscwdxuh) are both recorded as Free projects in their project CLAUDE.md files, so a third Free project is not allowed on the same account (see the upgrade entry).",
+    "date_checked": "2026-11-04",
+    "sources": [
+     "https://supabase.com/docs/guides/platform/database-size",
+     "https://supabase.com/docs/guides/platform/billing-faq",
+     "https://github.com/supabase/supabase/issues/43487",
+     "https://github.com/orgs/supabase/discussions/40081",
+     "https://github.com/orgs/supabase/discussions/46758",
+     "https://getvoroa.com/blog/supabase-free-tier-limits/"
+    ],
+    "verified": "verified-3-sources"
+   },
+   {
+    "provider": "Supabase Free: Storage bucket 1 GB for nightly compressed snapshots (question 3)",
+    "plan": "Free, file storage (S3-backed buckets)",
+    "free_storage": "1 GB total (744 GB-hours, billed as an average over the cycle). Max 50 MB per file on Free (the global file-size limit cannot be set above 50 MB; Pro can go up to 500 GB). This quota is separate from the 500 MB database quota. Pro: 100 GB, then $0.0213/GB/month.",
+    "expiry_pause_or_deletion": "Files are not auto-deleted. Over 1 GB on Free: email, grace period, then the same Fair Use restriction (HTTP 402 for the whole org); Free has no pay-per-use overage. Because it is an average, cutting storage late in the cycle clears the restriction only slowly. Staff note (Nov 2025): delete through the Storage API or UI, not by deleting rows in storage.objects with SQL.",
+    "other_free_limits": "Project pause after a week of inactivity applies. Storage image transformations cost extra on paid plans.",
+    "has_auth_realtime_cron": "Part of the same project: signed uploads via service role from an Edge Function or pg_cron plus pg_net, or from any external script.",
+    "sql_postgres": "Object metadata lives in storage.objects (tiny rows count toward DB size).",
+    "backups": "Storage objects are not part of the DB backups; this entry IS the backup target.",
+    "commercial_use_ok": "Same as Free plan.",
+    "fit_for_this_app": "Yes, with two limits. (1) 50 MB per file: a nightly pg_dump custom format (-Fc, already compressed) or .sql.gz must be under 50 MB or be split into parts of 45 MB or less. (2) 1 GB total: about 7 daily snapshots of up to about 140 MB, or 20 of 45 MB. Compression ratio for lead data is my estimate, NOT measured: test with pg_dump on the real DB. Weakness: same vendor and account, so it is not a true off-site backup; keep one weekly copy elsewhere (Drive/R2/B2, not verified here).",
+    "date_checked": "2026-11-04",
+    "sources": [
+     "https://supabase.com/docs/guides/platform/manage-your-usage/storage-size",
+     "https://supabase.com/docs/guides/storage/management/pricing",
+     "https://supabase.com/docs/guides/storage/uploads/file-limits",
+     "https://supabase.com/pricing",
+     "https://github.com/QaloriHQ/txkpro-workforce/issues/64",
+     "https://github.com/orgs/supabase/discussions/40081"
+    ],
+    "verified": "verified-3-sources"
+   },
+   {
+    "provider": "Supabase Pro (questions 4 and 7: cost, what 8 GB gives, spend cap)",
+    "plan": "Pro, from $25/month per organisation plus usage. Spend cap ON by default.",
+    "free_storage": "8 GB database disk per project included (16x the Free 500 MB), then $0.125/GB/month on the default gp3 disk. Also 100 GB file storage (then $0.0213/GB), 250 GB egress, 100,000 MAU, daily backups kept 7 days. $10/month compute credit covers one Micro project (1 GB RAM shared CPU, about $10/month); each extra project in the org costs about $10/month more (Small about $15). Autoscaling: disk grows 50% when it reaches 90% full (cap 200 GB, at most 4 changes per rolling 24h, one per 4h), but going past 8 GB needs the spend cap turned OFF.",
+    "expiry_pause_or_deletion": "No inactivity pausing, no expiry. With the spend cap on, usage over quota is restricted rather than billed; turning it off lifts any restriction immediately and switches to pay-as-you-go. A new Pro compute change (Nano to Micro) restarts the DB, usually under 2 minutes.",
+    "other_free_limits": "PITR add-on is expensive: about $100/month (7 days), $200 (14), $400 (28). Daily backups are included without it.",
+    "has_auth_realtime_cron": "Yes: Auth, Realtime, Edge Functions, pg_cron, same as Free.",
+    "sql_postgres": "Real Postgres, full SQL and RLS.",
+    "backups": "Daily backups, 7-day retention; PITR optional add-on (about $100/month for 7 days).",
+    "commercial_use_ok": "Yes (paid production plan).",
+    "fit_for_this_app": "Best fit if the user wants no maintenance: about $25/month (one project, Micro covered by the credit) gives 8 GB, backups, and no pausing. If the CRM and Outreach projects live in the same org they all become Pro and extra projects add about $10/month each (about $45/month for three, matching the selfhost.dev example); to avoid that, keep them in a separate Free org. 8 GB at the other agent's measured bytes per lead is the number to divide by for time-to-fill.",
+    "date_checked": "2026-11-04",
+    "sources": [
+     "https://supabase.com/pricing",
+     "https://supabase.com/docs/guides/platform/manage-your-usage/compute",
+     "https://supabase.com/docs/guides/platform/database-size",
+     "https://supabase.com/docs/guides/platform/backups",
+     "https://www.cloudzero.com/blog/supabase-pricing/",
+     "https://selfhost.dev/blog/supabase-self-hosting/"
+    ],
+    "verified": "verified-3-sources"
+   },
+   {
+    "provider": "Supabase: upgrade or move a Free project in place (question 5)",
+    "plan": "Free to Pro via the organisation billing settings; Project Transfers between organisations",
+    "free_storage": "Same project, same data, same ref and region; the plan belongs to the ORGANISATION, so every project in that org becomes Pro when it is upgraded. A Pro and a Free project cannot share an org. To keep some projects free, put them in a separate Free org (project transfer: Project Settings, General; you must own the source org and be a member of the target; no GitHub integration or log drains; same region only).",
+    "expiry_pause_or_deletion": "Upgrade does not delete or pause anything. Downtime of the plan switch itself is not stated in the official docs (one third-party guide says zero; not verified). Compute stays Nano (billed like Micro on a paid org) until you resize to Micro, which restarts the DB (usually under 2 minutes, can run longer; one 2-hour outage was reported during a failed resize in sa-east-1). Moving a project from a paid org to a Free org may cause 1-2 minutes of downtime and checks the 2-free-project limit.",
+    "other_free_limits": "FLAG: the 2-free-project limit counts across all orgs where you are Owner or Admin. The repo records two Free Supabase projects already (levelup-crm laxxqmtwowitopbqnejs, email-automation haroonvfx-outreach bnivytzudrpjlscwdxuh; read from project CLAUDE.md, not checked in the dashboard). A third project for the Database app therefore needs a Pro org, or reuse of an existing project, or a different design. Pro org plus a Free org for the other two is allowed and documented.",
+    "has_auth_realtime_cron": "Unchanged by upgrade.",
+    "sql_postgres": "Postgres, unchanged.",
+    "backups": "Daily backups begin after the upgrade.",
+    "commercial_use_ok": "Yes.",
+    "fit_for_this_app": "Good: start on Free with the Database project in its own Free org ONLY if a free slot is available; otherwise create a new org on Pro for the Database app (about $25/month) and keep CRM and Outreach free in the other org. No data migration needed when upgrading later.",
+    "date_checked": "2026-11-04",
+    "sources": [
+     "https://supabase.com/docs/guides/platform/billing-faq",
+     "https://supabase.com/docs/guides/platform/billing-on-supabase",
+     "https://supabase.com/docs/guides/platform/project-transfer",
+     "https://supabase.com/docs/guides/troubleshooting/keeping-free-projects-after-pro-upgrade-Kf9Xm2",
+     "https://supabase.com/docs/guides/platform/manage-your-usage/compute",
+     "https://www.sitesnapshot.io/blog/supabase-pro-compute-hack"
+    ],
+    "verified": "partly"
+   },
+   {
+    "provider": "Supabase: extra accounts or organisations for more free projects (question 2)",
+    "plan": "Free, multiple organisations or multiple accounts",
+    "free_storage": "Documented hard rule: 2 active free projects in total across ALL organisations where you are Owner or Admin; paused projects do not count. The docs themselves allow two Free orgs with one project each. Because the DB quota is evaluated per org (summed over its projects), two free projects in two separate orgs give two separate 500 MB quotas, about 1 GB combined, but the data would be split across two projects (two Auth systems, no cross-project RLS, joins or Realtime).",
+    "expiry_pause_or_deletion": "Terms: the Acceptable Use Policy (Version 1, 1 June 2026) section 4.2 prohibits creating accounts in bulk or by automation and also prohibits maintaining an \"excessive number of accounts as a single user\" without Supabase's explicit permission; no number is defined for excessive. The AUP says violations can lead to immediate suspension or termination of the accounts and services (from a search summary, not read verbatim). The Terms of Service page has no multiple-account or free-tier clause (only general suspension for fraud, breach of the use restrictions, and non-payment). Fair Use restrictions (402, pausing, read-only) apply per organisation.",
+    "other_free_limits": "Creating accounts only to multiply free quota looks contrary to the two-free-project rule and AUP section 4.2; an account ban would take production data offline. Separate accounts for two real admins are not clearly covered, but using them to dodge the quota is a gray area: ask Supabase support for written permission before relying on it.",
+    "has_auth_realtime_cron": "Per project, not shared across projects.",
+    "sql_postgres": "Postgres per project.",
+    "backups": "None on Free.",
+    "commercial_use_ok": "Not stated for multi-account use.",
+    "fit_for_this_app": "Not recommended as the plan. The only clean use is one legit second Free project (in its own org) as an archive database for old leads, accepting the split. It is not worth the risk or complexity compared with $25/month for 8 GB.",
+    "date_checked": "2026-11-04",
+    "sources": [
+     "https://supabase.com/aup",
+     "https://supabase.com/terms",
+     "https://supabase.com/docs/guides/platform/billing-on-supabase",
+     "https://supabase.com/docs/guides/platform/billing-faq",
+     "https://supabase.com/docs/guides/troubleshooting/keeping-free-projects-after-pro-upgrade-Kf9Xm2"
+    ],
+    "verified": "partly"
+   },
+   {
+    "provider": "Supabase: ways to get more than 500 MB free (question 7)",
+    "plan": "Promotions, startup, student, open-source programs, spend cap",
+    "free_storage": "No official route found. Startup credits: the supabase.com/solutions/startups page has no program, credit amount or application; one tracker (30 Oct 2026) says the old $300 / 6 months Pro offer is discontinued, while aggregator sites still list it (amounts conflict: $300, $2,500, $3,000), so treat as unverified. Student: no official program found; GitHub discussion 29381 (Sep 2024) has no staff confirmation. Open source: no official credits program found. One-off promos (e.g. a free Pro month via a podcast form) are not verified. Spend cap: exists only on Pro, protects from surprise bills, does not add free storage.",
+    "expiry_pause_or_deletion": "n/a",
+    "other_free_limits": "Ask Supabase support directly if the agency qualifies for a startup or sponsorship deal; do not plan around it.",
+    "has_auth_realtime_cron": "n/a",
+    "sql_postgres": "n/a",
+    "backups": "n/a",
+    "commercial_use_ok": "n/a",
+    "fit_for_this_app": "Do not count on any of these. Plan = Free until about 350 MB, then Pro.",
+    "date_checked": "2026-11-04",
+    "sources": [
+     "https://supabase.com/solutions/startups",
+     "https://guptadeepak.com/startup-offers/programs/supabase-startups",
+     "https://github.com/orgs/supabase/discussions/29381",
+     "https://supabase.com/pricing"
+    ],
+    "verified": "partly"
+   },
+   {
+    "provider": "Supabase: shrinking DB size (question 6: pruning, partitioning, TOAST compression)",
+    "plan": "Techniques, no plan change (work on Free or Pro)",
+    "free_storage": "Pruning: delete old rows, then vacuum; Supabase docs say deleted space is not reclaimed at once, VACUUM FULL <table> rewrites and locks that table, and disks do not shrink on their own (disk size only resets through an upgrade or migration). Partitioning: native range partitions by month; dropping or detaching an old partition is much faster than a bulk DELETE and avoids its VACUUM overhead (Postgres docs). Supabase documents a pg_partman page (create schema partman, create extension, schedule run_maintenance_proc via pg_cron), but a supabase/postgres issue (1586) says it was missing, so check the Extensions list; native partitions plus a small pg_cron function work either way. Housekeeping: cron.job_run_details is never auto-cleaned, so schedule a daily delete of rows older than 7 days (Supabase quickstart); a 1-minute job writes 1,440 rows a day. TOAST compression: text and jsonb are compressed automatically (pglz) but only when a row exceeds about 2 kB, so small lead rows gain little; per-column lz4 (Postgres 14+) is optional and works only if the server was built with lz4 (not verified on Supabase: test SET COMPRESSION lz4), and only affects newly written values.",
+    "expiry_pause_or_deletion": "n/a",
+    "other_free_limits": "Biggest real savings for this app (my judgment, not a sourced claim): store normalised columns instead of a raw jsonb copy of each sheet row, store a row hash for change detection, drop unused indexes, keep change history as diffs, archive old or closed leads as gzipped files in the 1 GB bucket, and prune sync logs and audit rows on a retention schedule.",
+    "has_auth_realtime_cron": "pg_cron runs the pruning and partition jobs.",
+    "sql_postgres": "Standard Postgres features.",
+    "backups": "Take a dump before any large delete.",
+    "commercial_use_ok": "n/a",
+    "fit_for_this_app": "Worth doing from day one (retention policy, log cleanup, monthly partitions for sync-event tables). It stretches Free but cannot make a growing lead table stay under 500 MB forever; combine with a Pro switch point.",
+    "date_checked": "2026-11-04",
+    "sources": [
+     "https://supabase.com/docs/guides/platform/database-size",
+     "https://www.postgresql.org/docs/current/storage-toast.html",
+     "https://www.postgresql.org/docs/current/runtime-config-client.html",
+     "https://www.postgresql.org/docs/current/ddl-partitioning.html",
+     "https://supabase.com/docs/guides/database/extensions/pg_partman",
+     "https://github.com/supabase/postgres/issues/1586",
+     "https://supabase.com/docs/guides/cron/quickstart",
+     "https://www.enterprisedb.com/blog/configurable-lz4-toast-compression"
+    ],
+    "verified": "partly"
+   },
+   {
+    "provider": "Self-hosted Supabase (Docker Compose) on Hetzner Cloud CX23",
+    "plan": "Hetzner CX23: 2 vCPU, 4 GB RAM, 40 GB NVMe, 20 TB traffic. About EUR 5.99/month excl. VAT with IPv4 (EUR 5.49 without; roughly EUR 7.1 with 19% German VAT, my calculation). Prices rose twice in 2026 (latest 15 Jun 2026). Hetzner Backups add 20% of the server price (about EUR 1.2) for 7 slots.",
+    "free_storage": "40 GB disk total, shared by OS, Docker images and Postgres data, so realistically about 20-25 GB for data (my estimate), versus 500 MB on Free. Supabase's minimum is 4 GB RAM, 2 cores, 40 GB SSD; recommended 8 GB+ RAM, 4 cores, 80 GB. CX33 (4 vCPU, 8 GB, 80 GB) is about EUR 8.99 incl. IPv4.",
+    "expiry_pause_or_deletion": "No pause or expiry; billed hourly with a monthly cap. AVAILABILITY WARNING: the hetzner.com cost-optimized page showed CX23 and the ARM CAX11 as currently unavailable on 2026-11-04, and one review says CX23 was unorderable in Oct 2026; the nearest orderable plan then was CPX22 (2 vCPU, 4 GB, 80 GB) at about EUR 19.99. Check the console before planning around EUR 6.",
+    "other_free_limits": "What you take on (official self-hosting overview): backups and disaster recovery (nothing built in, no PITR), security hardening, OS and Docker patching, monitoring and uptime, HTTPS reverse proxy, scaling. Support is community only. Missing vs hosted: branching, managed backups and PITR, Management API, multi-project Studio; Studio is protected only by shared basic auth, so anyone with the URL and password is admin. Updates: stable snapshots about monthly with an update.sh script, but upgrades are the most-cited pain point in the Supabase self-hosting thread (breaking changes, thin changelogs) and compatibility of mixed image tags is not guaranteed. Effort estimate (mine; no source quantifies it): about 1 day to build a hardened setup with TLS, firewall and tested backups, then 1-3 hours a month; the docs' under-15-minutes claim is a laptop test.",
+    "has_auth_realtime_cron": "Stack includes Studio, gateway, Auth, PostgREST, Realtime, Storage, Postgres, Edge Runtime (Deno; functions go in volumes/functions and need a restart), Supavisor. Same RLS behaviour. Realtime and Edge work per user reports, with slower cold starts. pg_cron and pg_net are not mentioned on the official Docker page: availability in the self-hosted Postgres image is NOT verified; test first, or fall back to host crontab calling the Edge Function every minute.",
+    "sql_postgres": "Same Postgres 15/17 image family and the same SQL, RLS, Auth and Realtime APIs as the hosted service, so the CRM/Outreach code would work unchanged apart from the URL and keys.",
+    "backups": "None built in. Build a nightly pg_dump -Fc via docker exec, keep .env, docker-compose.yml and volumes/functions, ship off-site, run restore drills. Add Hetzner Backups (20%) as a second layer.",
+    "commercial_use_ok": "Yes (own server). Supabase's Apache-2.0-style self-host licensing not checked.",
+    "fit_for_this_app": "Gives near-unlimited storage for about EUR 7-9/month, but the user would be the DBA for the agency's lead data with no vendor support. For about 5 users and 11 sheets, data volume is small, so this is not needed until data passes roughly 8 GB or $25/month is a blocker. Rank: Free + pruning first, Pro second, self-host last.",
+    "date_checked": "2026-11-04",
+    "sources": [
+     "https://supabase.com/docs/guides/self-hosting/docker",
+     "https://supabase.com/docs/guides/self-hosting",
+     "https://www.hetzner.com/cloud/cost-optimized",
+     "https://costgoat.com/pricing/hetzner",
+     "https://docs.hetzner.com/cloud/billing/faq/",
+     "https://github.com/orgs/supabase/discussions/39820",
+     "https://selfhost.dev/blog/supabase-self-hosting/",
+     "https://simplebackups.com/blog/backup-self-hosted-supabase"
+    ],
+    "verified": "partly"
+   },
+   {
+    "provider": "Self-hosted Supabase on Oracle Cloud Always Free (Ampere A1)",
+    "plan": "Always Free, $0. Ampere A1 allowance was cut on 15 Jun 2026 from 4 OCPU / 24 GB to 2 OCPU / 12 GB (1,500 OCPU-hours and 9,000 GB-hours a month) with no announcement; older tutorials are out of date.",
+    "free_storage": "200 GB combined boot and block volume per tenancy (boot volume minimum 47-50 GB), 20 GB object storage, 2 OCI AMD micro VMs (1 GB RAM, too small for the stack). 12 GB RAM is enough for the full Supabase stack.",
+    "expiry_pause_or_deletion": "Idle policy: Always Free VMs may be reclaimed if, over 7 days, 95th-percentile CPU is under 20% and network is under 20% (and memory under 20% on A1). Instances above the new caps on free-only accounts are shut down until resized; one guide says they are deleted after 30 days. Whether pay-as-you-go accounts keep 4 OCPU / 24 GB at no charge is unclear (conflicting support answers). New A1 VMs often fail with out-of-capacity errors.",
+    "other_free_limits": "Self-hosting duties are the same as on Hetzner (backups, patching, uptime, security). ARM64 risk: a 2023-24 issue (supabase 18815, closed) shows the Vector (logging) container failing on Oracle ARM64 with an unsupported page size error; the workaround was to remove that service. Whether current official images are fully multi-arch was not verified: check with docker buildx imagetools inspect.",
+    "has_auth_realtime_cron": "Same stack as above; pg_cron and pg_net availability not verified.",
+    "sql_postgres": "Same Postgres and APIs as hosted Supabase.",
+    "backups": "None built in; Oracle includes 5 volume backups in the Always Free allowance.",
+    "commercial_use_ok": "Not verified (Oracle Free Tier terms not read).",
+    "fit_for_this_app": "Cheapest on paper ($0, 12 GB RAM, about 150 GB usable), but the policy changed once without notice, the VM can be reclaimed, and ARM images are a risk. Not recommended as the only copy of the agency's leads; if used, keep nightly off-site dumps and a ready-to-restore plan.",
+    "date_checked": "2026-11-04",
+    "sources": [
+     "https://docs.oracle.com/en-us/iaas/Content/FreeTier/freetier_topic-Always_Free_Resources.htm",
+     "https://www.infoq.com/news/2026/07/oracle-cloud-free-tier-limits/",
+     "https://www.heise.de/en/news/Oracle-halves-free-cloud-resources-11334516.html",
+     "https://linuxiac.com/oracle-quietly-cuts-free-tier-ampere-a1-resources-in-half/",
+     "https://github.com/supabase/supabase/issues/18815"
+    ],
+    "verified": "partly"
+   }
+  ],
+  "notes": "SHORT ANSWERS (checked 2026-11-04).\n1) Past 500 MB on Free: nothing is deleted. Current official docs say 500 MB is a billing quota per organisation, not the read-only trigger. Over quota you get a grace period (length not published; user notices show about 2-3 weeks), then a Fair Use restriction: HTTP 402 on every API request for all projects in the org, judged on the AVERAGE daily size for the billing cycle. Read-only is a different trigger (95% of the fixed 2 GB Free disk; Postgres stops at 100%). Docs said read-only at 500 MB until a fix on 13 Apr 2026, and some blogs still say so, so plan for both. You can keep running during grace; after it, the app is down until the cycle resets, you upgrade to Pro, or you turn off the Pro spend cap.\n2) Extra accounts or orgs: the docs cap free projects at 2 in total across all orgs you own or administer. The Acceptable Use Policy (Version 1, 1 June 2026) section 4.2 bars an \"excessive number of accounts as a single user\" without Supabase's explicit permission; no number is given and the Terms of Service page has no such clause. Two Free orgs with one project each is documented and legal (separate 500 MB quotas) but splits the data. Using more accounts to dodge limits: not recommended.\n3) Storage: 1 GB free, 50 MB per file, separate from the DB quota. Nightly compressed dumps fit if split to 45 MB or less; roughly 7 days of snapshots. Compression ratio is an estimate; measure it.\n4) Pro: from $25/month per org; 8 GB DB disk per project (then $0.125/GB), 100 GB storage, daily backups kept 7 days, no pausing, $10 compute credit covers one Micro project; extra projects about $10 each; PITR about $100/month extra; going past 8 GB needs the spend cap off.\n5) In place: yes. Upgrade the organisation in billing settings; the same project keeps its data. All projects in that org become Pro, so keep other projects in a separate Free org via Project Transfers. Plan-switch downtime is not stated officially.\n6) Shrinking: retention deletes plus vacuum, monthly partitions that are dropped, a daily cleanup of cron.job_run_details, and avoiding raw jsonb copies. TOAST compresses only rows over about 2 kB, so small lead rows gain little.\n7) More free than 500 MB: no verified official program (startup credits appear discontinued; no student or open-source program found). Spend cap is Pro only.\nSELF-HOST: Hetzner CX23 about EUR 6 plus VAT/IPv4 gives 40 GB, same Auth/RLS/Realtime/Edge stack, but the user owns backups, updates, security and uptime; the plan was shown as unavailable on Hetzner's page today. Oracle Always Free is now 2 OCPU / 12 GB (halved in June 2026), has an idle-reclaim rule and ARM image risk.\nKEY FLAG: the CRM and Outreach apps already use the 2 Free Supabase projects per the repo notes (not checked in the dashboard), so the Database app cannot be a third Free project on that account. Options: new Pro org (about $25/month) for the Database app with CRM/Outreach kept free in another org, or put the app inside an existing project (shares that project's org quota).\nNOT CHECKED / SKIPPED: exact grace-period length; whether a 1-minute pg_cron job counts as activity against the 1-week pause; pg_partman and lz4 availability on Supabase; pg_cron, pg_net and arm64 status in the self-hosted images; Oracle Free Tier commercial terms; EUR conversions for USD prices; real compression ratio of this app's dumps. Several sources are third-party blogs or GitHub user posts and are labelled as such."
+ },
+ "decision": {
+  "recommendation": "Stay on the Supabase stack; no vendor switch. The data lives in a Supabase project in its OWN organisation (so a quota breach can never 402 the CRM): Free if the dashboard shows a free project slot, otherwise a new Pro org at $25/month for Database alone while CRM and Outreach stay in a Free org. The mirror is LEAN (30 typed fields per lead, no jsonb copy of the sheet row); the Google Sheets remain the permanent raw archive, so Suburb, Postcode, Map URL, Full Address, Lead Insight, Pitch Angle, Website Summary, YT/IG metrics and the other 40-odd columns stay only in the sheets and are re-read on demand or after any loss; only app-owned state (assignments, notes, tags, requests, reach events, audit) is irreplaceable and is small. Pruning from day one by pg_cron: audit kept 90 days, sync_log 30 days (and written only on change or error), cron.job_run_details 7 days, status history in the slim 129 B lead_status_event table, trigram index deferred until about 50k rows, VACUUM after each prune and REINDEX after the backlog import. Snapshots: nightly pg_dump -Fc of the app-owned tables only (not the rebuildable lead mirror) into the free 1 GB Storage bucket (under 50 MB per file, 7 kept) plus one weekly copy outside Supabase, and a restore drill before launch. Move to Pro when the 7-day average pg_database_size passes 350 MB (alert at 300), when daily backups or no-pause become a business need, or on day one if there is no free slot; the upgrade is in place with no migration.",
+  "options_ranked": [
+   {
+    "option": "1. Supabase Free (Database in its own org) + LEAN mirror + pruning + nightly app-state snapshot to the 1 GB bucket",
+    "verdict": "PICK, if a free project slot exists (repo notes say CRM and Outreach already hold both; not checked in the dashboard)",
+    "free_storage": "500 MB DB quota per org (about 450 MB usable after the ~50 MB baseline), 1 GB file storage, 2 GB fixed disk",
+    "cost": "$0",
+    "what_you_lose": "No managed backups (replaced by the nightly snapshot of app-owned data; lead rows are rebuilt from the sheets), pause after 7 idle days (a 1-minute scanner should keep it active; not verified), HTTP 402 for the whole org after an unpublished grace period if the AVERAGE size stays over 500 MB, Nano compute"
+   },
+   {
+    "option": "2. Supabase Pro, new org for Database only ($25/month), CRM + Outreach kept in a separate Free org",
+    "verdict": "PICK if no free slot; also the planned upgrade path at ~350 MB average size",
+    "free_storage": "8 GB DB disk included, 100 GB file storage, daily backups kept 7 days, no pausing",
+    "cost": "$25/month (the $10 compute credit covers one Micro project; extra projects in the same org ~$10 each)",
+    "what_you_lose": "The money. Going past 8 GB needs the spend cap off; PITR is a ~$100/month extra and not needed here"
+   },
+   {
+    "option": "3. Self-hosted Supabase (Docker) on Oracle Cloud Always Free Ampere A1 (2 OCPU / 12 GB / 200 GB)",
+    "verdict": "REJECT as the only copy of the agency's leads; the only truly free >= 1 GB route that keeps auth + RLS + realtime + cron; worth a 1-day pilot later only if $25/month becomes a blocker",
+    "free_storage": "~150 GB usable disk, 20 GB object storage",
+    "cost": "$0 cash; roughly 1 day to harden plus 1-3 hours/month of your own operations (estimate)",
+    "what_you_lose": "Vendor support, managed backups, certainty: allowance halved without notice in June 2026, idle-reclaim rule, anecdotal account terminations, A1 capacity often unavailable, ARM image issue on record (Vector container), pg_cron/pg_net on self-host not verified"
+   },
+   {
+    "option": "4. Neon Free (1 GB per project)",
+    "verdict": "REJECT",
+    "free_storage": "1 GB Postgres per project, 100 CU-hours/month",
+    "cost": "$0",
+    "what_you_lose": "A 1-minute scanner keeps compute awake 24/7 (~182 CU-h) so the database goes offline around day 17 each month; pg_cron cannot wake a suspended compute; no Realtime; auth, single session, reset-by-code rebuilt"
+   },
+   {
+    "option": "5. Prisma Postgres Free (2 GB)",
+    "verdict": "REJECT",
+    "free_storage": "2 GB shared per workspace, 200k operations/month",
+    "cost": "$0",
+    "what_you_lose": "11 sheets synced every minute is ~475k queries/month plus ~43k scanner runs vs a 200k cap: blocked mid-month; 'evaluation only, not for production'; no backups; no auth/realtime/cron"
+   },
+   {
+    "option": "6. Nile Free (1 GB, always-on)",
+    "verdict": "REJECT",
+    "free_storage": "1 GB, 50M query tokens",
+    "cost": "$0",
+    "what_you_lose": "No backups, no Realtime, pg_cron unconfirmed, tenant model does not map to per-sheet RLS; significant redesign"
+   },
+   {
+    "option": "7. Aiven Free PostgreSQL (1 GB)",
+    "verdict": "REJECT",
+    "free_storage": "1 GB disk, 1 CPU, 1 GB RAM, single node",
+    "cost": "$0",
+    "what_you_lose": "Bare Postgres: auth, single session, reset codes, realtime, API-level RLS all rebuilt; powered off after an unpublished idle period; 'not for production'; ~20 connections"
+   },
+   {
+    "option": "8. Turso Free (5 GB, SQLite/libSQL)",
+    "verdict": "REJECT",
+    "free_storage": "5 GB, 500M row reads/month",
+    "cost": "$0",
+    "what_you_lose": "Not Postgres; no auth, RLS, realtime or scheduler; conflicting 10-day archive rule; a COUNT(*) per minute over 50k rows alone exceeds the daily read budget"
+   },
+   {
+    "option": "9. Self-hosted Supabase on Hetzner CX23/CPX22",
+    "verdict": "LATER OPTION only (past ~8 GB or if $25/month is a blocker)",
+    "free_storage": "40-80 GB disk",
+    "cost": "~EUR 6-20/month plus VAT (CX23 shown unavailable on 2026-11-04)",
+    "what_you_lose": "You are the DBA: backups, patching, TLS, uptime, Studio secured only by basic auth"
+   },
+   {
+    "option": "10. Everything else checked: Firestore Spark, Cloudflare D1, Azure SQL free, Azure Cosmos, Oracle Autonomous DB, Aurora DSQL, DynamoDB, Render, Koyeb, Railway, Fly.io, Heroku, CockroachDB, Xata, Tiger Data, MongoDB M0, Convex, Appwrite, Back4App, PocketBase",
+    "verdict": "FAIL",
+    "free_storage": "Various (0 to 32 GB)",
+    "cost": "$0 to paid",
+    "what_you_lose": "Each fails on at least one hard requirement: under 1 GB (D1 per DB, Mongo, Convex, Back4App, Tiger), expiry or idle deletion (Render 30 days, Appwrite 1-week pause/90-day delete, DynamoDB account closes at 6 months), compute exhausted in days by a 1-minute scanner (Azure SQL, Koyeb), no free tier any more (Cockroach, Xata, Fly, Heroku, Railway), or a NoSQL/Oracle/T-SQL rewrite with no auth/RLS/realtime parity"
+   }
+  ],
+  "months_to_fill_table": "| Scenario (5 employees, everything assigned, LEAN design) | Logs pruned (audit 90 d, sync_log 30 d) | Months to Free 450 MB @300 actions/emp/day | @100 | @1000 | Months to 1 GB @300 | Months to Pro 8 GB @300 | App data at month 12 (MB) |\n|---|---|---|---|---|---|---|---|\n| Bot's own volume: ~10,000 leads month 1, then ~2,500/month, no backlog | no | 6.9 | n/a | n/a | 16.3 | 133 (11.1 y) | 761 |\n| Bot's own volume (same) | **yes** | **90 (7.5 y)** | n/a | n/a | **271 (22.6 y)** | never in practice | **202** (240 at month 24) |\n| 2,500 new leads/month, no backlog | no | 7.3 | 10.7 | 3.4 | 16.6 | 134 (11.1 y) | 741 |\n| 2,500/month, no backlog | yes | 92 (7.7 y) | 114 (9.5 y) | 13.4 | 273 (22.7 y) | >1200 (100+ y) | 197 |\n| 2,500/month + 50,000 backlog imported at month 0 | no | 6.7 | 9.9 | 3.1 | 16.0 | 133 (11.1 y) | 776 |\n| 2,500/month + 50,000 backlog | yes | 81 (6.7 y) | 103 (8.6 y) | 3.0 | 261 (21.8 y) | >1200 (100+ y) | 232 |\n| 5,000/month, no backlog | no | 6.5 | 9.2 | 3.2 | 15.0 | 120 (10.0 y) | 823 |\n| 5,000/month, no backlog | yes | 53 (4.4 y) | 67 (5.6 y) | 4.9 | 165 (13.7 y) | >1200 (100+ y) | 238 |\n| 5,000/month + 50,000 backlog | no | 6.0 | 8.5 | 3.0 | 14.4 | 120 (10.0 y) | 858 |\n| 5,000/month + 50,000 backlog | yes | 46 (3.9 y) | 60 (5.0 y) | 2.8 | 158 (13.1 y) | >1200 (100+ y) | 274 |\n| 20,000/month, no backlog (stress case) | no | 4.1 | 5.0 | 2.5 | 9.4 | 75 (6.3 y) | 1308 |\n| 20,000/month, no backlog | yes | 10.3 | 14.7 | 2.3 | 45 (3.8 y) | 484 (40.3 y) | 477 |\n\nReading: measured in a real Postgres (PGlite = PostgreSQL 18.6), per lead 867 B at 20k rows falling to ~658 B marginal at scale, times a measured update-churn factor of 1.143. Assigning all leads to 5 employees costs one indexed column (~9 B/lead). Below ~5,000 new leads/month the logs (audit at 681 B/event, sync_log at 160 B/row) are the main cost, not the leads: at 300 actions/employee/day the unpruned audit alone grows 30 MB/month, pruned it plateaus at ~108 MB. Thresholds are app data in MiB after the ~50 MB Supabase baseline (450 MB column); 1 GB and 8 GB columns do not subtract the baseline (subtract ~0.1-0.8 months). Not pruned at @100/@1000 for the bot-volume row was not computed (n/a). FULL design (jsonb copy of all 74 columns) for comparison at bot volume: 450 MB in 6.1 months unpruned / 31 months pruned; 1 GB in 14.7 / 96.",
+  "plain_answer_for_user": "With 4-5 employees and every lead assigned to someone, the assignment itself costs almost nothing (one small column per lead). What fills the database is the activity log and the scan log, not the leads. At your bot's volume (about 10,000 leads in month one, then about 2,500 a month) the lean design holds roughly 200 MB after a year if old logs are trimmed automatically (audit 90 days, scan log 30 days), so the free 500 MB lasts about 7 years. Without trimming it fills in about 7 months.\n\nA free 1 GB database that also gives you login, per-sheet access, live counters and the 1-minute scanner does not exist. Neon offers 1 GB but its free compute runs out around day 17 each month with a scanner that never sleeps; the rest are bare databases, expire, or need a full rewrite. Not worth the switch.\n\nDecision: Supabase, lean mirror, automatic log trimming, nightly backup of the app's own data to the free file store. One catch: Free allows 2 projects and the CRM and Outreach may already use both. If so, Database goes into its own Pro org at $25/month (8 GB, daily backups, no pausing).",
+  "brief_edits": [
+   "Section 2, finding 9: replace the row text with: `Supabase Free: **2 active projects total across every org you own or admin** (CRM `laxxqmtwowitopbqnejs` and Outreach `bnivytzudrpjlscwdxuh` are both recorded as Free projects in their CLAUDE.md; dashboard not yet checked), **500 MB DB quota per organisation** (~450 MB usable; nothing is deleted when exceeded: email + unpublished grace, then HTTP 402 on every API request of that org judged on the cycle AVERAGE size; read-only is a separate trigger at 95% of the fixed 2 GB disk), **no backups**, pauses after ~7 idle days. Pro: $25/month per organisation ($10 compute credit), 8 GB disk, daily backups kept 7 days, no pausing, upgrade in place. | supabase.com/pricing + docs database-size, billing-faq, backups; GitHub issue 43487; 2026-11-04`",
+   "Section 4 architecture, Postgres line: replace `Postgres: sheets, tabs, lead_sources, leads (derived grouping), lead_contacts (no employee SELECT), reach_events, do_not_contact,` with `Postgres (LEAN mirror: 30 typed fields per source row, NO jsonb copy of the sheet row; the sheets stay the raw archive): sheets, tabs, lead_sources, leads (derived grouping), lead_contacts (no employee SELECT), lead_status_event (slim), reach_events, do_not_contact,` and append a new line after the Export line: `Housekeeping (pg_cron): audit 90 d, sync_log 30 d (written on change/error only), cron.job_run_details 7 d, VACUUM after each prune; nightly pg_dump -Fc of app-owned tables -> Storage bucket (<50 MB/file, 7 kept) + weekly copy off Supabase`",
+   "Section 6, Backup paragraph: replace `**Backup:** Supabase Pro daily backups (7 days): ...` opening with `**Backup:** on Free: nightly compressed dump of the app-owned tables (assignments, notes, tags, requests, reach events, audit, sheet_access, profiles) to the project's 1 GB Storage bucket, 7 kept, plus one weekly copy outside Supabase; lead rows are rebuilt by re-scanning the sheets. On Pro: Supabase daily backups (7 days) in addition.` and keep the rest of the paragraph (restore to a NEW project, unschedule pg_cron first).",
+   "Section 7, red flag 1: replace the row with `| 1 | High | Supabase Free: no backups, pauses after 7 idle days, only 2 free projects (CRM + Outreach already recorded as using them), 402 hits the WHOLE org when the average size passes 500 MB | Section 13: Database in its OWN org (Free if a slot exists, else Pro $25/month); LEAN mirror + pruning keeps Free under 450 MB for ~7 years at the bot's volume; nightly app-state snapshot to the 1 GB bucket; alert at 300 MB, Pro at 350 MB average |`",
+   "Section 11, question E item (1): replace `(1) Supabase plan decision (section 13) and the access token in .env;` with `(1) Supabase: open the dashboard and tell me whether a third Free project can be created (CRM + Outreach may already hold both slots); if yes we start Free, if no I need your OK for a new Pro org at $25/month for Database only (CRM and Outreach stay free in their org); then the access token in .env;`",
+   "Section 12 Not verified, add bullets: `- Whether the account really has no free project slot left (repo notes only; check the dashboard).` `- Whether a 1-minute pg_cron job counts as activity against the Free 7-day pause.` `- Real bytes per lead and compression ratio of the nightly dump: measured on synthetic data (PGlite PostgreSQL 18.6, assumed fill rates 45.8 of 74 columns); re-measure after the pilot import with pg_total_relation_size.` `- Grace period length before a 402 (user reports show ~2-3 weeks).`",
+   "Section 13: replace the whole section with:\n## 13. Data plan (decided 2026-11-04)\n**Where:** Supabase, same stack as CRM and Outreach, Database project in its OWN organisation. Free if the dashboard shows a free slot (2 free projects total; CRM + Outreach recorded as using both), otherwise a new Pro org ($25/month, 8 GB, daily backups 7 d, no pause) for Database only. No other vendor: 29 free tiers checked with 3+ sources each; none gives >= 1 GB plus Auth + RLS + Realtime + a 1-minute scheduler without expiry. Closest: Neon 1 GB (compute 100 CU-h runs out ~day 17 with a 24/7 scanner, no Realtime), Prisma Postgres 2 GB (200k ops/month, evaluation only), Aiven/Nile 1 GB (bare Postgres, rebuild everything). Self-hosted Supabase on Oracle Always Free (12 GB RAM, ~150 GB) is the only free >= 1 GB that keeps the stack, rejected as the only copy of the leads (allowance halved without notice June 2026, idle reclaim, ARM risk, you are the DBA); possible later pilot. Multiple Supabase accounts to multiply quota: not done (AUP 4.2).\n**What is stored (LEAN mirror):** 30 typed fields per source row (ids, company, decision maker, emails, phone, website, city/state/country, niche, segment, score, tier, status, Lead Added On, first seen, assignment, tags, notes, hash) + app-owned state. Everything else (Suburb, Postcode, Map URL, Full Address, Other Emails, socials, Lead Insight, Pitch Angle, Website Summary, YT/IG metrics, quality columns, Notes, Enrichment) stays only in the Google Sheets, which remain the raw archive (10M cells per spreadsheet) and are re-read on demand or after any loss. Measured in a real Postgres: 867 B/lead at 20k rows, ~658 B marginal at scale (FULL jsonb copy would be 2,729 B); 5 employees assigned everything add ~9 B/lead.\n**Pruning (pg_cron, day one):** audit 90 d, sync_log 30 d and written only on change/error, cron.job_run_details 7 d, status history in the slim lead_status_event table (129 B/event), trigram search index added only past ~50k rows, VACUUM after each prune, REINDEX after the backlog import. Logs, not leads, are the main cost below ~5,000 new leads/month.\n**How long Free lasts (bot volume ~10k month 1 then ~2.5k/month, 5 employees at 300 actions/day):** pruned: 450 MB in ~90 months (7.5 y), ~202 MB at month 12; unpruned: 450 MB in ~6.9 months. 1 GB would buy roughly double; Pro 8 GB is never reached in practice.\n**Snapshots:** nightly pg_dump -Fc of app-owned tables only -> Storage bucket (1 GB free, <50 MB per file, 7 kept) + one weekly copy outside Supabase; restore drill before launch (restore to a NEW project, unschedule pg_cron first).\n**Switch points:** alert at 300 MB (pg_database_size, 7-day average); upgrade the org to Pro in place at 350 MB average, or earlier if daily backups / no-pause are wanted, or on day one if no free slot exists. Treat an HTTP 402 as app-down.\n**Not verified:** free slot availability (dashboard), 1-minute cron vs the idle pause, real bytes per lead (synthetic data, assumed fill rates), dump compression ratio, grace period length; see section 12."
+  ],
+  "risks": [
+   "Free slot may not exist: CRM and Outreach are recorded as Free projects; if both are active the Database app cannot start on Free at all and needs the $25/month Pro org (or pausing/transferring a project).",
+   "Fair Use 402 is per organisation and judged on the cycle AVERAGE size, so an overflow in a shared org would take the CRM down too and deleting data does not lift it at once; mitigated by giving Database its own org and alerting at 300 MB.",
+   "Free pause after ~7 idle days: not verified that a 1-minute pg_cron scanner counts as activity; a paused project means stale dashboards until someone restores it.",
+   "Storage numbers rest on synthetic leads (assumed 45.8 of 74 columns filled, lengths from the bot code); real text could move LEAN by a few percent and the trigram index by +-30%; the pilot import must re-measure.",
+   "Pruning is the whole plan: if the 90/30-day cron jobs are never installed or silently fail, Free fills in ~7 months instead of ~7 years; the dead-man ping must also cover the prune jobs.",
+   "The LEAN mirror means some sheet columns (Lead Insight, Pitch Angle, socials, address) are not searchable or filterable in the app unless read live from the sheet; accepted, but say so in the UI spec.",
+   "Nightly snapshots live in the same Supabase account (not a true off-site backup) and the dump compression ratio is an estimate; the weekly external copy and a restore drill are mandatory before launch.",
+   "Read-only at 500 MB was the documented behaviour until 13 Apr 2026 and some blogs still say so; plan for both outcomes (402 and read-only).",
+   "If Pro becomes necessary and the three apps end up in one org, cost rises to ~$45/month; keep CRM and Outreach in a separate Free org.",
+   "The Oracle Always Free route, if ever piloted, can be reclaimed or terminated without notice; never the only copy."
+  ],
+  "not_verified": [
+   "Whether the Supabase account actually has a third Free project slot (CRM and Outreach refs come from repo CLAUDE.md files, dashboard not checked).",
+   "Whether a 1-minute pg_cron job counts as activity against the Free 7-day inactivity pause, and whether pg_cron runs every 60 s on a Free project.",
+   "Real bytes per lead: measured on synthetic data in PGlite (PostgreSQL 18.6, 32-bit WASM) with assumed fill rates; Supabase runs Postgres 15/17; expected within a few percent, lz4 TOAST not tested.",
+   "Compression ratio of the nightly pg_dump and therefore how many snapshots fit under 50 MB per file / 1 GB total.",
+   "Length of the grace period before a Fair Use 402 (user reports ~2-3 weeks; not published).",
+   "Supabase Free commercial-use terms (no ban found in ToS/AUP; not officially stated) and most other providers' commercial clauses (ToS not read).",
+   "Oracle Always Free: pg_cron/pg_net and arm64 status in current self-hosted Supabase images; account idle-suspension window; commercial terms.",
+   "Aiven inactivity power-off period; Tiger Data ~750 MB figure (not on an official page); Neon commercial-use clause.",
+   "Projection assumptions: sync_log 5,000 rows/day, 300 actions/employee/day, 3 status changes per lead, autovacuum keeping up; the @100/@1000 columns for the bot-volume row were not computed.",
+   "Exact Supabase Pro behaviour on plan switch downtime (third-party says zero; not in official docs)."
+  ]
+ }
+}

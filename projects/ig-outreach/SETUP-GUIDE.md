@@ -68,3 +68,20 @@ See `GUIDE\04-TROUBLESHOOTING.md`. Quick ones: "MISSING SETTING" = a value in `s
 Every line should say OK (DRY lines mean "already fine or would be done").
 
 Not verified: the real Google Sheet, AI keys and Instagram flow (they need your logins). The installer, environment setup and script start-up were tested in a temp copy.
+
+## 11. Deeper chapters (read these when you need detail)
+| Question | Chapter |
+|---|---|
+| Run order, sheet tabs and columns, account ramp, how the AI keys fail over | `GUIDE\02-ARCHITECTURE.md` |
+| Exact settings and files for each change (wording, angles, limits, schedule, accounts, keys) | `GUIDE\03-HOW-TO-CHANGE-THINGS.md` |
+| Error messages and fixes, how to read the Run Log | `GUIDE\04-TROUBLESHOOTING.md` |
+| Order of work and known limits | `GUIDE\01-ROADMAP.md` |
+
+Key facts to remember:
+- A human sends every DM. The bot only writes and schedules. Never add auto-login or auto-send.
+- Account ramp: no outreach before day 14, max 5 a day until day 28, then your limit; hard cap 20.
+- Never delete rows in the Outreach Log; it is the bot memory.
+- Test with 3-10 leads and one account first:
+```
+install\run.cmd main.py
+```

@@ -65,3 +65,19 @@ See `GUIDE\04-TROUBLESHOOTING.md`.
 Every line should say OK (or DRY for things already fine).
 
 Not verified: the real Google Sheet, AI keys and Figma flow (they need your logins). The installer, environment setup and script start-up were tested in a temp copy.
+
+## 11. Deeper chapters (read these when you need detail)
+| Question | Chapter |
+|---|---|
+| What happens in one run, every tab and column, how the AI keys fail over | `GUIDE\02-ARCHITECTURE.md` |
+| Exact settings and files for each change (prompt, columns, dropdowns, schedule, Figma, keys) | `GUIDE\03-HOW-TO-CHANGE-THINGS.md` |
+| Error messages and fixes, how to read the _Log tab | `GUIDE\04-TROUBLESHOOTING.md` |
+| Order of work and known limits | `GUIDE\01-ROADMAP.md` |
+
+Key facts to remember:
+- Never delete the `_Ledger` tab; it remembers which notes were already filed.
+- This PC test run defaults to DRY_RUN=yes (writes nothing):
+```
+install\run.cmd organizer.py
+```
+- Gmail sorting is not built; Figma can only be read and commented on, not rearranged.

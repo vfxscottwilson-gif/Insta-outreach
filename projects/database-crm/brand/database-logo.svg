@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Level Up VFX "Database" mark. Shape from the user's reference (rounded hex stack, two bands, two dots each), finished in the CRM logo's
+       depth treatment: purple gradient body, lighter top face, bevelled cuts, glass highlight, soft drop shadow. -->
+  <defs>
+    <linearGradient id="db-body" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0" stop-color="#bbadff"/><stop offset="0.5" stop-color="#846AFF"/><stop offset="1" stop-color="#5f4bc4"/>
+    </linearGradient>
+    <linearGradient id="db-top" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#f1edff"/><stop offset="1" stop-color="#b7a7ff"/>
+    </linearGradient>
+    <linearGradient id="db-side" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#2b1d73" stop-opacity="0"/><stop offset="1" stop-color="#2b1d73" stop-opacity="0.34"/>
+    </linearGradient>
+    <linearGradient id="db-glass" x1="0" y1="0" x2="1" y2="0.2">
+      <stop offset="0" stop-color="#fff" stop-opacity="0.5"/><stop offset="0.5" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="db-dot" cx="0.35" cy="0.3" r="0.8">
+      <stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#e3dcff"/>
+    </radialGradient>
+    <filter id="db-shadow" x="-30%" y="-30%" width="160%" height="170%">
+      <feDropShadow dx="1.6" dy="2.4" stdDeviation="1.8" flood-color="#0b0620" flood-opacity="0.45"/>
+    </filter>
+    <clipPath id="db-clip">
+      <path d="M32 7.5 L56 19.5 V44.5 L32 56.5 L8 44.5 V19.5 Z" stroke="#000" stroke-width="5" stroke-linejoin="round"/>
+      <path d="M32 7.5 L56 19.5 V44.5 L32 56.5 L8 44.5 V19.5 Z"/>
+    </clipPath>
+  </defs>
+  <g transform="translate(32 32) scale(0.92) translate(-32 -32)">
+    <!-- body: silhouette with soft round corners -->
+    <g filter="url(#db-shadow)">
+      <path d="M32 7.5 L56 19.5 V44.5 L32 56.5 L8 44.5 V19.5 Z" fill="url(#db-body)" stroke="url(#db-body)" stroke-width="5" stroke-linejoin="round"/>
+    </g>
+    <!-- right half in shade for the isometric turn -->
+    <path d="M32 7.5 L56 19.5 V44.5 L32 56.5 Z" fill="url(#db-side)" stroke="url(#db-side)" stroke-width="5" stroke-linejoin="round" stroke-opacity="0"/>
+    <path d="M32 31.5 L56 19.5 V44.5 L32 56.5 Z" fill="url(#db-side)"/>
+    <!-- top face -->
+    <path d="M8 19.5 L32 7.5 L56 19.5 C48 24.5 42 31.5 32 31.5 C22 31.5 16 24.5 8 19.5 Z" fill="url(#db-top)" stroke="url(#db-top)" stroke-width="3" stroke-linejoin="round"/>
+    <!-- bevelled cuts between the top face and the two bands -->
+    <path d="M8 19.5 C16 24.5 22 31.5 32 31.5 C42 31.5 48 24.5 56 19.5" stroke="#3a2a92" stroke-opacity="0.55" stroke-width="2.4" stroke-linecap="round"/>
+    <path d="M8 19.5 C16 24.5 22 31.5 32 31.5 C42 31.5 48 24.5 56 19.5" stroke="#fff" stroke-opacity="0.35" stroke-width="0.9" stroke-linecap="round" transform="translate(0 1.7)"/>
+    <path d="M8 32 C16 37 22 44 32 44 C42 44 48 37 56 32" stroke="#3a2a92" stroke-opacity="0.55" stroke-width="2.4" stroke-linecap="round"/>
+    <path d="M8 32 C16 37 22 44 32 44 C42 44 48 37 56 32" stroke="#fff" stroke-opacity="0.3" stroke-width="0.9" stroke-linecap="round" transform="translate(0 1.7)"/>
+    <!-- server dots -->
+    <g fill="url(#db-dot)">
+      <circle cx="14" cy="28.6" r="1.9"/><circle cx="19.6" cy="31.4" r="1.9"/>
+      <circle cx="14" cy="41.1" r="1.9"/><circle cx="19.6" cy="43.9" r="1.9"/>
+    </g>
+    <!-- glass highlight, same as the CRM mark -->
+    <path d="M32 7.5 L56 19.5 V44.5 L32 56.5 L8 44.5 V19.5 Z" fill="url(#db-glass)" stroke="url(#db-glass)" stroke-width="5" stroke-linejoin="round"/>
+  </g>
+</svg>

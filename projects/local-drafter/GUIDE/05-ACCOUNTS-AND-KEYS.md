@@ -8,6 +8,27 @@
 | Ollama | none (no account) | - | Local AI | model `qwen3:8b` stored by Ollama, not in this folder |
 | AI server key (optional) | - | - | Only for OpenAI-compatible servers | `AI_API_KEY` |
 
+## Secret NAMES (values are never written in any guide)
+| Name | Required? | Read by | Behaviour if missing |
+|---|---|---|---|
+| `GOOGLE_SERVICE_ACCOUNT_FILE` (a file path, not a key) | only in sheet mode | `sinks.py` | `GOOGLE_SERVICE_ACCOUNT_FILE is not set in .env`; relative paths start in `app\`; surrounding quotes are removed |
+| `YOUTUBE_API_KEY` | optional | `pipeline.py`, `research.py` | `YouTube facts off (no YOUTUBE_API_KEY in .env)`; drafting continues |
+| `AI_API_KEY` | optional | OpenAI-compatible backend only | Ollama and LM Studio need none |
+
+How they get to the app: you (or the installer, on a first install) fill `secrets\.env`; the installer copies it to `app\.env`; `draft_emails.py` loads `app\.env`. After editing `secrets\.env`, re-run `install\INSTALL.cmd` to copy it again (an existing `secrets\.env` is never overwritten). Template: `app\.env.example`. Per-secret steps: `secrets\SECRETS-CHECKLIST.md`.
+
+## Free tiers and limits
+| Service | Limit | Source / date |
+|---|---|---|
+| YouTube Data API | 10,000 units per day, about 3 units per YouTube lead; `search.list` has its own bucket (100 calls/day) used only if `YT_ALLOW_SEARCH: true` | `app\START_HERE.md` "Facts checked" (checked 2026-11-03); not re-checked for this guide |
+| Google Sheets API | 300 read and 300 write requests per minute per project; this tool writes about once per 10 drafts | same table, 2026-11-03; Google said exceeding quotas is planned to incur charges later: not re-verified |
+| Ollama, `qwen3:8b` | free, local, no account | ollama.com |
+
+## Checking that access works
+1. Sheet and key: `app\run.bat --check` must show `input readable` and `output sheet opened`.
+2. YouTube key: the same check shows `YouTube API key answers (1 quota unit)`.
+3. Rotate a key: create the new key in Google Cloud, change the value in `secrets\.env`, re-run the installer, delete the old key in Google Cloud. If a key was ever shown in chat or committed, rotate it.
+
 ## Google service account (once)
 1. Go to https://console.cloud.google.com and create a project.
 2. APIs & Services > Library: enable **Google Sheets API** (and **YouTube Data API v3** for the optional key).
