@@ -41,6 +41,8 @@ Verdict = SkillSpector score/verdict + manual review. Route: `plugin` (claude pl
 | pwa-development | email-app | alinaqi/maggy | 55aabe2 | skills-cli | 10/100 SAFE | SAFE: single SKILL.md, code examples only (service worker, Workbox, VAPID push); HTML comments = example markup | yes 2026-11-03 | Installed = scanned |
 | cold-email | email-app | coreyhaines31/marketingskills | 88c79f6 | skills-cli | 25/100 CAUTION | SAFE: markdown + evals.json; HIGH AR1 = copywriting line 'they almost always respond' (false positive) | yes 2026-11-03 | Installed = scanned |
 | cold-email-deliverability | email-app | mbfinotti/sales-skills | b2ed362 | skills-cli | 7/100 SAFE | SAFE: markdown + evals.json; says hygiene/compliance only, never filter evasion | yes 2026-11-03 | Installed = scanned |
+| graphify 0.9.102 | 5 | Graphify-Labs/graphify | 59b5ab1 | tool (uv tool install graphifyy==0.9.102) + skill (~/.claude/skills/graphify) | 100/100 static | SAFE: HIGH = secret-file skip lists, SSRF block list, subprocess self-relaunch, LLM-API client for keys you set. No telemetry found. `graphify install` only added a 3-line block to ~/.claude/CLAUDE.md (backups: *.bak-pre-graphify); uninstall: `graphify uninstall` | yes 2026-11-04 (user asked) | Tested: `graphify update` on projects/levelup-crm = 73 nodes, 63 edges, no LLM. Use `/graphify .` per project |
+
 
 ## Queue (approved, waiting to install)
 _Skill Scout appends here while the Build session is running._
