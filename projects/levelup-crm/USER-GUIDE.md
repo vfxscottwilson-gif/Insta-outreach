@@ -10,12 +10,10 @@ Site: https://levelup-vfx-crm-sigma.vercel.app (works on phone, tablet and compu
 5. Only one device can be logged in per account. If you log in somewhere else, the first device is signed out within seconds and shows "Signed in elsewhere".
 
 ## 2. Forgot your password
-1. On the login page click **Forgot password?** (inside the password box).
-2. Enter your email and click **Send code**.
-3. Check your inbox for a 6-digit code. It works once and expires in 10 minutes.
-4. Enter the code and a new password, then click **Verify code and save**.
-
-The code only works for the email it was sent to. Note: sending codes needs the Gmail app password to be set up (see "What still needs the admin" below).
+There is no email or code. Ask your admin:
+1. Employees: tell the admin. The admin opens **Team**, finds your row, clicks **Set new password**, and gives you the new password.
+2. Log in with it. The CRM asks you to choose your own new password right away.
+3. Owner/admin: add `NEW_ADMIN_PASSWORD=...` (8+ characters, upper case, lower case, a number) to `app/.env`, run `node scripts/set-admin-password.mjs` from the `app` folder (add `--check` first for a dry run), then log in and change it in the portal.
 
 ## 3. Set duty hours (admin)
 1. Go to **Settings** (bottom of the left rail).
@@ -69,5 +67,4 @@ Outside these windows the Clock In / Clock Out buttons stay visible but greyed o
 Everything else (tasks, projects, teams, members, job titles, duty hours, settings, documents, approvals) is admin only. The database itself enforces this, so it can't be bypassed from the browser.
 
 ## What still needs the admin (one-time)
-1. **Gmail app password**, so reset codes can be emailed: open https://myaccount.google.com/apppasswords as Khizarvfx@gmail.com, create one named "Level Up VFX CRM", copy the 16 letters, then tell Claude "copied".
-2. Nothing else is required to start using the CRM.
+1. Nothing else is required to start using the CRM.
