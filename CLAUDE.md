@@ -13,6 +13,7 @@
 | `PROGRESS.md` | Workstream tracker |
 | `scripts/` | Helper scripts (scan, update) |
 | `backups/` | Copy of `~/.claude` config before installs (gitignored) |
+| `projects/` | One self-contained folder per app (`README.md` = the rule, `_TEMPLATE-app/` = skeleton: guide, installer, private/, backup) |
 
 ## Safety gate (every repo, no exceptions)
 1. `git clone` into `repos/<owner>__<repo>` and note the commit hash.

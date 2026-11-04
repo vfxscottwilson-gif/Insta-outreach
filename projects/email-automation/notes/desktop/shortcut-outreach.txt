@@ -1,0 +1,2 @@
+Desktop\Outreach.lnk -> wscript.exe "<folder>pp\Start Outreach App.vbs", start in <folder>pp, icon app\web\publicavicon.ico
+(recreated by install\install.ps1; Start-menu copy too)
