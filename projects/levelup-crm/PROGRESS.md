@@ -18,3 +18,4 @@
 | Phase 1-UI (ClickUp look + motion) | Lead architect (Opus U1, Sonnet U2 + branding, Sonnet charts + UI audit) | U1, U2, branding, login redesign, logo v3 (`af6d55f`), smooth charts (`4722ae7`), old views on tokens + dialogs + phone sidebar (`277b750`,`a1d11cd`,`5dd8ee3`). Preview https://levelup-vfx-4lg5q573q-vfxscottwilson-gif.vercel.app | 60 | 2026-11-04 | Logged-in visual check (needs user login) | U3 Home dashboard + Inbox + My Tasks |
 | ClickUp paid-feature map | Lead architect | FEATURES.md written (all paid features → Phases 1-6) | 100 | 2026-11-03 | — | Decided: defaults (see FEATURES.md) |
 | Phases 1-4 | — | Not started | 0 | 2026-11-03 | Phase 0 sign-off | — |
+| Production release (new CRM) | Lead architect + control room | LIVE: app `6dc5442` at https://levelup-vfx-crm-sigma.vercel.app (Fable: GO WITH CONDITIONS) | 95 | 2026-11-04 | Gmail app password (SMTP_PASS) for 6-digit reset codes | User picks next item; low-data/offline PWA queued |
