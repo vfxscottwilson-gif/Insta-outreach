@@ -7,6 +7,7 @@ projects/email-automation/app/
 projects/levelup-crm/app-main/
 
 projects/*/secrets/
+!projects/_TEMPLATE/secrets/
 projects/*/archive/
 Supabase code.txt
 projects/*/database/backups/
