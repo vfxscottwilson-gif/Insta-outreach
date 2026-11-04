@@ -53,7 +53,7 @@ Outside these windows the Clock In / Clock Out buttons stay visible but greyed o
 
 ## 8. Reports
 1. Employees: go to **Reports → Hourly** or **Daily**, fill in the report and click **Submit**. Once submitted it is locked.
-2. Admin: open the report, add remarks, then **Approve** or **Request revision**. A revision unlocks it for the employee.
+2. Admin: open the report, add remarks, then **Approve** or **Request Changes**. A revision unlocks it for the employee.
 3. Employees can comment on their own daily reports.
 
 ## 9. Customise the CRM (admin)
