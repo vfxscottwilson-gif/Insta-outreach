@@ -17,7 +17,7 @@ Lead sheets (Google Sheets, read-only)        Gmail accounts (OAuth, per owner)
 | Back end (logic) | `app/engine/` | Python 3.12, `uv` | Stateless `tick()`. CLI: `uv run python -m outreach healthcheck | tick | seed-settings`. Tools in `src/outreach/tools/` |
 | Back end (data) | `app/supabase/` | Postgres migrations + 3 Edge Functions | Project `haroonvfx-outreach`, ref `bnivytzudrpjlscwdxuh`, Mumbai |
 | Hosting | Cloudflare (web), this PC for the pilot (engine) | free tiers | 24/7 engine host still to choose (roadmap #10) |
-| Keys | `app/.env` (copy in `private/`) | gitignored | Never in git or chat |
+| Keys | `app/.env` (copy in `secrets/`) | gitignored | Never in git or chat |
 
 ## Data flow
 1. Source sheets > `importer.py` > `leads` (unique canonical email). 2. `planner.py` makes `sends` with jittered `send_at`. 3. `drafts.py` + `ai/` write; `validator.py` checks. 4. `sender.py` claims rows (`FOR UPDATE SKIP LOCKED`), writes `sending` with our Message-ID, then calls Gmail. 5. `mailbox/` syncs inboxes, classifies replies/bounces. 6. Web reads views/RPCs with the user's login; admin vs employee scoping by RLS.

@@ -12,7 +12,6 @@ Supabase code.txt
 projects/*/database/backups/
 
 # per-app packaging rule (projects/README.md)
-projects/*/private/
 !projects/*/backups/
 projects/*/backups/*.zip
 projects/*/backups/*.sql

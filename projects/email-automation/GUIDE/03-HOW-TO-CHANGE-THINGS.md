@@ -39,8 +39,8 @@ Use the app: Settings. The live values are rows in the Supabase table `settings`
 
 ## Back up and restore
 1. Backup: `powershell -ExecutionPolicy Bypass -File backups\backup.ps1`. Gives a dated zip (contains keys: keep private) and, with `pg_dump` installed, schema + data `.sql`.
-2. Restore the folder: unzip anywhere, run `install\Install.cmd`.
+2. Restore the folder: unzip anywhere, run `install\INSTALL.cmd`.
 3. Restore the database: in a new Supabase project run the schema `.sql`, then the data `.sql` with `psql`. The app can also restore from its Google Sheet backup (`app\docs\SHEET-BACKUP.md`, dry run first).
 
 ## Move to another PC
-Copy the folder (including `private\`), run `install\Install.cmd`. Re-sign in to Cloudflare (`wrangler login`) there.
+Copy the folder (including `secrets\`), run `install\INSTALL.cmd`. Re-sign in to Cloudflare (`wrangler login`) there.

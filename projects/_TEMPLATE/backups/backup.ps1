@@ -2,7 +2,7 @@
   Backup of the whole email-automation folder + the live Supabase database.
   Run:  powershell -ExecutionPolicy Bypass -File backups\backup.ps1   [-NoDb] [-DryRun]
   Output (in this backups\ folder, gitignored): outreach-folder-<date>.zip, db-<date>-schema.sql, db-<date>-data.sql
-  WARNING: the zip contains private\ (keys). Keep it somewhere safe; never share or upload it publicly.
+  WARNING: the zip contains secrets\ (keys). Keep it somewhere safe; never share or upload it publicly.
 #>
 param([switch]$NoDb, [switch]$DryRun)
 $ErrorActionPreference = 'Stop'

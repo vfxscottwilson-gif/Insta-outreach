@@ -1,19 +1,19 @@
 <#
   Outreach app: one-time installer (safe to re-run).
-  Run via install\Install.cmd. Flags:
-    -DryRun            show what would happen; change nothing, install nothing
+  Run via install\INSTALL.cmd. Flags:
+    -DryRun / -Check   show what would happen; change nothing, install nothing
     -Uninstall         remove only the Desktop + Start-menu shortcuts
     -SkipHealthcheck   do not contact the database at the end
   Prints no secret values. Network is used only by winget / npm / uv (package installs) and the final healthcheck.
 #>
-param([switch]$DryRun, [switch]$Uninstall, [switch]$SkipHealthcheck)
+param([Alias('Check')][switch]$DryRun, [switch]$Uninstall, [switch]$SkipHealthcheck)
 $ErrorActionPreference = 'Continue'
 
 $Root    = Split-Path -Parent $PSScriptRoot            # projects\email-automation
 $App     = Join-Path $Root 'app'                       # the git repo (kept name 'app')
 $Web     = Join-Path $App 'web'
 $Engine  = Join-Path $App 'engine'
-$Private = Join-Path $Root 'private'
+$Private = Join-Path $Root 'secrets'
 $Launch  = Join-Path $App 'Start Outreach App.vbs'
 $LnkName = 'Outreach.lnk'
 $Desktop = [Environment]::GetFolderPath('Desktop')
@@ -70,7 +70,7 @@ foreach ($t in $pre) {
   if (Have $t.Cmd) { Note 'OK' $t.Name 'already installed'; continue }
   if (-not $hasWinget) { Note 'FAIL' $t.Name 'missing and winget not available. Install App Installer from the Microsoft Store, then re-run.'; continue }
   Run-Step "Install $($t.Name)" { winget install --id $t.Id -e --silent --accept-package-agreements --accept-source-agreements; Refresh-Path } "winget install $($t.Id)" | Out-Null
-  if (-not $DryRun -and -not (Have $t.Cmd)) { Note 'WARN' $t.Name 'installed but not on PATH yet: close this window and run Install.cmd again' }
+  if (-not $DryRun -and -not (Have $t.Cmd)) { Note 'WARN' $t.Name 'installed but not on PATH yet: close this window and run INSTALL.cmd again' }
 }
 $edge = @("${env:ProgramFiles(x86)}\Microsoft\Edge\Application\msedge.exe", "$env:ProgramFiles\Microsoft\Edge\Application\msedge.exe") | Where-Object { Test-Path $_ }
 if ($edge) { Note 'OK' 'Microsoft Edge' 'present (app window)' } else { Note 'WARN' 'Microsoft Edge' 'not found; Chrome or the default browser will be used' }
@@ -94,9 +94,9 @@ if (Have 'uv') {
 $envFile = Join-Path $App '.env'; $envEx = Join-Path $App '.env.example'; $privEnv = Join-Path $Private '.env'
 $needNotepad = $false
 if (Test-Path $envFile) { Note 'SKIP' '.env' 'app\.env already exists (not touched)' }
-elseif (Test-Path $privEnv) { Run-Step 'Restore .env' { Copy-Item $privEnv $envFile } 'copy private\.env to app\.env' | Out-Null }
+elseif (Test-Path $privEnv) { Run-Step 'Restore .env' { Copy-Item $privEnv $envFile } 'copy secrets\.env to app\.env' | Out-Null }
 elseif (Test-Path $envEx) { Run-Step 'Create .env from template' { Copy-Item $envEx $envFile; $script:needNotepad = $true } 'copy .env.example to app\.env, open Notepad' | Out-Null }
-else { Note 'FAIL' '.env' 'no private\.env and no .env.example' }
+else { Note 'FAIL' '.env' 'no secrets\.env and no .env.example' }
 
 # ---- 5. Google service-account key -> %USERPROFILE%\.secrets, then fix GOOGLE_SA_JSON ----
 $key = Get-ChildItem $Private -Filter '*.json' -ErrorAction SilentlyContinue | Select-Object -First 1
@@ -112,13 +112,13 @@ if ($key -and (Test-Path $envFile)) {
       if (-not (Test-Path $dst)) { Copy-Item $key.FullName $dst }
       if ($idx -ge 0) { $lines[$idx] = "GOOGLE_SA_JSON=$dst" } else { $lines += "GOOGLE_SA_JSON=$dst" }
       [IO.File]::WriteAllLines($envFile, $lines, (New-Object Text.UTF8Encoding($false)))
-    } "copy private\$($key.Name) to $dstDir and set GOOGLE_SA_JSON in app\.env" | Out-Null
+    } "copy secrets\$($key.Name) to $dstDir and set GOOGLE_SA_JSON in app\.env" | Out-Null
   }
-} else { Note 'SKIP' 'Google key' 'no key file in private\ (only needed to read the lead Google Sheets)' }
+} else { Note 'SKIP' 'Google key' 'no key file in secrets\ (only needed to read the lead Google Sheets)' }
 
 # ---- 6. Healthcheck ----
 if ($SkipHealthcheck -or $DryRun) { Note 'SKIP' 'Engine healthcheck' $(if ($DryRun) { 'dry run' } else { 'skipped by flag' }) }
-elseif (-not (Test-Path $envFile) -or $needNotepad) { Note 'SKIP' 'Engine healthcheck' 'fill in app\.env first, then re-run Install.cmd' }
+elseif (-not (Test-Path $envFile) -or $needNotepad) { Note 'SKIP' 'Engine healthcheck' 'fill in app\.env first, then re-run INSTALL.cmd' }
 elseif (Have 'uv') {
   Push-Location $Engine
   $out = (& uv run python -m outreach healthcheck 2>&1 | Out-String); $code = $LASTEXITCODE
@@ -141,6 +141,6 @@ if ($needNotepad -and -not $DryRun) { Start-Process notepad.exe $envFile }
 Write-Host "`n===== CHECKLIST ====="
 foreach ($r in $Results) { Write-Host ("{0,-5} {1}  {2}" -f $r.Status, $r.Step, $r.Detail) }
 $fails = @($Results | Where-Object { $_.Status -eq 'FAIL' }).Count
-if ($needNotepad) { Write-Host "TO DO: Notepad opened app\.env. Paste each key after '=', save, then run Install.cmd again." }
+if ($needNotepad) { Write-Host "TO DO: Notepad opened app\.env. Paste each key after '=', save, then run INSTALL.cmd again." }
 if ($fails -gt 0) { Write-Host "$fails step(s) FAILED. See guide GUIDE\04-TROUBLESHOOTING.md." ; exit 1 }
 Write-Host 'Done. Double-click "Outreach" on the Desktop to open the app.'
