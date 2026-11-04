@@ -6,7 +6,9 @@ projects/levelup-crm/app/
 projects/email-automation/app/
 projects/levelup-crm/app-main/
 
-projects/*/secrets/
+projects/*/secrets/*
+!projects/*/secrets/SECRETS-*.md
+!projects/*/secrets/.gitignore
 !projects/_TEMPLATE/secrets/
 projects/*/archive/
 Supabase code.txt
@@ -17,3 +19,22 @@ projects/*/database/backups/
 projects/*/backups/*.zip
 projects/*/backups/*.sql
 projects/*/backups/*.dump
+
+# --- portable-folders batch (2026-11-05): every app's code has its own git; secrets never committed ---
+projects/*/app/
+projects/*/app-*/
+projects/_shared/secrets/*
+!projects/_shared/secrets/SECRETS-*.md
+!projects/_shared/secrets/.gitignore
+.env.*
+!.env.example
+*Keys*.txt
+*all info*.txt
+accounts.local.csv
+DEMO-LOGINS.md
+demo_credentials.txt
+*service-account*.json
+*credentials*.json
+.venv/
+node_modules/
+__pycache__/

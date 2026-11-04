@@ -1,0 +1,87 @@
+=== yt-creator-finder CHECK
+[OK] Folder layout app\src found
+[OK] Python Python 3.12.10
+[DRY] Create venv would: python -m venv app\.venv
+[DRY] pip install would: pip install -r app\requirements.txt
+[DRY] Create secrets\.env from template would: copy app\.env.example to secrets\.env
+[WARN] Keys no secrets\.env yet
+[DRY] Tests would run pytest (offline)
+[DRY] Desktop shortcut (dry run) would: create C:\Users\Khizar Malik\Desktop\YT Creator Finder (dry run).lnk
+===== CHECKLIST =====
+OK    Folder layout  app\src found
+OK    Python  Python 3.12.10
+=== scraper-tools CHECK
+[OK] Python Python 3.12.10
+[DRY] Download gmaps.exe (gosom v1.18.1) would: download https://github.com/gosom/google-maps-scraper/releases/download/v1.18.1/google_maps_scraper-1.18.1-windows-amd64.exe
+[DRY] Download yt-dlp.exe (latest) would: download https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe and verify it against SHA2-256SUMS
+[DRY] Create scrapetube venv + pip install scrapetube==2.6.0 would: python -m venv scrapetube\.venv; pip install scrapetube==2.6.0
+[DRY] Create crawl4ai venv + pip install crawl4ai==0.9.5 would: python -m venv crawl4ai\.venv; pip install crawl4ai==0.9.5
+[DRY] crawl4ai-setup (Chromium) would run crawl4ai-setup once
+===== CHECKLIST =====
+OK    Python  Python 3.12.10
+=== REAL yt
+[OK] Folder layout app\src found
+[OK] Python Python 3.12.10
+[OK] Create venv 
+[notice] A new release of pip is available: 25.0.1 -> 26.3
+[notice] To update, run: C:\Users\Khizar Malik\AppData\Local\Temp\pkgtest-yt-creator-finder\app\.venv\Scripts\python.exe -m pip install --upgrade pip
+[OK] pip install requirements 
+[OK] Create secrets\.env from template 
+[OK] Copy secrets\.env to app\.env 
+[OK] Offline tests 22 passed in 4.60s
+[OK] Desktop shortcut (dry run) 
+===== CHECKLIST =====
+OK    Folder layout  app\src found
+OK    Python  Python 3.12.10
+OK    Create venv  
+OK    pip install requirements  
+OK    Create secrets\.env from template  
+OK    Copy secrets\.env to app\.env  
+OK    Offline tests  22 passed in 4.60s
+OK    Desktop shortcut (dry run)  
+=== uninstall yt
+[OK] Removed shortcut C:\Users\Khizar Malik\Desktop\YT Creator Finder (dry run).lnk
+=== REAL scraper
+[OK] Python Python 3.12.10
+[OK] Download gmaps.exe (gosom v1.18.1) 
+[FAIL] Download yt-dlp.exe (latest) SHA-256 mismatch against official SHA2-256SUMS; file deleted
+[notice] A new release of pip is available: 25.0.1 -> 26.3
+[notice] To update, run: C:\Users\Khizar Malik\AppData\Local\Temp\pkgtest-scraper-tools\app\scrapetube\.venv\Scripts\python.exe -m pip install --upgrade pip
+[OK] Create scrapetube venv + pip install scrapetube==2.6.0 
+[notice] A new release of pip is available: 25.0.1 -> 26.3
+[notice] To update, run: C:\Users\Khizar Malik\AppData\Local\Temp\pkgtest-scraper-tools\app\crawl4ai\.venv\Scripts\python.exe -m pip install --upgrade pip
+[OK] Create crawl4ai venv + pip install crawl4ai==0.9.5 
+[INIT].... \u2192 Running post-installation setup... 
+[INIT].... \u2192 Installing Playwright browsers... 
+[COMPLETE] \u25cf Playwright installation completed successfully. 
+[INIT].... \u2192 Installing Patchright browsers for undetected mode... 
+[COMPLETE] \u25cf Patchright installation completed successfully. 
+[INIT].... \u2192 Starting database initialization... 
+[COMPLETE] \u25cf Database initialization completed successfully. 
+[COMPLETE] \u25cf Post-installation setup completed! 
+[OK] crawl4ai-setup (downloads Chromium) 
+[OK] Health: gmaps.exe size 58 MB (expected ~58 MB)
+===== CHECKLIST =====
+OK    Python  Python 3.12.10
+OK    Download gmaps.exe (gosom v1.18.1)  
+FAIL  Download yt-dlp.exe (latest)  SHA-256 mismatch against official SHA2-256SUMS; file deleted
+OK    Create scrapetube venv + pip install scrapetube==2.6.0  
+OK    Create crawl4ai venv + pip install crawl4ai==0.9.5  
+OK    crawl4ai-setup (downloads Chromium)  
+OK    Health: gmaps.exe size  58 MB (expected ~58 MB)
+=== 2nd run scraper
+[OK] Python Python 3.12.10
+[OK] gmaps.exe (gosom) present, 58 MB
+[FAIL] Download yt-dlp.exe (latest) SHA-256 mismatch against official SHA2-256SUMS; file deleted
+[OK] scrapetube venv import works
+[OK] crawl4ai venv import works
+[SKIP] crawl4ai-setup already done (delete crawl4ai\.setup-done to redo)
+[OK] Health: gmaps.exe size 58 MB (expected ~58 MB)
+===== CHECKLIST =====
+OK    Python  Python 3.12.10
+OK    gmaps.exe (gosom)  present, 58 MB
+FAIL  Download yt-dlp.exe (latest)  SHA-256 mismatch against official SHA2-256SUMS; file deleted
+OK    scrapetube venv  import works
+OK    crawl4ai venv  import works
+OK    Health: gmaps.exe size  58 MB (expected ~58 MB)
+=== END

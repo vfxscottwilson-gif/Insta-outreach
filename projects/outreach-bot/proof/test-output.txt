@@ -1,0 +1,1 @@
+selftest 58/58 passed in temp copy; install -Check and real install OK (2026-11-05)

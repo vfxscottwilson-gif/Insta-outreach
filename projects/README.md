@@ -2,6 +2,16 @@
 
 **Rule (2026-11-05):** every app lives in ONE self-contained, portable folder `projects\<app-name>\`. Copy the folder to a new PC, double-click `install\INSTALL.cmd`, and the app is back. Start a new app by copying `_TEMPLATE\`. Rules for Claude sessions: `APPS-STANDARD.md`.
 
+## Start here
+1. Open an app folder, e.g. `levelup-crm\` or `email-automation\`.
+2. Read its `README.md` (what it is, quick start).
+3. Follow its `SETUP-GUIDE.md` step by step.
+4. To move to another PC: copy the whole folder, then in `install\` run:
+```
+INSTALL.cmd -Check
+```
+Fix anything marked MISSING, then run `INSTALL.cmd`.
+
 ## Standard layout
 | Path | Goes in it | Git |
 |---|---|---|
@@ -32,4 +42,21 @@
 - [ ] Project `CLAUDE.md` + `PROGRESS.md` current; committed; nothing pushed without approval
 - [ ] No secret value in any committed file
 
-Apps: `email-automation` (Outreach), `levelup-crm` (CRM), `database` (lead dashboard, packaging pending).
+## All apps (one line each)
+| Folder | What it is |
+|---|---|
+| `levelup-crm` | Work OS / CRM (Supabase + Vercel) |
+| `email-automation` | Outreach email app (Supabase + Cloudflare) |
+| `database` | Flask lead dashboard (packaging pending; another chat is building it) |
+| `lead-bot-worldwide` | Worldwide lead bot, GitHub Actions daily, Google Sheets |
+| `lead-bot-au` | AU-only lead bot edition |
+| `outreach-bot` | Draft-email bot v3 (Google Sheets + AI keys) |
+| `local-drafter` | Local AI email drafter (Ollama qwen3:8b) |
+| `full-cycle-emails` | Docs only: master spec of the hunt, email and follow-up cycle |
+| `ig-outreach` | Instagram lead / DM assist |
+| `sheet-organizer` | Figma / sheet organizer |
+| `scraper-tools` | gosom, yt-dlp, scrapetube, crawl4ai (manifest of how to re-download) |
+| `yt-creator-finder` | YouTube creator client finder (GitHub Actions) |
+| `harvey` | Third-party autonomous sales agent (own git, upstream recorded) |
+
+`_shared\` = credentials used by several apps (gitignored). `INSTALL-ALL.cmd` runs every installer (add `-Check` to only check). `PROGRESS.md` = tracker.
