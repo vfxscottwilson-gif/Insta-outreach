@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Level Up VFX Setup Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Layout: one reading column; step cards for actions, tables for reference. */
+  --bg: #F6F6F9; --surface: #FFFFFF; --ink: #1E1E26; --muted: #62626F; --line: #E2E2EA;
+  --accent: #6E4CF5; --accent-soft: #EEEAFE; --ok: #1E8A4C; --warn: #A15C00;
+  --display: "IBM Plex Sans", system-ui, sans-serif; --body: "IBM Plex Sans", system-ui, sans-serif; --mono: "IBM Plex Mono", ui-monospace, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #121216; --surface: #1C1C22; --ink: #E7E7EC; --muted: #9B9BA8; --line: #2C2C35;
+  --accent: #9A82FF; --accent-soft: #2A2445; --ok: #4CC98A; --warn: #F0A848; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #121216; --surface: #1C1C22; --ink: #E7E7EC; --muted: #9B9BA8; --line: #2C2C35;
+  --accent: #9A82FF; --accent-soft: #2A2445; --ok: #4CC98A; --warn: #F0A848; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.6 var(--body); }
+main { max-width: 760px; margin: 0 auto; padding: 40px 16px 80px; display: grid; gap: 28px; }
+h1 { font: 600 30px/1.2 var(--display); margin: 0; text-wrap: balance; }
+h2 { font: 600 19px/1.3 var(--display); margin: 0 0 12px; text-wrap: balance; display: flex; gap: 10px; align-items: baseline; }
+h2 .n { font: 500 13px var(--mono); color: var(--accent); }
+p { margin: 0 0 10px; max-width: 65ch; }
+.lede { color: var(--muted); }
+section { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 22px; }
+ol, ul { margin: 0; padding-left: 22px; display: grid; gap: 8px; }
+code, pre { font-family: var(--mono); font-size: 13px; }
+code { background: var(--accent-soft); padding: 1px 5px; border-radius: 4px; }
+pre { background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; margin: 6px 0 0; overflow-x: auto; white-space: pre; }
+.tbl { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { color: var(--muted); font-weight: 500; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+.pill { display: inline-block; font: 500 12px var(--mono); padding: 1px 8px; border-radius: 99px; white-space: nowrap; }
+.ok { color: var(--ok); background: color-mix(in srgb, var(--ok) 14%, transparent); }
+.wait { color: var(--warn); background: color-mix(in srgb, var(--warn) 14%, transparent); }
+a { color: var(--accent); }
+.note { border-left: 3px solid var(--accent); padding: 4px 0 4px 12px; color: var(--muted); margin-top: 10px; }
+</style>
+</head>
+<body>
+<main>
+<header>
+  <h1>Level Up VFX CRM: setup and daily use</h1>
+  <p class="lede">Written 4 November 2026. What works now, how to get in today, what is still needed from you, and how to change things yourself.</p>
+</header>
+
+<section>
+  <h2><span class="n">00</span>Where things stand</h2>
+  <div class="tbl"><table>
+    <tr><th>Part</th><th>Status</th><th>Note</th></tr>
+    <tr><td>Login, one session per account, admin role</td><td><span class="pill ok">working</span></td><td>Your admin account exists.</td></tr>
+    <tr><td>Tasks, statuses, priorities, projects</td><td><span class="pill ok">working</span></td><td>Saved in the Supabase database.</td></tr>
+    <tr><td>Reset password by emailed code</td><td><span class="pill wait">needs you</span></td><td>Needs the Gmail app password (step 4).</td></tr>
+    <tr><td>Adding employees</td><td><span class="pill wait">needs you</span></td><td>Works, but employees set their password through the code email, so this also waits on Gmail.</td></tr>
+    <tr><td>Sign in with Google</td><td><span class="pill wait">optional</span></td><td>Button is there; needs a free Google sign-in key.</td></tr>
+    <tr><td>Live site for the team</td><td><span class="pill wait">needs you</span></td><td>Stays on the old CRM until you say "go live".</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2><span class="n">01</span>Get in today without the email code</h2>
+  <p>This sets your admin password straight from your <code>.env</code> file. You type the password only into the file, never into chat.</p>
+  <ol>
+    <li>Open <code>F:\Github Repos\projects\levelup-crm\app\.env</code> in Notepad.</li>
+    <li>Add a new line at the bottom, with your own password (8 or more characters):
+      <pre>NEW_ADMIN_PASSWORD=your-new-password</pre></li>
+    <li>Save the file and close Notepad.</li>
+    <li>In the app's Terminal tab, run:
+      <pre>node "F:\Github Repos\projects\levelup-crm\app\scripts\set-admin-password.mjs"</pre></li>
+    <li>You should see <code>Password changed.</code> The script removes the password lines from <code>.env</code> by itself.</li>
+    <li>Open the CRM (step 2) and log in with <b>Khizarvfx@gmail.com</b> and that password.</li>
+  </ol>
+  <p class="note">Or simply tell Claude "password added" after step 3, and it runs step 4 for you. Claude never sees the value.</p>
+</section>
+
+<section>
+  <h2><span class="n">02</span>Open the CRM</h2>
+  <div class="tbl"><table>
+    <tr><th>Where</th><th>How</th><th>Who can open it</th></tr>
+    <tr><td>Preview link</td><td><a href="https://levelup-vfx-855t5tthz-vfxscottwilson-gif.vercel.app">https://levelup-vfx-855t5tthz-vfxscottwilson-gif.vercel.app</a></td><td>Only you: sign in to Vercel as the account that owns the project first.</td></tr>
+    <tr><td>On this PC</td><td>In the Terminal tab:<pre>npm --prefix "F:\Github Repos\projects\levelup-crm\app" run dev</pre>then open <code>http://localhost:5173</code></td><td>Only this PC</td></tr>
+    <tr><td>Live site</td><td>https://levelup-vfx-crm.vercel.app</td><td>Still the old CRM until "go live"</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2><span class="n">03</span>First-time setup inside the CRM</h2>
+  <ol>
+    <li><b>Settings &rarr; Branding &amp; apps</b>: CRM name, logo (upload PNG or SVG), theme colour, default light or dark theme, and the left-side apps (show, hide, rename, change icon, reorder). The login page, buttons, charts and logo all follow the theme colour.</li>
+    <li><b>Statuses and priorities</b>: set the steps your work goes through (for example To Do, In Progress, Review, Done).</li>
+    <li><b>Projects / Lists</b>: one per client or show.</li>
+    <li><b>Team</b> (after step 4 is done): add each employee with name and email. They get a code by email, set their own password, and log in.</li>
+  </ol>
+</section>
+
+<section>
+  <h2><span class="n">04</span>What is still needed from you</h2>
+  <div class="tbl"><table>
+    <tr><th>#</th><th>What</th><th>Why</th><th>Cost</th></tr>
+    <tr><td>1</td><td>Gmail app password for Khizarvfx@gmail.com: <a href="https://myaccount.google.com/apppasswords">myaccount.google.com/apppasswords</a>, name it "Level Up VFX CRM", copy the 16 letters, tell Claude "copied".</td><td>Sends reset and welcome codes. Supabase's free plan only allows a code email once your own sender is connected.</td><td>None</td></tr>
+    <tr><td>2</td><td>Your final logo file (SVG best, PNG fine), if you have one.</td><td>Claude swaps it in, or you upload it in Settings.</td><td>None</td></tr>
+    <tr><td>3</td><td>Optional: Google sign-in key. Claude gives you numbered steps when you want it.</td><td>Turns on "Sign in with Google". Only emails you added can use it.</td><td>None</td></tr>
+    <tr><td>4</td><td>Say "go live" when you are happy with the preview.</td><td>Moves the new CRM to the live site.</td><td>None</td></tr>
+    <tr><td>5</td><td>Hosting decision before the team relies on it daily.</td><td>Vercel's free Hobby plan is for non-commercial use. Supabase Free pauses after 7 days with no use (Pro is $25/month). Both checked 3 November 2026.</td><td>See note</td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2><span class="n">05</span>Where secrets go</h2>
+  <p>Only in <code>F:\Github Repos\projects\levelup-crm\app\.env</code>. Never paste them in chat. The file is never uploaded or committed.</p>
+  <div class="tbl"><table>
+    <tr><th>Key</th><th>What it is</th><th>Status</th></tr>
+    <tr><td><code>VITE_SUPABASE_URL</code>, <code>VITE_SUPABASE_ANON_KEY</code></td><td>Database address and public key</td><td><span class="pill ok">set</span></td></tr>
+    <tr><td><code>SUPABASE_ACCESS_TOKEN</code></td><td>Lets Claude deploy and configure Supabase</td><td><span class="pill ok">set</span></td></tr>
+    <tr><td><code>ADMIN_EMAIL</code></td><td>Your admin login</td><td><span class="pill ok">set</span></td></tr>
+    <tr><td><code>SMTP_PASS</code></td><td>Gmail app password</td><td><span class="pill wait">missing</span></td></tr>
+    <tr><td><code>GOOGLE_CLIENT_ID</code>, <code>GOOGLE_CLIENT_SECRET</code></td><td>Google sign-in key (optional)</td><td><span class="pill wait">missing</span></td></tr>
+  </table></div>
+  <p class="note">To save a copied secret safely, Claude runs <code>scripts\save-secret.ps1</code> in your Terminal tab: it reads your clipboard, checks the format, saves it, and clears the clipboard.</p>
+</section>
+
+<section>
+  <h2><span class="n">06</span>Changing things in the code</h2>
+  <div class="tbl"><table>
+    <tr><th>To change</th><th>File (in <code>levelup-crm\app</code>)</th></tr>
+    <tr><td>Logo shapes</td><td><code>src\components\shell\LogoMark.tsx</code> (static copy: <code>brand\level-up-vfx-logo.svg</code>)</td></tr>
+    <tr><td>Theme colours (light and dark)</td><td><code>src\index.css</code>, the <code>--bg</code>, <code>--accent</code> and other lines at the top</td></tr>
+    <tr><td>Default name, colour, left apps</td><td><code>src\context\BrandingContext.tsx</code></td></tr>
+    <tr><td>Login, forgot, reset pages</td><td><code>src\components\auth\AuthPages.tsx</code></td></tr>
+    <tr><td>Database tables and security rules</td><td><code>supabase\migrations\</code> (Claude applies them)</td></tr>
+  </table></div>
+  <p class="note">Easiest way: tell Claude what you want changed. It edits, tests, commits, and redeploys the preview.</p>
+</section>
+
+<section>
+  <h2><span class="n">07</span>How a day works</h2>
+  <ul>
+    <li><b>Admin (you)</b>: create and assign tasks with every field (title, description, time, deadline, status, priority), watch Dashboards and Reports, manage the Team and Settings, check the Audit log.</li>
+    <li><b>Employees</b>: log in, see My Tasks, update status, track time with the timer, submit hourly and daily reports.</li>
+    <li><b>One session per account</b>: logging in on a second device signs the first one out with a "Signed in elsewhere" message.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="n">08</span>Your other apps</h2>
+  <div class="tbl"><table>
+    <tr><th>App</th><th>Folder</th><th>Start here</th></tr>
+    <tr><td>Email outreach automation</td><td><code>F:\Github Repos\projects\email-automation</code></td><td><code>app\docs\START_HERE.md</code>. The Google service-account JSON goes in its own <code>app\.env</code> as <code>GOOGLE_SA_JSON</code>, not in the CRM.</td></tr>
+    <tr><td>Skills hub (Claude tools)</td><td><code>F:\Github Repos</code></td><td><code>SKILLS-REGISTRY.md</code> and <code>PROGRESS.md</code></td></tr>
+  </table></div>
+</section>
+
+<section>
+  <h2><span class="n">09</span>Working with Claude on these apps</h2>
+  <ol>
+    <li>Each app has its own Claude session. Talk to the CRM session for CRM work.</li>
+    <li>Each project keeps <code>PROGRESS.md</code> and a <code>CLAUDE.md</code> with its status, so if credits run out you click <b>Continue</b> and work picks up where it stopped.</li>
+    <li>Anything that needs you (passwords, sign-ins, "go live", sending email to real people) is asked in one list. Everything else Claude does itself.</li>
+  </ol>
+</section>
+</main>
+</body>
+</html>
