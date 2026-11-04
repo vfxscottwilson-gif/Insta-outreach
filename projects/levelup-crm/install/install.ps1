@@ -227,11 +227,19 @@ function Invoke-Cloud {
     Push-Location $App
     $existing = (& npx supabase secrets list --project-ref $ref) 2>$null | Out-String
     Pop-Location
-    if ($existing -notmatch 'PASSWORD_VAULT_KEY') {
-      # New project only: a fresh random key. Replacing an existing key would make stored password copies unreadable.
+    # PASSWORD_VAULT_KEY: the backup file in secrets\ is the source of truth. Never generate a second key while it exists.
+    $vaultFile = Join-Path $Root 'secrets\password-vault-key.txt'
+    if (Test-Path $vaultFile) {
+      $vk = (Get-Content $vaultFile -Raw).Trim()
+      if ($vk -match '^[A-Za-z0-9+/]{43}=$') { $lines += "PASSWORD_VAULT_KEY=$vk"; Info 'will set PASSWORD_VAULT_KEY from secrets\password-vault-key.txt' }
+      else { Fail 'secrets\password-vault-key.txt is not a valid key: fix it before continuing'; return }
+    } elseif ($existing -notmatch 'PASSWORD_VAULT_KEY') {
+      # New project, no backup yet: make one key, save the backup FIRST, then set it.
       $bytes = New-Object byte[] 32; [Security.Cryptography.RandomNumberGenerator]::Create().GetBytes($bytes)
-      $lines += "PASSWORD_VAULT_KEY=$([Convert]::ToBase64String($bytes))"; Info 'will set a new PASSWORD_VAULT_KEY (project had none)'
-    } else { Info 'PASSWORD_VAULT_KEY already set: left as it is' }
+      $vk = [Convert]::ToBase64String($bytes)
+      Set-Content -Path $vaultFile -Value $vk -NoNewline -Encoding ascii
+      $lines += "PASSWORD_VAULT_KEY=$vk"; Info 'will set a new PASSWORD_VAULT_KEY (backup written to secrets\password-vault-key.txt: back it up)'
+    } else { Info 'WARNING: PASSWORD_VAULT_KEY is set in the project but secrets\password-vault-key.txt is missing: left as it is (no backup!)' }
     $tmpDir = Join-Path $env:TEMP ("lvl-" + [guid]::NewGuid().ToString('N'))
     New-Item -ItemType Directory -Path $tmpDir | Out-Null
     $tmp = Join-Path $tmpDir 'secret.env'
