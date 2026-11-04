@@ -127,7 +127,7 @@ Keep the copy private: `secrets\` and `app\.env` hold keys that control the live
 - One owner admin (khizarvfx@gmail.com) who cannot be demoted, deactivated or deleted.
 - Security headers on the site (CSP, HSTS, no framing).
 - Keys never in code; `.env` and `secrets\` are gitignored.
-- Open items (see `SECURITY-AUDIT.md`): CAPTCHA not on yet; Documents vault still in the browser (don't store real passwords there).
+- Open items (see `docs/SECURITY-AUDIT.md`): CAPTCHA not on yet; Documents vault still in the browser (don't store real passwords there).
 
 ## 9. Troubleshooting
 | Symptom | Likely cause | Fix |
