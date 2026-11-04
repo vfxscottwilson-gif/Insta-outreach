@@ -115,7 +115,7 @@ Keep the copy private: `secrets\` and `app\.env` hold keys that control the live
 | Google Sheet | CRM → Settings → Sheets sync → **Sheet URL or ID** | Paste the new Sheet link. Share that Sheet with `crm-automation-bot@trans-campus-513315-v0.iam.gserviceaccount.com` as **Editor** first |
 | Rotate Google key | Google Cloud → service account → Keys | Add new JSON key → save as `secrets\google-sa.json` and `app\secrets\google-sa.json` → in `app\`: `node scripts/load-google-secret.mjs` → delete the old key in Google Cloud |
 | Rotate Supabase access token | supabase.com → Account → Access Tokens | New token → `save-secret.ps1` (section 5, sign-ins step 3) → revoke the old one → update `secrets\app.env.backup` |
-| Rotate vault key | **Don't**, unless needed: see `secrets\SECRETS-CHECKLIST.md` | Breaks stored password copies |
+| Vault key backup | `secrets\password-vault-key.txt`: back it up with the other secrets. Re-apply: `node scripts\set-vault-key.mjs --confirm`; rotate only if needed (`--rotate`) | Losing it makes stored passwords unreadable |
 | Redeploy site | see `DEPLOYMENT.md` | `git archive` export + `npx vercel --prod` |
 | Change code | `app\src` | Edit, `npm run build`, commit, deploy |
 
