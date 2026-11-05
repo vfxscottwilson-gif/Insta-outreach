@@ -44,7 +44,7 @@ if ($Uninstall) {
 }
 
 # 0. layout
-if (-not (Test-Path (Join-Path $App 'manage.py'))) { Note 'FAIL' 'Folder layout' "app\dashboard\manage.py missing under $Root. Copy the WHOLE database-crm folder."; exit 1 }
+if (-not (Test-Path (Join-Path $App 'manage.py'))) { Note 'FAIL' 'Folder layout' "app\dashboard\manage.py missing under $Root. Copy the WHOLE database folder."; exit 1 }
 Note 'OK' 'Folder layout' 'app\dashboard found'
 
 # 1. prerequisites

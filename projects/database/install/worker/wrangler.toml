@@ -1,0 +1,8 @@
+name = "levelup-database"
+main = "index.js"
+compatibility_date = "2026-11-01"
+workers_dev = true
+
+[[kv_namespaces]]
+binding = "ORIGIN_KV"
+id = "b908a0ec23994c8a991304cf6aa76c42"

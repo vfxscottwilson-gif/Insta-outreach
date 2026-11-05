@@ -68,7 +68,7 @@ First make demo data once: in `app\dashboard` run `.venv\Scripts\python.exe mana
 More: `GUIDE\04-TROUBLESHOOTING.md`.
 
 ## 10. Move to a new PC
-1. Copy the whole `database-crm` folder (with `secrets\`) to the new PC.
+1. Copy the whole `database` folder (with `secrets\`) to the new PC.
 2. Double-click `install\INSTALL.cmd`.
 3. To keep your data: copy the SQLite file back, see `database\RESTORE.md`.
 4. Check: in `install\` run `.\install.ps1 -Check`. Every line should say OK/SKIP.

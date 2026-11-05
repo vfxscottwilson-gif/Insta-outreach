@@ -15,3 +15,6 @@ Names only. NEVER write values here. Real values go in `secrets\.env` (gitignore
 Non-secret settings (also in `.env`): SMTP_HOST, SMTP_PORT, DASH_DB, DASH_SOURCES, DASH_CATEGORIES, DASH_TIMEZONE, DASH_SYNC_MINUTES, DASH_SWEEP_MINUTES, DASH_READS_PER_MIN, DASH_BOT_LATE_HOURS, DASH_WRITEBACK, DASH_COOKIE_SECURE, DASH_APP_NAME, DASH_ACCENT.
 
 Other files kept here: `DEMO-LOGINS.md`, `demo_credentials.txt` (fake demo accounts; copied from the app, not reviewed).
+
+- `backup.key`: encrypts the nightly backups. Save a copy OFF this PC (password manager). Without it no cloud backup can be opened.
+- `supabase-backup.env`: SUPABASE_URL, SUPABASE_BUCKET, SUPABASE_SECRET_KEY for the private bucket `database-backups` (Supabase account vfx.chrisewart, free plan). Names only here.

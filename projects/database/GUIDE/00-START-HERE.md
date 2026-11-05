@@ -1,7 +1,7 @@
 # 00 Start here: set up the Lead Dashboard on a PC
 
 ## A. Install
-1. Copy the whole `database-crm` folder (with `secrets\`) to the PC.
+1. Copy the whole `database` folder (with `secrets\`) to the PC.
 2. Double-click `install\INSTALL.cmd`. Click **Yes** if Windows asks.
 3. Expected: a CHECKLIST of OK / SKIP lines and "Done". FAIL lines point to `04-TROUBLESHOOTING.md`.
 

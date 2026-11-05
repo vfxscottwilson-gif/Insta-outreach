@@ -1,0 +1,138 @@
+/* charts-smooth.css: proposal, loaded AFTER app.css (docs/ui-audit). Three jobs:
+   1. radius + motion tokens (re-skins every existing component through the three variables app.css already reads),
+   2. smooth chart marks (monotone lines, gradient area, round-top bars, pill bars, rounded donut) and their draw-in,
+   3. "alive" feedback: press, hover, sliding tab pill, nav pill, toast, bell, busy button, approve/reject outcome.
+   Rules kept from MOTION.md: transform + opacity (and stroke-dashoffset) only, every keyframe is from-only so the resting
+   style is the finished state, and app.css line 50 already strips animation/transition under prefers-reduced-motion. */
+
+/* ===== 1. Tokens ===== */
+:root{
+  --r-xs:4px;--r-sm:8px;--r-md:12px;--r-lg:16px;--r-pill:999px;       /* the whole radius scale */
+  --r-card:var(--r-md);--r-ctl:var(--r-sm);--r-panel:var(--r-lg);      /* names app.css already uses */
+  --dur-press:140ms;--dur-hover:180ms;--dur-pop:240ms;--dur-enter:280ms;--dur-draw:600ms;
+  --press:.97;
+}
+.seg [role=tab]{border-radius:calc(var(--r-ctl) - 2px)}   /* was 4px */
+.legend i{border-radius:var(--r-xs)}                       /* was 3px */
+
+/* ===== 2. Charts ===== */
+.chart.sm{display:block;width:100%;min-width:0;height:auto;overflow:visible}
+@media (max-width:767px){.chart.sm.wide{min-width:560px}}
+.chart.sm text{fill:var(--muted);font-size:12px;font-variant-numeric:tabular-nums}
+.chart.sm text.val{fill:var(--text);font-weight:600}
+.chart.sm text.big{fill:var(--text);font-size:28px;font-weight:600;letter-spacing:-.02em}
+.chart.sm .grid{stroke:var(--chart-grid);stroke-width:1;stroke-dasharray:2 5}
+.chart.sm .grid.base{stroke-dasharray:none}
+/* lines: round caps and joins, 2.5 px; paths carry pathLength=1 so one dash pattern draws every line */
+.chart.sm .line{fill:none;stroke:var(--accent);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.chart.sm .line.ghost{stroke:var(--series-2);stroke-width:2;opacity:.7}
+.chart.sm .line.avg{stroke:var(--series-2);stroke-width:1.75;opacity:.9}
+.chart.sm .agrad{stroke:none}
+.gs0{stop-color:var(--accent);stop-opacity:.32}.gs1{stop-color:var(--accent);stop-opacity:0}
+.chart.sm .endpt .dot{fill:var(--accent);stroke:var(--surface);stroke-width:2}
+.chart.sm .ghostdot{fill:var(--series-2);stroke:var(--surface);stroke-width:2}   /* last month on the same day: the ahead/behind answer */
+.chart.sm .endpt .halo{fill:var(--accent);opacity:0}
+/* hover: one crosshair + one focus dot, moved by charts-smooth.js with transform */
+.chart.sm .xh{stroke:var(--accent);stroke-opacity:.5;stroke-width:1;opacity:0;transition:opacity var(--dur-hover) var(--ease),transform 120ms var(--ease)}
+.chart.sm .fp{fill:var(--accent);stroke:var(--surface);stroke-width:2.5;opacity:0;transition:opacity var(--dur-hover) var(--ease),transform 120ms var(--ease)}
+.chart.sm .fp2{fill:var(--series-2)}
+.chart.sm.hot .xh,.chart.sm.hot .fp{opacity:1}
+.chart.sm.snap .xh,.chart.sm.snap .fp{transition:none}   /* first hover jumps, it does not sweep in from x=0 */
+.chart.sm .mark{outline:none;cursor:default}
+.chart.sm a.mark{cursor:pointer}
+.chart.sm .hit{fill:transparent;transition:fill var(--dur-hover) var(--ease)}
+.chart.sm .mark:focus-visible .hit{stroke:var(--ring);stroke-width:2}
+/* bars */
+.chart.sm .bar{fill:color-mix(in srgb,var(--accent) 70%,var(--surface));transition:fill var(--dur-hover) var(--ease)}
+.chart.sm .bar.cur{fill:var(--accent)}
+.chart.sm .mark:hover .bar,.chart.sm .mark:focus-visible .bar{fill:var(--accent-text)}
+.chart.sm .mark:hover .hit,.chart.sm .mark:focus-visible .hit{fill:var(--hover)}
+/* donut: round ends come from stroke-linecap, gaps from the dash math in smooth_donut */
+.ringchart{width:168px;flex:none}
+.ringchart .ring{fill:none;stroke:var(--surface-2)}
+.ringchart .seg{fill:none;stroke:var(--c);transform-box:view-box;transform-origin:center;transition:transform var(--dur-hover) var(--ease)}
+.ringchart .mark:hover .seg,.ringchart .mark:focus-visible .seg{transform:scale(1.04)}
+.ringchart .ringg{transform-box:view-box;transform-origin:center;transform:rotate(-90deg)}
+.t-a{--c:var(--done)}.t-b{--c:var(--accent)}.t-c{--c:var(--series-2)}   /* quality tiers: meaning, not decoration */
+.spark.sm .line{stroke-width:2}
+.spark.sm .spk-dot{fill:var(--accent)}
+
+/* draw-in: stroke-dashoffset, 600 ms ease-out. "1 2" (not "1 1") keeps the round cap from showing as a dot at the line end at t=0 */
+.chart.sm .draw,.spark.sm .draw{stroke-dasharray:1 2;animation:sm-draw var(--dur-draw) var(--ease) 60ms both}
+.chart.sm .agrad{animation:sm-fade 420ms var(--ease) 200ms both}
+.chart.sm .line.avg,.chart.sm .line.ghost{animation:sm-fade 420ms var(--ease) 300ms both}
+.chart.sm .endpt .dot{transform-box:fill-box;transform-origin:center;animation:sm-pop var(--dur-pop) var(--ease) 520ms both}
+.chart.sm .endpt .halo{transform-box:fill-box;transform-origin:center;animation:sm-ping 1.8s var(--ease) 760ms 3}   /* 3 pulses, then it rests */
+.spark.sm .spk-dot{transform-box:fill-box;transform-origin:center;animation:sm-pop var(--dur-pop) var(--ease) 480ms both}
+.chart.sm .bar{transform-box:fill-box;animation:sm-rise 520ms var(--ease) both;animation-delay:calc(min(var(--i,0),12) * 18ms)}   /* rises under the baseline clip: corners never squash */
+.chart.sm rect.bar{animation-name:sm-slide}                                                                                     /* horizontal pills slide in from the left clip edge */
+.chart.sm text.val{animation:sm-fade 320ms var(--ease) both;animation-delay:calc(min(var(--i,0),12) * 18ms + 240ms)}
+.ringchart .ringg{animation:sm-ring var(--dur-draw) var(--ease) both}
+.ringchart .seg{animation:sm-fade 320ms var(--ease) both;animation-delay:calc(var(--i,0) * 60ms + 120ms)}
+@keyframes sm-draw{from{stroke-dashoffset:1.05}}
+@keyframes sm-fade{from{opacity:0}}
+@keyframes sm-pop{from{opacity:0;transform:scale(.3)}}
+@keyframes sm-ping{from{opacity:.45;transform:scale(.5)}to{opacity:0;transform:scale(1.6)}}
+@keyframes sm-rise{from{transform:translateY(100%)}}
+@keyframes sm-slide{from{transform:translateX(-100%)}}
+@keyframes sm-ring{from{opacity:0;transform:rotate(-150deg)}}
+
+/* tooltip: two lines (label muted, value bold), glides between marks, fades in/out */
+.tip{display:grid;gap:1px;border-radius:var(--r-ctl);transition:opacity 140ms var(--ease),transform 120ms var(--ease)}
+.tip.snap{transition:opacity 140ms var(--ease)}
+.tip span{color:var(--muted);font-size:11px}
+.tip b{font-weight:600;font-variant-numeric:tabular-nums}
+
+/* ===== 3. Alive ===== */
+/* page enter: shorter and capped. app.css .rise is 520 ms with 45 ms x i, so card 12 starts at 0.6 s; this caps the wait at 0.18 s */
+.rise{animation-duration:var(--dur-enter);animation-delay:calc(min(var(--i,0),6) * 30ms)}
+@keyframes rise{from{opacity:0;transform:translateY(6px)}}
+/* press + hover on everything that is clickable */
+.side a,.chip,a.kpi,.legend a{transition:background-color var(--dur-hover) var(--ease),color var(--dur-hover) var(--ease),transform var(--dur-press) var(--ease)}
+.side a:active,a.kpi:active,.pager a:active{transform:scale(var(--press))}
+tbody tr>td{transition:background-color 120ms var(--ease)}
+a.kpi{color:inherit;text-decoration:none}
+@media (hover:hover){a.kpi:hover,a.card.country:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--accent) 30%,var(--border))}}
+a.card.country{transition-duration:var(--dur-hover)}   /* was 340 ms */
+/* sliding tab pill (charts-smooth.js adds .pill and --n/--idx); equal-width tabs so one translateX does it */
+.seg{position:relative;display:inline-grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:0}
+.seg .pill{position:absolute;z-index:0;top:2px;bottom:2px;left:2px;width:calc((100% - 4px) / var(--n,1));border-radius:calc(var(--r-ctl) - 2px);
+  background:var(--surface);box-shadow:var(--shadow-card);transform:translateX(calc(var(--idx,0) * 100%))}
+.seg .pill.go{transition:transform 220ms var(--ease)}
+.seg.js [role=tab]{position:relative;z-index:1;justify-content:center;min-width:52px;background:transparent;box-shadow:none}
+.seg.js [role=tab][aria-selected=true]{background:transparent;box-shadow:none;color:var(--text)}
+/* nav pill: remembers where it was on the previous page (sessionStorage) and glides to the new item */
+.side nav{position:relative}
+.navpill{position:absolute;left:0;top:0;z-index:0;border-radius:var(--r-ctl);background:var(--accent-soft);pointer-events:none}
+.navpill.go{transition:transform 260ms var(--ease)}
+.side a{position:relative;z-index:1}
+.has-pill a[aria-current=page]{background:transparent}
+/* toast / flash: enters, then non-errors leave on their own after 5 s */
+.flash{animation:sm-enter var(--dur-enter) var(--ease) both}
+.flash.out{opacity:0;transform:translateY(-6px);transition:opacity 180ms var(--ease),transform 180ms var(--ease)}
+@keyframes sm-enter{from{opacity:0;transform:translateY(-6px)}}
+#toasts{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:70;display:grid;gap:8px;width:min(360px,calc(100vw - 32px))}
+#toasts .flash{margin:0;box-shadow:var(--shadow-pop)}
+#toasts .flash.out{transform:translateY(6px)}
+/* bell: rings once when there is something unread; the count pops in */
+.bell.has-unread .ic{transform-origin:50% 8%;animation:sm-bell .7s var(--ease) .3s 1 both}
+.dotcount{animation:sm-pop var(--dur-pop) var(--ease) both}
+@keyframes sm-bell{20%{transform:rotate(14deg)}40%{transform:rotate(-10deg)}60%{transform:rotate(6deg)}80%{transform:rotate(-3deg)}to{transform:none}}
+/* sidebar count (Approvals): the number is already injected as approvals_pending, it just was never rendered */
+.navcount{margin-left:auto;min-width:18px;height:18px;padding:0 6px;border-radius:var(--r-pill);background:var(--accent);color:var(--accent-fg);
+  font-size:11px;font-weight:600;line-height:18px;text-align:center;font-variant-numeric:tabular-nums}
+[data-sidebar=collapsed] .navcount{position:absolute;top:2px;right:2px;min-width:14px;height:14px;padding:0 4px;font-size:10px;line-height:14px}
+/* busy button: a spinner replaces the label while the form posts, double clicks are ignored */
+button[data-busy]{position:relative;color:transparent;pointer-events:none}
+button[data-busy]::after{content:"";position:absolute;inset:0;margin:auto;width:14px;height:14px;border:2px solid var(--accent-fg);border-right-color:transparent;
+  border-radius:50%;animation:sm-spin .7s linear infinite}
+button.sec[data-busy]::after,button.ghost[data-busy]::after{border-color:var(--muted);border-right-color:transparent}
+@keyframes sm-spin{to{transform:rotate(1turn)}}
+/* approve / reject outcome: the row leaves toward the side of the decision */
+tr.out-ok{animation:sm-ok 240ms var(--ease) forwards}
+tr.out-no{animation:sm-no 240ms var(--ease) forwards}
+@keyframes sm-ok{to{opacity:0;transform:translateX(14px)}}
+@keyframes sm-no{to{opacity:0;transform:translateX(-14px)}}
+/* purposeless loops removed: the rotating hero beam and the box-shadow glow (MOTION.md allows transform/opacity only) */
+.card.hero::before{animation:none;display:none}
+.pulse{animation:none}
