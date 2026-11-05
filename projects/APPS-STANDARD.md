@@ -11,4 +11,4 @@
 9. Never delete anything; move old or unused files to `archive\`.
 10. Keep docs\ current (roadmap, brief, features, audit, prices); keep proof\ for screenshots and test output.
 11. Update the project CLAUDE.md "Status / next step" and `projects\README.md` whenever an app is added or changes state.
-12. The app standard also applies: email+password login, one active session, code-based password reset, full admin portal.
+12. The app standard also applies: email+password login, up to 2 active sessions per account (PC + phone; a third login signs out the oldest), code-based password reset, full admin portal.
