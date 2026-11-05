@@ -28,7 +28,7 @@ Commits (app repo): `15bff8e` migrations 21-22 + tests, `acfba29` login-guard, `
 | d | Owner: second admin set_role / set_password via function; DB demote / deactivate / re-email / owner flag | PASS refused | live d.*, check-db |
 | d2 | Owner deletable via `auth.admin.deleteUser` (FK cascade runs as postgres; `protect_owner` skips postgres) | **FIXED, migration 21** (`protect_owner_auth_user`). Not reachable today (no delete action) | check-db |
 | d3 | One-admin rule | PASS offline only (live would touch the real admin) | check-db |
-| e | Single session; superseded admin token at admin-users; deactivated and password-reset accounts' old access + refresh tokens; old password | PASS all refused | live e.* |
+| e | Two-device rule (3rd login evicts the oldest); superseded admin token at admin-users; deactivated and password-reset accounts' old access + refresh tokens; old password | PASS all refused | live e.* |
 | f | Login error generic (wrong password = unknown e-mail) | PASS | live |
 | f2 | Rate limit | PASS: GoTrue 429 per IP | live |
 | f3 | JWT lifetime | PASS: 600 s | live |
@@ -39,7 +39,7 @@ Commits (app repo): `15bff8e` migrations 21-22 + tests, `acfba29` login-guard, `
 | t2 | Employees reading `auth.users` | PASS refused | live |
 | t3 | `list_team` gives employees colleagues' e-mails | ACCEPTED for a small studio (work e-mails for the directory); optional patch below | live INFO |
 | t4 | E-mail recovery / OTP / magic link as login paths | Closed by the access-token hook (refuses every method except password-with-ticket and token_refresh) + Send Email hook (drops all auth mail); rollout pending | migration 22 |
-| t5 | Password change without reauth | INFO: needs e-mail to turn on (mail is dropped); single session + 10 min JWT limit the risk | auth config |
+| t5 | Password change without reauth | INFO: needs e-mail to turn on (mail is dropped); 2-device limit + 10 min JWT limit the risk | auth config |
 | g | Secrets in git (112 commits: `sbp_`, service-role JWTs, `PRIVATE KEY`, `GOCSPX`) and `dist/` | PASS: only `.env.example` tracked; only JWT is the anon key; the `PRIVATE KEY` hit is generated inside `sheetsMapper.test.ts`. `dist/` holds the Google service-account e-mail (shown on purpose in Sheets settings, not a secret), no key | report |
 | g2 | `.vercelignore` misses `secrets/` and `.env.test` | **OPEN (low)**: patch below (deploys use `git archive`, which already excludes them) | |
 | g3 | Passwords in logs | PASS: functions log counts / errors only | grep |
@@ -76,7 +76,7 @@ Proof: `npm run check:db` 156 PASS / 0 FAIL (offline); pgTAP on the hosted proje
 |---|---|---|
 | profiles | own name, avatar | nothing (only the server clears forced_password_change after a password change) |
 | profiles.role / is_active / job_title | no | no. Admin only; the last active admin can't be demoted or deactivated (also blocks server code) |
-| active_sessions | own row | own row (needed for one-session-per-account) |
+| active_sessions | own row | own rows (needed for the 2-devices-per-account rule) |
 | tasks: insert | yes (own tasks) | **no** |
 | tasks: update | creator: everything; assignee: status, progress, notes, time taken, image | **assignee: status only** |
 | tasks: delete | creator | **no** |
@@ -101,7 +101,7 @@ Proof: `npm run check:db` 156 PASS / 0 FAIL (offline); pgTAP on the hosted proje
 
 | Function | Runs as | Employee result |
 |---|---|---|
-| claim_session() | definer | claims own session (single-session rule) |
+| claim_session() | definer | claims own session; keeps the 2 newest per user, evicts the oldest |
 | clock_in(), clock_out() | invoker | same rules as the table: once a day, inside the window |
 | clock_status() | invoker | reads own status only |
 | list_team() | definer | read-only team directory (id, name, email, role, job title) |

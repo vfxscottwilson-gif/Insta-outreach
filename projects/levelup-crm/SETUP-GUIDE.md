@@ -33,7 +33,7 @@ Live: https://levelup-vfx-crm-sigma.vercel.app. Owner admin: khizarvfx@gmail.com
 | Frontend | React 18 + Vite + TypeScript + Tailwind | `app\src` → Vercel | The screens in the browser |
 | Hosting | Vercel (Hobby), team `vfxscottwilson-gif`, project `levelup-vfx-crm` | vercel.com | Serves the site, security headers, daily keep-alive cron |
 | Database | Supabase Postgres (Free, Mumbai, ref `laxxqmtwowitopbqnejs`) | supabase.com | All data. Row Level Security (RLS) decides who sees/edits what |
-| Login | Supabase Auth + `login-guard` function + auth hooks | Supabase | Email + password only, one device per account, lockout after 5 wrong tries |
+| Login | Supabase Auth + `login-guard` function + auth hooks | Supabase | Email + password only, up to 2 devices per account (a third login signs out the oldest), lockout after 5 wrong tries |
 | Server functions | Supabase Edge Functions | `app\supabase\functions` | `admin-users` (add/remove people, set passwords), `sheets-sync` (Sheet mirror), `login-guard` (safe login) |
 | Scheduled jobs | pg_cron in Supabase + Vercel cron | DB + `vercel.json` | Sheet sync every 5 min; keep-alive daily 06:00 UTC |
 | Google Sheet mirror | Google Sheets API, service account `crm-automation-bot@trans-campus-513315-v0.iam.gserviceaccount.com` | Google Cloud | Writes tasks/staff to the Sheet (Sheet shared with that account as **Editor**) |
@@ -122,7 +122,7 @@ Keep the copy private: `secrets\` and `app\.env` hold keys that control the live
 
 ## 8. Security rules in force
 - Email + password only. No sign-up page, no email reset, no magic links (auth hooks block them).
-- One device per account: a new login signs out the old one.
+- Up to 2 devices per account: a third login signs out the oldest.
 - 5 wrong passwords in 15 min lock the account (15 → 30 → 60 min); too many from one IP block the IP. Admin can **Unlock**.
 - Employees can only see their own / their team's tasks and change status. Everything else is admin-only, enforced in the database (RLS).
 - One owner admin (khizarvfx@gmail.com) who cannot be demoted, deactivated or deleted.
@@ -133,7 +133,7 @@ Keep the copy private: `secrets\` and `app\.env` hold keys that control the live
 ## 9. Troubleshooting
 | Symptom | Likely cause | Fix |
 |---|---|---|
-| Site shows "Signed in elsewhere" | Same account logged in on another device | Log in again; only one device at a time |
+| Site shows "Signed out on this device" | Account was signed in on 2 other devices, so this oldest one was signed out | Log in again; max 2 devices per account, a third login signs out the oldest |
 | "Account locked" / can't log in after typos | 5 wrong passwords | Wait 15 min or admin clicks **Unlock** in Team |
 | Nobody can log in | Auth hook / login-guard problem | Rollback in `DEPLOYMENT.md`; check Supabase → Edge Functions → login-guard logs |
 | Site loads but no data, after a long break | Supabase Free paused (7 idle days) | Supabase dashboard → project → **Restore**. Check Vercel cron `/api/keepalive` runs |
