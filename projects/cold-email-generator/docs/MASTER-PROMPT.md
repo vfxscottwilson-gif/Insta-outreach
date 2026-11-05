@@ -31,6 +31,15 @@ Services line stays ONE short line (restaurants: Meta and Google ads, SEO, Reels
 ## 1c. ANGLE ROTATION (hard cap)
 Every angle (opener, subject, value line, services wording, CTA, sample line, sign-off) is used in at most 10-15% of the batch. Rotate through pools of 8+ options. Bullets in about 3% of emails only: services only, 3-4 short bullets, one blank line before and after, no blank line between bullets, no colon before them. A "Name + hook" subject in at most 5-10% of emails, never consecutive.
 
+## 1d. TONE AND PROOF OF EXPERTISE (added after review)
+- Never beg or plead. No "I would genuinely enjoy joining your team", no "hoping to earn your trust". Confident, calm, professional. The ask to join the team appears only as a clear, polite trial offer ("Would you consider trying me as your editor on a trial video?").
+- Show real YouTube know-how in the value line and the services line: audience retention, hooks, the first 30 seconds, pacing, packaging (title plus thumbnail), watch time, how YouTube recommends a video. Do not repeat "long-form edits, motion graphics, thumbnails" in every email; rotate 8+ wordings.
+- No claims that need facts we do not have: do not assume they have a team, a business, a staffing gap, or that they have not already got an editor. Do not promise "an idea" in a subject unless the body states it.
+- Check grammar line by line: no tautologies ("Your channel is a channel"), no comma splices, no run-on CTAs, no vague "this".
+- Title subject: never paste a raw video title in a subject (it looks like a typo). Use "A note about your recent video" and quote the title only in the body, with "saw".
+- Subjects keep the channel name's real spelling (proper noun); only the template words are lowercase. Channel handles with digits or all lowercase merged words are replaced by "your channel".
+- Bullets use a plain hyphen "- ", at least four words each, services only, one blank line before and after, about 3% of emails.
+
 ## 2. OUTPUT FILE
 Tab "Ready to Send", one row per lead, columns in this order:
 Email | First Name | Subject Line | Email Body | Score | Follow-up 1 | Follow-up 2 | Follow-up 3 | Follow-up 4 | Why this score
