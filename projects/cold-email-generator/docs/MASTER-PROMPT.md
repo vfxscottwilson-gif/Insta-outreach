@@ -20,6 +20,17 @@ Rotate the value angle across the batch, never the same one in every email:
 - Short years-of-experience line (limit above)
 Services line stays ONE short line (restaurants: Meta and Google ads, SEO, Reels, design, branding, websites. YT: edits, motion graphics, thumbnails, plus Shorts only if the channel posts Shorts).
 
+## 1b. FACTS ONLY (highest priority, added after a bad batch)
+- Write only what the lead sheet proves. Never assume, never guess, never fill a gap with a plausible claim.
+- NEVER state upload counts, subscriber counts, view counts, engagement numbers or "videos a month" in any email or subject. They were wrong and felt like an attack.
+- Never say or imply the content is weak, the numbers are low, or "hire me to fix it". Appreciate the work, then show my value and ask to join the team.
+- The sheet's niche label is unreliable, so never claim a niche ("real estate channel", "AI channel").
+- Usable facts: the channel name, a complete recent video title (cited exactly as seen, with "saw"; only if it has no symbols, no emoji and is not cut off), the content mix when the sheet shows it (Shorts mentioned only if the channel posts Shorts), and the owner's first name from the email handle or channel name (see names rule).
+- One hook per email, not two. Start with them, not "I". Avoid "I'd love to", "quick question", flattery with no fact behind it (Harvey advice).
+
+## 1c. ANGLE ROTATION (hard cap)
+Every angle (opener, subject, value line, services wording, CTA, sample line, sign-off) is used in at most 10-15% of the batch. Rotate through pools of 8+ options. Bullets in about 3% of emails only: services only, 3-4 short bullets, one blank line before and after, no blank line between bullets, no colon before them. A "Name + hook" subject in at most 5-10% of emails, never consecutive.
+
 ## 2. OUTPUT FILE
 Tab "Ready to Send", one row per lead, columns in this order:
 Email | First Name | Subject Line | Email Body | Score | Follow-up 1 | Follow-up 2 | Follow-up 3 | Follow-up 4 | Why this score
@@ -32,7 +43,8 @@ Font Arial 11 on every tab. Sorted by score, highest first. Follow-ups are sent 
 - Score out of 10 = the ICP score already in the sheet divided by 10 (size fit, budget, activity, money signals). YT: minus 1 if the channel already credits an editor. "Why this score" explains it in one line.
 
 ## 4. SUBJECT LINES
-- At least 30 characters; first letter capital, rest lowercase; no symbols; never cut a word to fit, go a few characters over instead.
+- 30 to 48 characters; first letter capital, rest lowercase (keep "I" and "AI" capitals); curiosity-driven, short, personalized to the lead; never cut a word. No numbers or stats in subjects.
+- Rotate 10+ subject angles (an idea for their next video, joining their editing team, a zero cost sample edit, a new pair of hands, a small idea, their name plus an idea, their recent video title).
 - Personalized to the person, channel or restaurant. Never generic ("quick question").
 - Format "Name + hook" in at most 10% of rows, never consecutive, one every ~10 rows. Check that name plus hook reads as a sensible sentence. If the name is long, use the plain subject.
 
@@ -40,12 +52,13 @@ Font Arial 11 on every tab. Sorted by score, highest first. Follow-ups are sent 
 - First letter capital. Only commas, periods and question marks. No + ; : = | & * or em dashes. Hyphens only inside words (30-60, long-form).
 - Services as a short line ("Meta and Google ads, SEO, Reels..."), never "including X:" with a colon.
 - Short, breathable: one idea per line, blank line between paragraphs. First email about 75-100 words. Follow-ups 40-70 words.
+- CTA is a full, grammatical, frictionless sentence (never "Sound useful?" or a two-word fragment). Check grammar and vocabulary on every line.
 - Never the same sentence in every email: rotate opener, value line, sample line, CTA, sign-off. A sentence may not repeat inside one lead's sequence.
 - Professional, never offensive, never telling someone their channel or restaurant is weak. Numbers like a low engagement % are never quoted; turn them into an opportunity.
 - Channel and business names: split camelCase, "&" becomes "and", strip emojis and odd characters, "AI" stays capitals. If a name cannot be cleaned safely, use a neutral phrase ("your channel").
 
 ## 6. THE SAMPLE (YouTube)
-30-60 seconds is the LENGTH OF THE EDIT I deliver. The prospect sends any raw clip (any length) from one of their videos; I cut a free 30-60 second sample. Every sample line must contain "30-60 second" and "free" or "no cost" / "zero cost" / "no charge". Never "Want to see it?" as the only ask (it implies the sample already exists). Never "send me a 30-60 second clip".
+30-60 seconds is the LENGTH OF THE EDIT I deliver. The prospect sends any raw clip (any length) from one of their videos; I cut a free 30-60 second sample. Every sample line must contain "30-60 second" and "no cost", "zero cost" or "free of cost". Do NOT use the bare word "free" in the first email. Never "Want to see it?" as the only ask (it implies the sample already exists). Never "send me a 30-60 second clip".
 Restaurants: I offer a free sample (a short Reel or graphic) directly, completely free, no raw clip needed.
 
 ## 7. PITCHING THE RIGHT THING (do not repeat the offended-reply mistake)
@@ -54,7 +67,8 @@ Restaurants: I offer a free sample (a short Reel or graphic) directly, completel
 - Do not claim facts the sheet does not show.
 
 ## 8. FIRST NAMES (never guess)
-- Use a first name only if it is in a real first-name dictionary AND the channel name is a person-shaped name (two or more words, no digits, no business words, not ALL CAPS, not a single word).
+- Email handle first: if the handle (before the @) is a real first name in the dictionary and not generic (info, hello, team, sales...), use it when the channel name gives no conflicting name. If handle and channel name disagree, use "Team".
+- Otherwise use a first name only if it is in a real first-name dictionary AND the channel name is a person-shaped name (two or more words, no digits, no business words, not ALL CAPS, not a single word).
 - Single-word channels, brands, merged lowercase names (orenmeetsworld, flippingdrawers), financial/tech brands: "Team".
 - Restaurants: always "Team" (the sheet has no confirmed owner names).
 - To find a real owner name manually: search the contact email on Google plus "who is the owner of this YouTube channel". Found: use the owner's first name. Not found: "Team".
@@ -73,4 +87,4 @@ Run the rule checker on the file (symbols, capital letters, subject length and s
 ## 11. SECURITY
 No keys, passwords or API tokens in any file or chat. Emails are only sent after I approve the send.
 
-Last updated: 2026-11-05
+Last updated: 2026-11-05 (facts-only rewrite, Harvey advice applied)
