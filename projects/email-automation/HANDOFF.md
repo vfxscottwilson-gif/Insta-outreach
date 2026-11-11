@@ -20,5 +20,32 @@
 - Web OAuth client for the in-app Connect button (`GMAIL_CONNECT_CLIENT_ID/SECRET` missing in `.env`).
 - From the user: pilot sheet shared with the service account, niche timing case study, postal address decision, 'free' wording decision. No real sends until the user says go.
 
+## Engine session handoff (written 2026-11-11 ~17:40 UTC)
+
+**Created this round (all committed in `app\`, not pushed; live migrations 0024, 0025 applied):**
+- `app\supabase\migrations\0024_counting_rules.sql`, `0025_sync_requests.sql`
+- `app\engine\src\outreach\mailbox\classify.py`, `sync.py`, `events.py` (counting rules), `reclassify.py` (new)
+- `app\engine\src\outreach\worker.py` (new), `__main__.py` (`worker` command), `mailbox\phase.py`, `settings.py`
+- `app\engine\tools\run-tick.vbs`, `worker-task.ps1` (now a long-running worker, starts at logon)
+- Tests: `app\engine\tests\test_counting_rules.py`, `test_worker.py`
+- Commits: 3a44c3a (section A), beb695b + dff6053 (section B)
+
+**Finished and verified:**
+- Section A: live replies 74 -> 11; 63 moved to `other_inbound`; rerun changes nothing. 95 targeted tests pass.
+- Section B (database + engine): `request_sync()`, `sync_requests`, `open_alert_count()`, worker loop (30 s poll, 3 min rounds), `MAILBOX_SYNC_MINUTES` = 3 live. 16 targeted tests pass. All 14 accounts synced within 8 minutes after the change.
+- Design has the names (message queued to its session).
+
+**Not done / not verified:**
+- Full engine suite NOT run since 0024/0025 (last full run: 1365 passed before these). Run `uv run pytest -q` in `app\engine` first.
+- `worker-task.ps1` must be run once more by the user (Claude is not allowed to create scheduled tasks) so the task starts at logon with no 10-minute time limit. Until then the old task restarts the worker every 10 minutes: it works, but less cleanly.
+- New-thread replies older than today appear only after a 30-day re-read (not run). Auto Reply label: not checked per account.
+- Section F (zero-cost always-on research): NOT started. Web tools in the Engine session are redirected by the context-mode hook; use `ctx_fetch_and_index` or a subagent. Facts needed: Supabase Free pg_cron + Edge Function limits, GitHub Actions private minutes and cron delays, Cloudflare Workers Free cron.
+- Sections C and D (sheet-driven sending, niches): NOT started.
+
+**Exact next step (Engine):** run the full suite; then section F research and report; then C/D per `app\docs\SPEC-V2-SHEET-AUTOMATION.md`. Nothing sends until the user approves a pilot.
+
 ## 4. Exact next step
 Open the Engine session ("Build: Email app engine") and confirm it picked up the Spec V2 work order (step 1 = section A recount); open the Design session for its Spec V2 list; then deploy what passes and report.
+
+## 5. Rule added 2026-11-11 (section 14 of the user's CLAUDE.md): release packaging
+Next time code is delivered: a zip named `Email Automation v<N>.zip` (Title Case, lowercase v, number +1 each delivery) in this folder, complete and deployable with `install\` and `Start Here.md`, no secrets/.env/key files/.venv/.git/caches (names only in SECRETS-CHECKLIST.md), older zips moved to `Archive\`, contents checked before saying done. Title Case, no hyphens or underscores, for every name the user sees (folders, files, zips, Google Sheet and tab names). Not yet delivered: no zip exists, and the app's folder names (`app`, `install`, `email-automation`) are tool or project names still to be reviewed against this rule.
