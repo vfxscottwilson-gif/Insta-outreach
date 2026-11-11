@@ -63,18 +63,18 @@ fu_reminder = [
  "Following up on my earlier email in case it got buried.\n\n{sample}\n\nIt is a small first step, with nothing else to decide until it has been seen. Does that sound reasonable?",
  "Quick follow-up on my last note about {biz_or}.\n\nThe offer still stands. {sample}\n\nIf it is useful, reply with a yes and the work begins right away.",
  "Resurfacing my earlier email in case the timing was not right then.\n\n{sample}\n\nNo brief and no commitment are needed, and a short yes is enough to begin.",
- "A gentle reminder about my earlier note.\n\nThe idea is simple. {sample}\n\nYou decide afterwards whether it is worth a conversation. Shall I go ahead?",
+ "A gentle reminder about my earlier note.\n\nThe idea is simple. {sample}\n\nYou decide afterwards whether it is worth a conversation. Would a quick start suit you?",
  "Circling back on my earlier email about {biz_or}.\n\n{sample}\n\nIt costs nothing to find out whether it fits, and a quick yes is all that is needed to begin.",
- "Just checking that my earlier note reached you.\n\n{sample}\n\nThere is no obligation attached, and you stay in control of what happens next. Would you like to go ahead?",
+ "Just checking that my earlier note reached you.\n\n{sample}\n\nThere is no obligation attached, and you stay in control of what happens next. Would a quick start suit you?",
 ]
 
 fu_angle = [
  "Maybe the priority for {biz_or} sits somewhere else right now, and that is completely fine.\n\nIf there is one goal for this quarter, tell me what it is and the work can be shaped around it. {sample}\n\nWhat would be most useful to explore?",
  "A different thought this time.\n\nIn the {niche_word} space, one clear goal leading the plan tends to deliver the most. Tell me the goal that matters most for {biz_or}, and a sample can be built around it. {sample}\n\nWhich goal comes first?",
- "Taking a different approach, here is a plain question.\n\nWhat would make the biggest difference for {biz_or} over the next few months? A direct answer helps shape a sample that is relevant from the first second. {sample}\n\nWhat would it be?",
+ "Taking a different approach, here is a plain question.\n\nWhat would make the biggest difference for {biz_or} over the next few months? A direct answer helps shape a sample that is relevant from the first second. {sample}\n\nDoes one thing stand out?",
  "Another way to look at it.\n\nA sample often explains more than a message can. {sample}\n\nYou keep full control of what happens next. Would that be a fair way to start?",
  "One more angle on my earlier notes.\n\nThe work is easiest to judge when it is built around your own business. {sample}\n\nWould that help you decide?",
- "Perhaps a different starting point helps.\n\nSome people prefer to begin with a question rather than a proposal, so here is one for {biz_or}. What result would make the next quarter feel like a win? {sample}\n\nWhat would that be?",
+ "Perhaps a different starting point helps.\n\nSome people prefer to begin with a question rather than a proposal, so here is one for {biz_or}. What result would make the next quarter feel like a win? {sample}\n\nI would be glad to hear your thoughts.",
  "Thinking about {biz_or} from another side.\n\nThe best results usually start from a single clear priority. Share yours, and the sample can be shaped around it. {sample}\n\nWhat is the priority right now?",
 ]
 
@@ -99,12 +99,12 @@ fu_options_question = [
 
 fu_last = [
  "This is my last follow-up, so I will leave it here.\n\nIf the timing is not right, that is completely fine, and there is no need to respond. Should growing {biz_or} become a priority later, a short note is all it takes to pick this back up.\n\nWishing you continued success.",
- "Closing the loop on my side.\n\nI will take the quiet as a not now rather than a no, and that makes sense for a busy {noun}, so nothing further is needed from you. If reaching more people ever moves up the list, my inbox is open.\n\nAll the best with everything ahead.",
- "Last message from me on this.\n\nNo reply usually means the timing was off, and that is easy to understand, so there is no pressure at all. The door stays open for {biz_or} whenever the moment is right.\n\nThank you for reading, and best of luck with it.",
+ "Closing the loop on my side.\n\nTiming is often the only thing standing between an idea and a yes, and that is easy to respect. If the goal of reaching more people comes into focus later, my inbox is open.\n\nAll the best with everything ahead.",
+ "Last message from me on this.\n\nNo reply usually means the timing was off, and that is easy to understand, so there is no pressure at all. A short note from {biz_or} is welcome whenever the moment is right.\n\nThank you for reading, and best of luck with it.",
  "I will not keep filling your inbox after this one.\n\nIf building {biz_or} further is on the agenda down the line, a short reply will bring me straight back. Until then, every success with everything else on your plate.\n\nWith appreciation for your time.",
- "Final note from me.\n\nA quiet inbox tells me the moment is not right, and I respect that completely, so no response is expected. Whenever growth for {biz_or} comes into focus, my help is still available.\n\nWarm wishes for the weeks ahead.",
+ "Final note from me.\n\nTiming is everything, and it may simply not be the right moment. Whenever growth for {biz_or} comes into focus, a short note is welcome at any time. Thank you for taking the time to read my earlier messages.\n\nWarm wishes for the weeks ahead.",
  "Wrapping up my notes here.\n\nIf now is not the moment, I understand completely, and I will not follow up again. Whenever {biz_or} is ready to take the next step, a single line is enough to restart the conversation.\n\nAll the best.",
- "This will be my final message on the subject.\n\nI know how full a calendar gets for a busy {noun}, so I am happy to leave the door open. If the right moment arrives, just reply and we will pick it up from there.\n\nThank you for your time.",
+ "This will be my final message on the subject.\n\nI know how full a calendar can get, so I am happy to leave the conversation open. If the right moment arrives, just reply and we will pick it up from there.\n\nThank you for your time.",
 ]
 
 # ---------------- subjects ----------------
@@ -117,6 +117,10 @@ subjects_named = [
  "{name}, the next stage for {biz}",
  "{name}, what {biz} could build next",
  "{name}, about the road ahead for {biz}",
+ "{name}, thinking about {biz}",
+ "{name}, a quick idea for {biz}",
+ "{name}, how {biz} could reach further",
+ "{name}, growth ideas for {biz}",
 ]
 subjects_biz = [
  "A thought on {biz}",
@@ -126,6 +130,18 @@ subjects_biz = [
  "The next stage for {biz}",
  "What {biz} could build next",
  "A note for the team at {biz}",
+ "Ideas for {biz}",
+ "Reaching further with {biz}",
+ "Growth ideas for {biz}",
+ "Thinking about {biz}",
+]
+subjects_named_noun = [
+ "{name}, a thought on your {noun}",
+ "{name}, an idea for your {noun}",
+ "{name}, where your {noun} could grow next",
+ "{name}, thinking about your {noun}",
+ "{name}, a quick idea for your {noun}",
+ "{name}, growth ideas for your {noun}",
 ]
 subjects_plain = [
  "A thought on your {noun}",
@@ -134,6 +150,10 @@ subjects_plain = [
  "Where your {noun} could grow next",
  "The next stage for your {noun}",
  "What your {noun} could build next",
+ "Ideas for your {noun}",
+ "Reaching further with your {noun}",
+ "Growth ideas for your {noun}",
+ "Thinking about your {noun}",
 ]
 
 # =====================================================================
@@ -151,13 +171,13 @@ openers_person = [
  "Channels in the same space as {biz} win when a video starts strong and keeps rewarding the viewer.",
  "Viewers decide quickly whether a video on {biz} is worth their time.",
  "Creators build lasting audiences by making every video feel worth finishing.",
- "On YouTube, the first minute of a video does more for reach than almost anything else.",
+ "On YouTube, the first minute of a video carries a great deal of weight.",
  "Viewers decide within seconds whether a video deserves their time, and the edit decides what they see in those seconds.",
 ]
 openers_company = [
  "Teams behind channels like {biz} balance publishing, growth and production all at once.",
- "Keeping a channel like {biz} publishing on schedule while the audience keeps growing takes a coordinated team.",
- "Production is rarely the only task on a channel's plate, and that holds for {biz} as well.",
+ "Keeping a channel like {biz} publishing on a schedule is a craft of its own.",
+ "Behind every upload on {biz} sit planning, filming and editing, and each one takes real time.",
  "Behind every consistent channel sits a production process that has to scale with the audience.",
  "Behind a channel like {biz}, planning, filming and editing all compete for the same hours.",
  "A channel like {biz} lives in a feed where every video competes with thousands of others for the same click.",
@@ -181,9 +201,9 @@ values = [
  "The aim in every edit is a video that holds attention and a channel that builds on it.",
  "Creators I work with get a partner who thinks about the business behind the channel, not only the timeline.",
  "Having edited for creators in many niches, I know the best edits feel effortless to watch.",
- "Past work spans documentary-style storytelling to fast-paced business content, always with the same goal, a video worth finishing.",
- "Channels I have edited for have grown on one principle, build every video to be finished.",
- "Strong channels share one habit, every cut serves the story, and the rest follows.",
+ "Past work spans documentary-style storytelling to fast-paced business content, always with the same goal of a video worth finishing.",
+ "Channels I have edited for have grown on one principle, which is to build every video to be finished.",
+ "Strong channels share one habit, which is that every cut serves the story.",
  "Edits built for retention keep the viewer curious from the first second to the last.",
  "I treat every video as a small film, with a hook, a middle that earns attention and an ending worth finishing.",
 ]
@@ -198,6 +218,8 @@ options = [
  ["Reaching a wider audience.", "Turning viewers into subscribers.", "More time to create."],
  ["Growing watch time.", "Reaching new viewers.", "Building the channel brand."],
  ["Growing audience loyalty.", "Winning more clicks.", "Freeing up editing time."],
+ ["Growing the subscriber base.", "Reaching viewers beyond the current audience.", "Building the creator brand."],
+ ["Growing community engagement.", "Winning more recommendations.", "Planning the next season of content."],
 ]
 
 # =====================================================================
@@ -221,7 +243,7 @@ openers_person = [
 ]
 openers_company = [
  "Teams running restaurants like {biz} balance service, staff and marketing all at once.",
- "Keeping {biz} visible online while the kitchen and floor stay busy takes real coordination.",
+ "Keeping {biz} visible online while the kitchen and floor stay busy is a job of its own.",
  "A restaurant like {biz} competes for attention in {city} every single day.",
  "Guests searching for {cuisine} in {city} choose a place within minutes.",
  "Running {biz} means the kitchen, the floor and the online presence all need attention at once.",
@@ -240,13 +262,13 @@ insights = [
 ]
 values = [
  "Restaurants, showrooms, creators and online brands have all been part of my work, and growth follows the same pattern, a plan built around what makes the business different.",
- "Work across restaurants and other local businesses has shown which online efforts bring guests in and which only look busy.",
+ "Work across restaurants and other local businesses has shown which online efforts bring guests in and which only collect likes.",
  "I plan the whole picture for a restaurant, from how it is found to how it is remembered, so every piece supports the next.",
  "Each plan starts with what makes the restaurant different, then builds the online presence guests meet around it.",
  "Hospitality brands grow when marketing is treated as part of the experience, and that is how every plan is built.",
  "Brand, content and search are planned together, because guests experience them together.",
  "Having grown businesses across many industries, I know the restaurants that last are the ones guests feel they know.",
- "Strong restaurant brands share one habit, every post and page looks and sounds like the dining room.",
+ "Strong restaurant brands share one habit, which is that every post and page looks and sounds like the dining room.",
  "Guests return to restaurants that feel consistent, online and at the table, and that consistency is designed on purpose.",
  "I treat every restaurant as a story with a place, a plate and a person behind it.",
 ]
@@ -254,7 +276,9 @@ sample_extra = []
 options = [
  ["Reaching new local diners.", "Growing repeat guests.", "Growing catering and events."],
  ["Growing weekend bookings.", "Growing the lunch crowd.", "Building the local brand."],
- ["Reaching visitors and tourists.", "Growing delivery and takeout.", "Growing the loyalty base."],
+ ["Growing word of mouth.", "Growing guest loyalty.", "Building local awareness."],
+ ["Growing reservations.", "Growing group bookings.", "Reaching new neighbourhoods."],
+ ["Growing brand recognition.", "Growing the social following.", "Growing the dinner crowd."],
 ]
 
 # =====================================================================
@@ -275,7 +299,7 @@ openers_person = [
 openers_company = [
  "Teams at brokerages like {biz} balance listings, clients and marketing all at once.",
  "A brokerage like {biz} competes for attention in {city} every day.",
- "Keeping listings visible while clients keep calling takes a coordinated team.",
+ "Keeping listings visible while clients keep calling is a job of its own.",
  "Brokerages balance listings, clients and marketing all at once.",
 ]
 insights = [
@@ -317,7 +341,7 @@ openers_person = [
 openers_company = [
  "Teams running showrooms like {biz} balance sales, stock and marketing all at once.",
  "A showroom like {biz} competes for attention in {city} every day.",
- "Keeping new arrivals visible online while the floor stays busy takes real coordination.",
+ "Keeping new arrivals visible online while the floor stays busy is a job of its own.",
  "Showrooms balance sales, stock and marketing all at once.",
 ]
 insights = [
@@ -338,7 +362,7 @@ values = [
 sample_extra = []
 options = [
  ["More showroom visits.", "Reaching buyers earlier.", "Growing repeat and referral customers."],
- ["More enquiries before the visit.", "Growing the local brand.", "Highlighting new arrivals."],
+ ["More enquiries before the visit.", "Growing the local brand.", "Growing customer referrals."],
  ["Growing weekend footfall.", "Reaching nearby buyers.", "Building customer stories."],
 ]
 
@@ -438,7 +462,7 @@ openers_person = [
 openers_company = [
  "Teams running businesses like {biz} balance service, operations and marketing all at once.",
  "A business like {biz} competes for attention every day.",
- "Keeping a business visible online while the day-to-day stays busy takes real coordination.",
+ "Keeping a business visible online while the day-to-day stays busy is a job of its own.",
  "Teams running a business balance service, operations and marketing all at once.",
 ]
 insights = [
@@ -449,7 +473,7 @@ insights = [
 ]
 values = [
  "Restaurants, showrooms, creators, stores and software brands have all been part of my work, and the pattern holds, growth follows a plan built around what makes the business different.",
- "Work across many industries has shown which online efforts bring customers in and which only look busy.",
+ "Work across many industries has shown which online efforts bring customers in and which only collect likes.",
  "I plan the whole picture, from how a business is found to how it is remembered, so every piece supports the next.",
  "Each plan starts with what makes the business different, then builds the online presence customers meet around it.",
  "Having grown businesses across many industries, I know people choose the businesses they feel they know.",

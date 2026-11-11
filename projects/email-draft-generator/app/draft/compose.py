@@ -149,25 +149,30 @@ class Composer:
             if not viol:
                 break
         viol, body, picks, kind, uses_i = best
-        subj = self.subject(lead, ctx, idx, rnd)
+        subj = self.subject(lead, ctx, idx, rnd, kind)
         picks.append(subj[1])
         self.commit([p for p in picks if isinstance(p, tuple)])
-        fus, fviol, opt_set = self.followups(lead, ctx, N, niche, kind, idx)
+        fus, fviol, opt_set = self.followups(lead, ctx, N, niche, kind, idx, body)
         return dict(subject=subj[0], body=body, fus=fus, kind=kind, uses_i=uses_i,
                     violations=viol + subj[2] + fviol)
 
     # ---------- subject ----------
-    def subject(self, lead, ctx, idx, rnd):
+    def subject(self, lead, ctx, idx, rnd, kind="normal"):
         s, C = self.s["subject"], self.C
         pools = []
-        if lead.first and ctx["biz"]:
+        dup = bool(lead.first and ctx["biz"] and ctx["biz"].lower().split()[0] == lead.first.lower())
+        if lead.first and ctx["biz"] and not dup:
             pools.append(("sub.named", C["subjects_named"]))
+        elif lead.first:
+            pools.append(("sub.named", C["subjects_named_noun"]))
         if ctx["biz"]:
             pools.append(("sub.biz", C["subjects_biz"]))
         pools.append(("sub.plain", C["subjects_plain"]))
         cand = []
         for slot, lines in pools:
             for t in lines:
+                if "question" in t and kind != "options":
+                    continue
                 x = fill(t, {**ctx, "name": lead.first})
                 if x:
                     cand.append((slot, t, x))
@@ -190,11 +195,21 @@ class Composer:
         return x, (slot, t, ""), viol
 
     # ---------- follow-ups ----------
-    def followups(self, lead, ctx, N, niche, kind, idx):
+    @staticmethod
+    def sentences(text):
+        out = []
+        for s in re.split(r"(?<=[.?])\s+|\n+", text):
+            s = s.strip()
+            if len(s.split()) >= 5 and not s.startswith(("1.", "2.", "3.")) and s != "Just reply with 1, 2, or 3.":
+                out.append(s)
+        return out
+
+    def followups(self, lead, ctx, N, niche, kind, idx, body=""):
         C, w = self.C, tuple(self.w["followup"])
         has_opts = kind == "options"
         plan = ["reminder", "angle", "options", "last"] if has_opts else ["options", "angle", "reminder", "last"]
         outs, allv, picks = [], [], []
+        used = set(self.sentences(body))
         for n, ftype in enumerate(plan):
             best = None
             for attempt in range(40):
@@ -225,6 +240,8 @@ class Composer:
                 full = text + "\n\n" + sign
                 v = checks.check_followup(full, self.signoffs, "options" if ftype == "options" else "plain", w,
                                           need_cost=ftype != "last", mask=[lead.biz, lead.city, lead.title])
+                if any(s in used for s in self.sentences(full)):
+                    v = v + ["repeats an earlier sentence"]
                 if best is None or len(v) < len(best[0]):
                     best = (v, full, [x for x in local if x])
                 if not v:
@@ -232,5 +249,6 @@ class Composer:
             v, full, local = best
             self.commit(local)
             outs.append(full)
+            used.update(self.sentences(full))
             allv += [f"follow-up {n + 1}: {x}" for x in v]
         return outs, allv, None
