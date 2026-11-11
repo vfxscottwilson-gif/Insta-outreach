@@ -1,0 +1,33 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "outreach-web",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "F:/Github Repos/projects/email-automation/app/web/node_modules/vite/bin/vite.js",
+        "preview",
+        "F:/Github Repos/projects/email-automation/app/web",
+        "--port",
+        "4173",
+        "--strictPort"
+      ],
+      "port": 4173
+    },
+    {
+      "name": "levelup-crm",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "F:/Github Repos/projects/levelup-crm/app",
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "5173",
+        "--strictPort"
+      ],
+      "port": 5173
+    }
+  ]
+}

@@ -18,7 +18,12 @@ Write for a non-expert on Windows 10. Numbered steps. NEVER write secret values.
 
 ## 5. First-time install
 1. Open `install\` and double-click `INSTALL.cmd`.
-2. (Steps and what you should see.)
+2. (Steps and what you should see.) Pattern for every step: one action, the exact command in its own code block, then what the user should see.
+3. Example step: check nothing is missing before installing.
+```
+INSTALL.cmd -Check
+```
+You should see green `PASS` lines; `MISSING` lines tell you what the installer will add.
 
 ## 6. Secrets
 See `secrets\SECRETS-CHECKLIST.md`. Where to put them: (file path, names only).

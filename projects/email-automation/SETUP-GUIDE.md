@@ -27,15 +27,47 @@ Cold outreach from 14+ Gmail accounts: touch 1 plus 4 follow-ups in one thread, 
 See `README.md`.
 
 ## 5. First-time install
-(TODO: `install\INSTALL.cmd` is not written yet.) Until then follow `app\docs\START_HERE.md` parts A to E: Supabase project, Google OAuth client, connect each Gmail account, service account for sheets, pilot.
+`install\INSTALL.cmd` installs the tools (Node.js, Python/uv), runs `npm install` and the build, makes the Desktop shortcut and ends with a checklist (OK / SKIP / WARN / FAIL). Options (type after the file name): `-Check` (same as `-DryRun`: shows what would happen, changes nothing), `-Uninstall` (removes only the Desktop and Start-menu shortcuts), `-SkipHealthcheck` (does not contact the database). Safe to run again.
+1. In File Explorer open the `install` folder, click the address bar, type `cmd`, press Enter.
+2. Preview first (changes nothing):
+```
+INSTALL.cmd -Check
+```
+You should see lines starting `[DRY]` or `[OK]` and no `[FAIL]`.
+3. Install for real:
+```
+INSTALL.cmd
+```
+If Notepad opens `app\.env`: paste each key after `=`, save, run the same command again. You should end with the checklist and an **Outreach** icon on the Desktop.
+4. The accounts and keys (Supabase, Google, AI) are set up by hand: follow `app\docs\START_HERE.md` parts A to E.
 
 ## 6. Secrets
 See `secrets\SECRETS-CHECKLIST.md`. They go in `app\.env` (never committed).
 
 ## 7. Run it / use it
-- Windows launcher: `app\Start Outreach App.cmd`.
-- Web dev: `cd app\web`, `npm install --ignore-scripts`, `npm run dev` (http://localhost:5173).
-- Engine: `cd app\engine`, `uv run ...` (see `app\docs\HOW-TO-RUN.md`).
+1. Windows launcher: double-click **Outreach** on the Desktop, or:
+```
+"app\Start Outreach App.cmd"
+```
+You should see one app window (the local server runs hidden and stops when you close it).
+2. Web dev (for changing the screens):
+```
+cd app\web
+npm install --ignore-scripts
+npm run dev
+```
+Open http://localhost:5173.
+3. Build and put the online copy up to date (Cloudflare):
+```
+npm run build
+npx wrangler@4.157.0 deploy
+```
+4. Engine (the sender), from `app\engine`:
+```
+cd app\engine
+uv run python -m outreach healthcheck
+```
+You should see `can send: False` until setup (START_HERE) is finished. More commands: `app\docs\HOW-TO-RUN.md`.
 
 ## 8. How to change common things
 | I want to... | Do this |
@@ -53,7 +85,7 @@ See `secrets\SECRETS-CHECKLIST.md`. They go in `app\.env` (never committed).
 | Real sends blocked | Health Check blocks sends until sender names are confirmed (TODO detail) |
 
 ## 10. Move to a new PC
-1. Copy the whole `email-automation` folder.
-2. Recreate `app\.env` from `secrets\SECRETS-CHECKLIST.md` (values from your password manager).
-3. Install Node, Python/uv (TODO: `install\INSTALL.cmd`).
-4. Data lives in Supabase, so nothing else moves. Keep `database\backups\` current.
+1. Copy the whole `email-automation` folder (with `secrets\`).
+2. Put the secrets back in `secrets\` / `app\.env` if missing (names only in `secrets\SECRETS-CHECKLIST.md`; values from your password manager).
+3. In `install\` run `INSTALL.cmd -Check`, then `INSTALL.cmd` (Node.js, Python/uv and the packages are installed for you).
+4. Data lives in Supabase, so nothing else moves. Database exports go to `backups\` (run `backups\backup.ps1`; needs `pg_dump`), not into the app folder.

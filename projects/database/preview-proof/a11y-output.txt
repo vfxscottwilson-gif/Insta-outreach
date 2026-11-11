@@ -1,0 +1,74 @@
+┌─────────┬──────────┬───────────────────┬─────────┐
+│ (index) │ tag      │ name              │ visible │
+├─────────┼──────────┼───────────────────┼─────────┤
+│ 0       │ 'a'      │ 'Skip to content' │ true    │
+│ 1       │ 'button' │ 'Track'           │ true    │
+│ 2       │ 'a'      │ 'Overview'        │ true    │
+│ 3       │ 'a'      │ 'Dashboard'       │ true    │
+│ 4       │ 'a'      │ 'Leads'           │ true    │
+│ 5       │ 'a'      │ 'Geography'       │ true    │
+│ 6       │ 'a'      │ 'Niches'          │ true    │
+│ 7       │ 'a'      │ 'Quality'         │ true    │
+│ 8       │ 'button' │ 'Sources'         │ true    │
+│ 9       │ 'a'      │ 'Sheets'          │ true    │
+│ 10      │ 'button' │ 'Team'            │ true    │
+│ 11      │ 'a'      │ 'Team'            │ true    │
+│ 12      │ 'a'      │ 'Assignments'     │ true    │
+│ 13      │ 'a'      │ 'Approvals'       │ true    │
+│ 14      │ 'button' │ 'Insights'        │ true    │
+│ 15      │ 'a'      │ 'Reports'         │ true    │
+└─────────┴──────────┴───────────────────┴─────────┘
+drawer, dialog and Ctrl+K close on Escape: ok
+reduced motion: ok
+axe dark /: 0 violations
+axe dark /dashboard: 0 violations
+axe dark /leads: 0 violations
+axe dark /leads?lead=ld_0100: 0 violations
+axe dark /sheets: 0 violations
+axe dark /sheets/sh_us: 0 violations
+axe dark /sheets/sh_gb: 0 violations
+axe dark /sheets/sh_nz: 0 violations
+axe dark /geography: 0 violations
+axe dark /niches: 0 violations
+axe dark /quality: 0 violations
+axe dark /team: 0 violations
+axe dark /team/u_hina: 0 violations
+axe dark /assignments: 0 violations
+axe dark /approvals: 0 violations
+axe dark /reports: 0 violations
+axe dark /activity: 0 violations
+axe dark /lists: 0 violations
+axe dark /settings: 0 violations
+axe dark /sign-in: 0 violations
+axe dark /forgot-password: 0 violations
+axe light /: 0 violations
+axe light /dashboard: 0 violations
+axe light /leads: 0 violations
+axe light /leads?lead=ld_0100: 0 violations
+axe light /sheets: 0 violations
+axe light /sheets/sh_us: 0 violations
+axe light /sheets/sh_gb: 0 violations
+axe light /sheets/sh_nz: 0 violations
+axe light /geography: 0 violations
+axe light /niches: 0 violations
+axe light /quality: 0 violations
+axe light /team: 0 violations
+axe light /team/u_hina: 0 violations
+axe light /assignments: 0 violations
+axe light /approvals: 0 violations
+axe light /reports: 0 violations
+axe light /activity: 0 violations
+axe light /lists: 0 violations
+axe light /settings: 0 violations
+axe light /sign-in: 0 violations
+axe light /forgot-password: 0 violations
+dropdowns dark: 240 options, all black on white
+dropdowns light: 240 options, all black on white
+phone width: no sideways scroll on any screen
+signed out: every route goes to sign-in
+wrong password and unknown email are refused
+every active login works and sign out works
+the inactive employee is refused
+employee: no View as, admin pages redirect away
+admin: view as on and off works
+a11y-check: all checks passed

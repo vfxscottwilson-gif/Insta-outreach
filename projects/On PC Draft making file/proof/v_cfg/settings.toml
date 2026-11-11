@@ -1,0 +1,50 @@
+# Email Draft Generator settings. Edit freely, then re-run. Lines starting with # are comments.
+
+[run]
+seed = 42                  # same seed + same sheet = same drafts
+share_short = 0.60         # 50-60 word emails
+share_options = 0.30       # 80-90 word emails with the 1, 2, 3 options
+share_normal = 0.40        # 70-80 word emails
+share_first_person = 0.17  # share of emails that use the word I (15-20%)
+save_every = 50            # partial Excel save every N leads (large runs save about 20 times in total)
+
+[words]                    # allowed word range, sign-off line not counted
+short = [50, 60]
+normal = [70, 80]
+options = [80, 90]
+followup = [40, 70]
+
+[subject]
+min_chars = 28
+target_chars = 40          # first choice
+soft_max_chars = 50        # only used when no good subject fits the target. Words are never cut.
+
+[llm]                      # local model through Ollama. Optional: the tool works without it.
+enabled = true
+host = "http://localhost:11434"
+model = "qwen3:4b"         # check the exact name in the Ollama library, or run: ollama list
+timeout_seconds = 60
+offence_check = true       # second opinion on tone. Switches itself off if it flags over 30% of drafts.
+
+[gpu]                      # protects a GPU with weak cooling
+guard = true
+pause_above_c = 78
+resume_below_c = 70
+
+[scrape]                   # reads only the lead's own public pages, politely
+enabled = true
+timeout_seconds = 8
+delay_seconds = 1.0
+
+[columns]                  # leave empty for auto-detect, or map your headers, e.g. email = "Contact Email"
+email = ""
+name = ""
+business = ""
+niche = ""
+city = ""
+cuisine = ""
+video_title = ""
+website = ""
+
+[names]
+keep_unsplit = ["YouTube", "TikTok", "LinkedIn", "PayPal", "iPhone", "eBay", "McDonald", "McDonalds", "Starbucks", "Subway", "WhatsApp", "OpenAI"]

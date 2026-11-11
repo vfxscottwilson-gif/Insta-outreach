@@ -1,0 +1,62 @@
+ok   owner /
+ok   owner /dashboard
+ok   owner /leads
+ok   owner /leads?lead=ld_0100
+ok   owner /sheets
+ok   owner /sheets/sh_us
+ok   owner /sheets/sh_gb
+ok   owner /sheets/sh_nz
+ok   owner /sheets/sh_yt
+ok   owner /sheets/sh_ae
+ok   owner /geography
+ok   owner /niches
+ok   owner /quality
+ok   owner /team
+ok   owner /team/u_hina
+ok   owner /assignments
+ok   owner /approvals
+ok   owner /approvals?tab=trash
+ok   owner /approvals?tab=missing
+ok   owner /approvals?tab=outreach
+ok   owner /reports
+ok   owner /activity
+ok   owner /lists
+ok   owner /settings
+ok   owner Add lead dialog
+ok   owner Import dialog
+ok   owner Add sheet wizard
+ok   owner Invite person
+ok   owner Add country (Lists)
+ok   owner Add country (Overview)
+ok   owner Ctrl+K palette
+ok   owner open a country folder
+ok   owner approve a removal request (state changes)
+ok   owner view as employee and back
+ok   admin /
+ok   admin /team
+ok   admin /settings
+ok   admin /approvals
+ok   Hina (Contribute) /
+ok   Hina (Contribute) /leads
+ok   Hina (Contribute) /geography
+ok   Hina (Contribute) /approvals
+ok   Hina (Contribute) /niches
+ok   Hina (Contribute) blocked from admin pages
+ok   Hina Request removal dialog
+ok   Asad (View) /
+ok   Asad (View) /leads
+ok   Asad (View) /geography
+ok   Asad (View) /approvals
+ok   Asad (View) /niches
+ok   Asad (View) blocked from admin pages
+ok   Talha (assigned only) /
+ok   Talha (assigned only) /leads
+ok   Talha (assigned only) /geography
+ok   Talha (assigned only) /approvals
+ok   Talha (assigned only) /niches
+ok   Talha (assigned only) blocked from admin pages
+ok   signed out /sign-in
+ok   signed out /forgot-password
+ok   signed out is sent to sign-in
+
+60 steps passed, 0 failed

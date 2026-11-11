@@ -14,4 +14,4 @@
 | scraper-tools | packaged | yes (real downloads, checksum) | yes + TOOLS-MANIFEST | 2026-11-05 | gmaps.exe never run |
 | yt-creator-finder | packaged | yes (22 tests) | yes | 2026-11-05 | GitHub repo + secrets (user) |
 | harvey | packaged | yes (2804 pass, 1 Windows symlink fail); shortcut step untested | yes | 2026-11-05 | claude login + mailbox (user) |
-| database-crm (`database` is a link) | packaged around app\ (guides, installer, backup, secrets checklist) | yes (temp copy; 389/390 tests, 1 stale test in app) | yes | 2026-11-05 | user: service account, sheet links; duplicate folders from another chat to be folded into archive\ |
+| database (`database` is a link) | packaged around app\ (guides, installer, backup, secrets checklist) | yes (temp copy; 389/390 tests, 1 stale test in app) | yes | 2026-11-05 | user: service account, sheet links; duplicate folders from another chat to be folded into archive\ |

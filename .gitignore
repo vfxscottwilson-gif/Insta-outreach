@@ -38,3 +38,7 @@ demo_credentials.txt
 .venv/
 node_modules/
 __pycache__/
+
+
+# portable binaries downloaded by installers
+projects/*/install/bin/

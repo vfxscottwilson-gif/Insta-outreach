@@ -75,7 +75,7 @@ if (-not $DryRun) {
 if ((Test-Path $VPy) -and -not $DryRun) {
   Push-Location $App
   & $VPy src\selftest.py 2>&1 | Select-Object -Last 3
-  if ($LASTEXITCODE -eq 0) { Ok "self-test passed" } else { Write-Host "FAIL    self-test failed (see GUIDE\04-TROUBLESHOOTING.md)"; $bad++ }
+  if ($LASTEXITCODE -eq 0) { Ok "self-test passed" } else { Write-Host "FAIL    self-test failed (see Guide\Troubleshooting.md)"; $bad++ }
   Pop-Location
 }
 Write-Host "Install finished. Next: fill the rest of secrets\.env (names in secrets\SECRETS-CHECKLIST.md) and add the same values as GitHub repo secrets. Then run: .\install.ps1 -Check"

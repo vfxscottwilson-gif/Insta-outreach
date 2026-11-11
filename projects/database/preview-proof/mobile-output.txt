@@ -1,0 +1,51 @@
+owner: done
+employee: done
+signed out: done
+
+Tap targets under 44px (warnings, 42):
+  Sort by (137x36)
+  Count added dates by (263x36)
+  About business hours (24x24)
+  69 leads in Fitness. Open in Leads. (44x44)
+  68 leads in Professional services. Open  (44x44)
+  60 leads in YouTube creators. Open in Le (44x44)
+  59 leads in Events. Open in Leads. (44x44)
+  36 leads in Home and energy. Open in Lea (44x44)
+  About Unclassified (24x24)
+  32 leads in Unclassified. Open in Leads. (44x44)
+  Niche for Cosmetic dental studio (197x36)
+  Niche for Aesthetics lounge (197x36)
+  Niche for Plastic surgery centre (197x36)
+  Niche for Reformer pilates studio (197x36)
+  Niche for Wedding photographers (197x36)
+  Niche for Mortgage and loans (197x36)
+  Niche for Podcast studios (197x36)
+  194 leads, PRIME. Open in Leads. (44x44)
+  101 leads, PRIME-REVIEW. Open in Leads. (44x44)
+  223 leads, GROWING. Open in Leads. (44x44)
+  66 leads, HAS-AGENCY. Open in Leads. (44x44)
+  123 leads, POLISHED-NO-SIGNAL. Open in L (44x44)
+  What usable means (24x24)
+  US LeadsUnited States (74x38)
+  CA LeadsCanada (63x38)
+  GB LeadsUnited Kingdom (88x38)
+  AU LeadsAustralia (63x38)
+  NZ LeadsNew Zealand (71x38)
+  IE LeadsIreland (56x38)
+  AE LeadsUnited Arab Emirates (116x38)
+  YouTube CreatorsWorldwide (117x38)
+  AU Only (Sydney)Australia (115x38)
+  Export row limit, Hina Farooq (144x36)
+  Pakistan timeUS EasternUS CentralUS Moun (331x36)
+  212 leads in United States. Open in Lead (44x44)
+  168 leads in Australia. Open in Leads. (44x44)
+  106 leads in United Kingdom. Open in Lea (44x44)
+  94 leads in Canada. Open in Leads. (44x44)
+  51 leads in Ireland. Open in Leads. (44x44)
+  41 leads in New Zealand. Open in Leads. (44x44)
+  35 leads in United Arab Emirates. Open i (44x44)
+  Export row limit, Hina Farooq (144x36)
+
+Failures (0):
+
+mobile-check (chromium): all checks passed

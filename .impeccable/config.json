@@ -1,0 +1,20 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "arial",
+        "createdAt": "2026-11-04T05:58:48.450Z",
+        "reason": "Control-room brief (user request): password mask uses Arial so iOS Safari renders small bullets"
+      },
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "createdAt": "2026-11-04T05:58:49.096Z",
+        "reason": "Control-room relay of user instruction: keep the finalized interface; Inter is the CRM's established typeface"
+      }
+    ]
+  }
+}

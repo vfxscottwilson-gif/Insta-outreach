@@ -1,0 +1,1514 @@
+{
+  "proof/ui/clean-check.cjs": {
+    "mtime": 1793737973.0315928,
+    "seen": 1793812477.6963768,
+    "ast_hash": "36aa284e360505165cb246f240a7cbda",
+    "semantic_hash": ""
+  },
+  "vercel-link-khizarvfx-8915/project.json": {
+    "mtime": 1793768018.3189275,
+    "seen": 1793812477.6963768,
+    "ast_hash": "2227070156ccc6fd0997c2aca51ea732",
+    "semantic_hash": ""
+  },
+  "vercel-link-old-vfxscottwilson/project.json": {
+    "mtime": 1793731654.301048,
+    "seen": 1793812477.6963768,
+    "ast_hash": "305cf7f35c0ff1bdf57df431f7aa8bf4",
+    "semantic_hash": ""
+  },
+  "BRIEF.md": {
+    "mtime": 1793722983.3571072,
+    "seen": 1793812477.6963768,
+    "ast_hash": "417bd722ca0fe31e5b03994ad34eb5ec",
+    "semantic_hash": ""
+  },
+  "FACTS-CHECKED.md": {
+    "mtime": 1793726991.150678,
+    "seen": 1793812477.6963768,
+    "ast_hash": "baa4a1fa7de867de5efe20cb416c8913",
+    "semantic_hash": ""
+  },
+  "FEATURES.md": {
+    "mtime": 1793763334.8669276,
+    "seen": 1793812477.6963768,
+    "ast_hash": "f7add2e00c0d57c814cd5f62289ced28",
+    "semantic_hash": ""
+  },
+  "GUIDE.html": {
+    "mtime": 1793766054.8258672,
+    "seen": 1793812477.6963768,
+    "ast_hash": "e654db54167e4ba2592fac8163d8da66",
+    "semantic_hash": ""
+  },
+  "INPUTS.md": {
+    "mtime": 1793726191.6183722,
+    "seen": 1793812477.6963768,
+    "ast_hash": "c00e65ec954933978541b93310737a7b",
+    "semantic_hash": ""
+  },
+  "PROGRESS.md": {
+    "mtime": 1793774015.2785034,
+    "seen": 1793812477.6963768,
+    "ast_hash": "7097bc49140310782e6e3147f260b008",
+    "semantic_hash": ""
+  },
+  "ROADMAP.md": {
+    "mtime": 1793722584.0203874,
+    "seen": 1793812477.6963768,
+    "ast_hash": "4a02bd6cbf5175086e35108f51177f5e",
+    "semantic_hash": ""
+  },
+  "SECURITY-AUDIT.md": {
+    "mtime": 1793766965.4710648,
+    "seen": 1793812477.6963768,
+    "ast_hash": "dea0840e5d03021c2391efbfbc54b942",
+    "semantic_hash": ""
+  },
+  "UI-PLAN.md": {
+    "mtime": 1793730085.9970293,
+    "seen": 1793812477.6963768,
+    "ast_hash": "00e7eea079fe5ce432d971f1201976a7",
+    "semantic_hash": ""
+  },
+  "USER-GUIDE.md": {
+    "mtime": 1793770240.1529932,
+    "seen": 1793812477.6963768,
+    "ast_hash": "31d9bb3257d31072511117971e1e9128",
+    "semantic_hash": ""
+  },
+  "vercel-link-khizarvfx-8915/README.txt": {
+    "mtime": 1793768018.3209302,
+    "seen": 1793812477.6963768,
+    "ast_hash": "2b13c79d37d6ed82a3255b83b6815034",
+    "semantic_hash": ""
+  },
+  "vercel-link-old-vfxscottwilson/README.txt": {
+    "mtime": 1793731654.3020456,
+    "seen": 1793812477.6963768,
+    "ast_hash": "2b13c79d37d6ed82a3255b83b6815034",
+    "semantic_hash": ""
+  },
+  "proof/mobile/chromium-375x788-admin-home.png": {
+    "mtime": 1793773467.066524,
+    "seen": 1793812477.6963768,
+    "ast_hash": "227416c2bd348a2f2a9982c72d7e433f",
+    "semantic_hash": ""
+  },
+  "proof/mobile/chromium-375x788-admin-modal.png": {
+    "mtime": 1793773502.8698997,
+    "seen": 1793812477.6963768,
+    "ast_hash": "28ba75fb3fa55fa3f38a538b894171ae",
+    "semantic_hash": ""
+  },
+  "proof/mobile/chromium-375x788-admin-my-tasks.png": {
+    "mtime": 1793773471.2823868,
+    "seen": 1793812477.6963768,
+    "ast_hash": "0636d2a3df3e06cf62055638bf982a02",
+    "semantic_hash": ""
+  },
+  "proof/mobile/chromium-375x788-admin-task-panel.png": {
+    "mtime": 1793773499.6172647,
+    "seen": 1793812477.6963768,
+    "ast_hash": "0efd5db5dbd059be06aa1a680ef290a9",
+    "semantic_hash": ""
+  },
+  "proof/mobile/chromium-375x788-admin-tasks.png": {
+    "mtime": 1793773473.4220514,
+    "seen": 1793812477.6963768,
+    "ast_hash": "c46695f80fd5d488e3350a3f91679539",
+    "semantic_hash": ""
+  },
+  "proof/mobile/chromium-375x788-employee-home.png": {
+    "mtime": 1793773513.1665893,
+    "seen": 1793812477.6963768,
+    "ast_hash": "a531892041a3a6cf6b315cf2598547cc",
+    "semantic_hash": ""
+  },
+  "proof/mobile/chromium-375x788-employee-task-panel.png": {
+    "mtime": 1793773528.2304552,
+    "seen": 1793812477.6963768,
+    "ast_hash": "4a43314c0be331545167fd4fe6797663",
+    "semantic_hash": ""
+  },
+  "proof/mobile/webkit-320x672-admin-home.png": {
+    "mtime": 1793773620.302394,
+    "seen": 1793812477.6963768,
+    "ast_hash": "3e6a20b7146439dca0a53e6afe839274",
+    "semantic_hash": ""
+  },
+  "proof/mobile/webkit-320x672-admin-modal.png": {
+    "mtime": 1793773663.0675032,
+    "seen": 1793812477.6963768,
+    "ast_hash": "4486e89a8432cba19e44ed416ae90931",
+    "semantic_hash": ""
+  },
+  "proof/mobile/webkit-320x672-admin-my-tasks.png": {
+    "mtime": 1793773626.6424327,
+    "seen": 1793812477.6963768,
+    "ast_hash": "d43c2c87f251626f838e46fc762ea817",
+    "semantic_hash": ""
+  },
+  "proof/mobile/webkit-320x672-admin-task-panel.png": {
+    "mtime": 1793773659.0353322,
+    "seen": 1793812477.6963768,
+    "ast_hash": "10e7be475bb2b80a256e5cec32e641b6",
+    "semantic_hash": ""
+  },
+  "proof/mobile/webkit-320x672-admin-tasks.png": {
+    "mtime": 1793773629.1476314,
+    "seen": 1793812477.6963768,
+    "ast_hash": "72024315e8acf4e213accac5cd2e760b",
+    "semantic_hash": ""
+  },
+  "proof/mobile/webkit-320x672-employee-home.png": {
+    "mtime": 1793773675.2724335,
+    "seen": 1793812477.6963768,
+    "ast_hash": "8f3c0e66e3ef3987d37d5285aa5bd546",
+    "semantic_hash": ""
+  },
+  "proof/mobile/webkit-375x788-admin-audit.png": {
+    "mtime": 1793773654.2745137,
+    "seen": 1793812477.6963768,
+    "ast_hash": "f0d1c4adc122c66f80ba0c9a76644c22",
+    "semantic_hash": ""
+  },
+  "proof/mobile/webkit-375x788-admin-dashboards-my-progress.png": {
+    "mtime": 1793773647.103018,
+    "seen": 1793812477.6963768,
+    "ast_hash": "73c23786eca28e48d8235b7ecd0d0831",
+    "semantic_hash": ""
+  },
+  "proof/mobile/webkit-375x788-admin-dashboards.png": {
+    "mtime": 1793773643.982756,
+    "seen": 1793812477.6963768,
+    "ast_hash": "ce6934d62e143e137763257f9ef114e0",
+    "semantic_hash": ""
+  },
+  "proof/mobile/webkit-375x788-admin-docs.png": {
+    "mtime": 1793773641.4711,
+    "seen": 1793812477.6963768,
+    "ast_hash": "935a90177f298b431a427b8b41019e9a",
+    "semantic_hash": ""
+  },
+  "proof/mobile/webkit-375x788-admin-home.png": {
+    "mtime": 1793773620.3163905,
+    "seen": 1793812477.6963768,
+    "ast_hash": "9c8c32457a27859012d49820190c1de9",
+    "semantic_hash": ""
+  },
+  "proof/mobile/webkit-375x788-admin-inbox.png": {
+    "mtime": 1793773623.9154165,
+    "seen": 1793812477.6963768,
+    "ast_hash": "f936ad9230c3a413662309827112a21b",
+    "semantic_hash": ""
+  },
+  "proof/mobile/webkit-375x788-admin-modal.png": {
+    "mtime": 1793773665.3911784,
+    "seen": 1793812477.6963768,
+    "ast_hash": "6df5180ae097a35b88a1da3beec68848",
+    "semantic_hash": ""
+  },
+  "proof/mobile/webkit-375x788-admin-my-tasks.png": {
+    "mtime": 1793773626.2803957,
+    "seen": 1793812477.6963768,
+    "ast_hash": "31494ec2113347e1de5bf7e32409ce1a",
+    "semantic_hash": ""
+  },
+  "proof/mobile/webkit-375x788-admin-projects.png": {
+    "mtime": 1793773631.408831,
+    "seen": 1793812477.6963768,
+    "ast_hash": "f30341c4cd092bfa8c62447b0a3292c0",
+    "semantic_hash": ""
+  },
+  "proof/mobile/webkit-375x788-admin-reports-daily.png": {
+    "mtime": 1793773639.1571898,
+    "seen": 1793812477.6963768,
+    "ast_hash": "45bb6bebe398a9f1c6366eb1133e3e91",
+    "semantic_hash": ""
+  },
+  "proof/mobile/webkit-375x788-admin-reports-hourly.png": {
+    "mtime": 1793773636.6705296,
+    "seen": 1793812477.6963768,
+    "ast_hash": "99b343287169ddedab0d2a77ee7f8048",
+    "semantic_hash": ""
+  },
+  "proof/mobile/webkit-375x788-admin-settings.png": {
+    "mtime": 1793773656.6745443,
+    "seen": 1793812477.6963768,
+    "ast_hash": "0a97018dbdfb70239230302d396fb922",
+    "semantic_hash": ""
+  },
+  "proof/mobile/webkit-375x788-admin-task-panel.png": {
+    "mtime": 1793773660.800959,
+    "seen": 1793812477.6963768,
+    "ast_hash": "721183e57b107bf6d77d319ed4bd9800",
+    "semantic_hash": ""
+  },
+  "proof/mobile/webkit-375x788-admin-tasks.png": {
+    "mtime": 1793773628.7806313,
+    "seen": 1793812477.6963768,
+    "ast_hash": "906f28a85d9916e56e4fd60a50eb25a6",
+    "semantic_hash": ""
+  },
+  "proof/mobile/webkit-375x788-admin-teams.png": {
+    "mtime": 1793773649.7115016,
+    "seen": 1793812477.6963768,
+    "ast_hash": "86cc40232a11f9601f0af71758ac9a67",
+    "semantic_hash": ""
+  },
+  "proof/mobile/webkit-375x788-admin-timesheet.png": {
+    "mtime": 1793773634.1497402,
+    "seen": 1793812477.6963768,
+    "ast_hash": "3986bdd155d4dc51d13d684cef8c5a5e",
+    "semantic_hash": ""
+  },
+  "proof/mobile/webkit-375x788-employee-home.png": {
+    "mtime": 1793773677.8923068,
+    "seen": 1793812477.6963768,
+    "ast_hash": "fe5e12bcef86ec05d3df87eef7ec0e0a",
+    "semantic_hash": ""
+  },
+  "proof/mobile/webkit-375x788-employee-my-tasks.png": {
+    "mtime": 1793773680.4533575,
+    "seen": 1793812477.6963768,
+    "ast_hash": "65bcdf1a5054872edb6abfe409808853",
+    "semantic_hash": ""
+  },
+  "proof/mobile/webkit-375x788-employee-task-panel.png": {
+    "mtime": 1793773696.0073292,
+    "seen": 1793812477.6963768,
+    "ast_hash": "0e57939edc36a44c789fc5e01f70aa18",
+    "semantic_hash": ""
+  },
+  "proof/mobile/webkit-375x788-employee-timesheet.png": {
+    "mtime": 1793773683.076405,
+    "seen": 1793812477.6963768,
+    "ast_hash": "85aeeab1a877e4093e736f1a0c388149",
+    "semantic_hash": ""
+  },
+  "proof/mobile/webkit-788x375-admin-home.png": {
+    "mtime": 1793773706.121572,
+    "seen": 1793812477.6963768,
+    "ast_hash": "f925e6b2a565a3d9a80217919793dcf0",
+    "semantic_hash": ""
+  },
+  "proof/mobile/webkit-788x375-admin-modal.png": {
+    "mtime": 1793773751.2681775,
+    "seen": 1793812477.6963768,
+    "ast_hash": "a333e3c3a9e8f3677fafd92610639191",
+    "semantic_hash": ""
+  },
+  "proof/mobile/webkit-788x375-admin-my-tasks.png": {
+    "mtime": 1793773710.5877745,
+    "seen": 1793812477.6963768,
+    "ast_hash": "a467ef292d176cf4b0e04d86e6adf738",
+    "semantic_hash": ""
+  },
+  "proof/mobile/webkit-788x375-admin-task-panel.png": {
+    "mtime": 1793773747.1723773,
+    "seen": 1793812477.6963768,
+    "ast_hash": "dbba48f6cd233d90004ac0ca97419bc8",
+    "semantic_hash": ""
+  },
+  "proof/mobile/webkit-788x375-admin-tasks.png": {
+    "mtime": 1793773713.1739542,
+    "seen": 1793812477.6963768,
+    "ast_hash": "a07d3da5deed1cd26d9f7e33fccd8403",
+    "semantic_hash": ""
+  },
+  "proof/mobile/webkit-788x375-employee-home.png": {
+    "mtime": 1793773762.861573,
+    "seen": 1793812477.6963768,
+    "ast_hash": "d67ae75b6c014d5dfbfb671fdc18bc88",
+    "semantic_hash": ""
+  },
+  "proof/mobile/webkit-788x375-employee-task-panel.png": {
+    "mtime": 1793773780.4631326,
+    "seen": 1793812477.6963768,
+    "ast_hash": "e7f7a5c394fccd6318bf8f1532cac832",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-desktop-audit.png": {
+    "mtime": 1793769914.8116882,
+    "seen": 1793812477.6963768,
+    "ast_hash": "df31163a429eb372c8fc0392664b4f89",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-desktop-dashboards-my-progress.png": {
+    "mtime": 1793769908.78018,
+    "seen": 1793812477.6963768,
+    "ast_hash": "40d5f386eee0eafd60fa0cf8f460e914",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-desktop-dashboards.png": {
+    "mtime": 1793769906.7465963,
+    "seen": 1793812477.6963768,
+    "ast_hash": "d43438c8c6d2263d7452013609c74efd",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-desktop-docs.png": {
+    "mtime": 1793769904.6495597,
+    "seen": 1793812477.6963768,
+    "ast_hash": "e2ea360a7d515242e59c35a412fe80ee",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-desktop-home.png": {
+    "mtime": 1793769888.603266,
+    "seen": 1793812477.6963768,
+    "ast_hash": "fbda6c9a738be78a958e0d1100cd27dc",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-desktop-inbox.png": {
+    "mtime": 1793769890.5449488,
+    "seen": 1793812477.6963768,
+    "ast_hash": "a0f83b069c3655c400b0b84df1020efe",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-desktop-my-tasks.png": {
+    "mtime": 1793769892.520668,
+    "seen": 1793812477.6963768,
+    "ast_hash": "ae2f457d3372e96aa79acc53c0fb0c63",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-desktop-projects.png": {
+    "mtime": 1793769896.6497908,
+    "seen": 1793812477.6963768,
+    "ast_hash": "52b2229ada4886b2bd6795dde2e06258",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-desktop-reports-daily.png": {
+    "mtime": 1793769902.7116132,
+    "seen": 1793812477.6963768,
+    "ast_hash": "cf4a9d6e5911bfe1261ca7ff325c7238",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-desktop-reports-hourly.png": {
+    "mtime": 1793769900.6779046,
+    "seen": 1793812477.6963768,
+    "ast_hash": "4dcdf2ee80ea9c685466d240a640cfc5",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-desktop-settings.png": {
+    "mtime": 1793769916.9108498,
+    "seen": 1793812477.6963768,
+    "ast_hash": "1ea003e528c652ffff93a59cf4a9032d",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-desktop-tasks.png": {
+    "mtime": 1793769894.6409762,
+    "seen": 1793812477.6963768,
+    "ast_hash": "1191f9859ab4fa8dae759819f60d18e7",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-desktop-team.png": {
+    "mtime": 1793769912.7908628,
+    "seen": 1793812477.6963768,
+    "ast_hash": "c1841052572a36aa6cd36ed6cee0c401",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-desktop-teams.png": {
+    "mtime": 1793769910.7438219,
+    "seen": 1793812477.6963768,
+    "ast_hash": "9ec4d212594fd26915569a72af717e73",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-desktop-timesheet.png": {
+    "mtime": 1793769898.709145,
+    "seen": 1793812477.6963768,
+    "ast_hash": "77ae2ecc5dc5205dd99e22c57023a472",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-phone-audit.png": {
+    "mtime": 1793769847.084785,
+    "seen": 1793812477.6963768,
+    "ast_hash": "978151e82bc915da061a828ee1059d54",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-phone-dashboards-my-progress.png": {
+    "mtime": 1793769841.2059853,
+    "seen": 1793812477.6963768,
+    "ast_hash": "8ef9df4259a82e7f7f5718cddd29e08a",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-phone-dashboards.png": {
+    "mtime": 1793769839.2608497,
+    "seen": 1793812477.6963768,
+    "ast_hash": "c4335bd4f3ce34477f017d03b28d8d50",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-phone-docs.png": {
+    "mtime": 1793769837.2240827,
+    "seen": 1793812477.6963768,
+    "ast_hash": "c15d2f634f7d4a00d32241e40953a905",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-phone-home.png": {
+    "mtime": 1793769820.3558192,
+    "seen": 1793812477.6963768,
+    "ast_hash": "78cf125c26c32426c259a6bd3f07c012",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-phone-inbox.png": {
+    "mtime": 1793769822.3557625,
+    "seen": 1793812477.6963768,
+    "ast_hash": "e091432682a154a2f88ebcfd52a3aadf",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-phone-my-tasks.png": {
+    "mtime": 1793769824.4533107,
+    "seen": 1793812477.6963768,
+    "ast_hash": "b219517f226912236554215d2288db64",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-phone-projects.png": {
+    "mtime": 1793769829.2548432,
+    "seen": 1793812477.6963768,
+    "ast_hash": "db4cf3ea78aa62c9541935e6663f3bbf",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-phone-reports-daily.png": {
+    "mtime": 1793769835.2385917,
+    "seen": 1793812477.6963768,
+    "ast_hash": "cbd02d1b744b41b27a44b8bb62da8d28",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-phone-reports-hourly.png": {
+    "mtime": 1793769833.287089,
+    "seen": 1793812477.6963768,
+    "ast_hash": "c8bb2bd72b47f4f1669561f97d72184b",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-phone-settings.png": {
+    "mtime": 1793769849.1716511,
+    "seen": 1793812477.6963768,
+    "ast_hash": "f08d0cda4fa608d11d757c53901418b4",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-phone-tasks.png": {
+    "mtime": 1793769827.1553226,
+    "seen": 1793812477.6963768,
+    "ast_hash": "9f80595ed94dbfa519ae256fda97669b",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-phone-team.png": {
+    "mtime": 1793769845.1620927,
+    "seen": 1793812477.6963768,
+    "ast_hash": "ec25223ee2cc9198f5d0ab894388da26",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-phone-teams.png": {
+    "mtime": 1793769843.184225,
+    "seen": 1793812477.6963768,
+    "ast_hash": "268c49ff03814f01a430f893b9054581",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-phone-timesheet.png": {
+    "mtime": 1793769831.2743986,
+    "seen": 1793812477.6963768,
+    "ast_hash": "7a8a528b9b64ac57719635ea31ddd9af",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-tablet-audit.png": {
+    "mtime": 1793769881.1302135,
+    "seen": 1793812477.6963768,
+    "ast_hash": "fa396e393c2ddea96eee1981d6ddff94",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-tablet-dashboards-my-progress.png": {
+    "mtime": 1793769875.0079482,
+    "seen": 1793812477.6963768,
+    "ast_hash": "d8314d67a0140b667f6a2d1db172c4c9",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-tablet-dashboards.png": {
+    "mtime": 1793769873.0265648,
+    "seen": 1793812477.6963768,
+    "ast_hash": "f10c1d78adf04fd54afd29ae3ea66752",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-tablet-docs.png": {
+    "mtime": 1793769870.9446616,
+    "seen": 1793812477.6963768,
+    "ast_hash": "18ae06604423ac902dd2219cd23beb13",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-tablet-home.png": {
+    "mtime": 1793769854.6815338,
+    "seen": 1793812477.6963768,
+    "ast_hash": "21d040fef0a43e155467c0f45921a69e",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-tablet-inbox.png": {
+    "mtime": 1793769856.6937337,
+    "seen": 1793812477.6963768,
+    "ast_hash": "861d154dd1ec2ae45cb515411f009f72",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-tablet-my-tasks.png": {
+    "mtime": 1793769858.7188034,
+    "seen": 1793812477.6963768,
+    "ast_hash": "641671f3005dca74b47d9f0212bad9e6",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-tablet-projects.png": {
+    "mtime": 1793769862.9031656,
+    "seen": 1793812477.6963768,
+    "ast_hash": "25da99d3cca9dac9a4f445dd4443372a",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-tablet-reports-daily.png": {
+    "mtime": 1793769868.9416845,
+    "seen": 1793812477.6963768,
+    "ast_hash": "ae80d311b66b5884e3bc31764283ffc9",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-tablet-reports-hourly.png": {
+    "mtime": 1793769866.9664829,
+    "seen": 1793812477.6963768,
+    "ast_hash": "66ed68d13cf05636511c37d117991f7b",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-tablet-settings.png": {
+    "mtime": 1793769883.254978,
+    "seen": 1793812477.6963768,
+    "ast_hash": "dec44589ed7579b84d5f0a8b18f37db6",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-tablet-tasks.png": {
+    "mtime": 1793769860.797547,
+    "seen": 1793812477.6963768,
+    "ast_hash": "3d310b14e3652690bc9d6a3983fa458f",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-tablet-team.png": {
+    "mtime": 1793769879.167872,
+    "seen": 1793812477.6963768,
+    "ast_hash": "5295d3a6e78f7d2dab2757fc6a310eab",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-tablet-teams.png": {
+    "mtime": 1793769877.166203,
+    "seen": 1793812477.6963768,
+    "ast_hash": "ff09928876e309f99ae965684ee3fc3c",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-dark-tablet-timesheet.png": {
+    "mtime": 1793769864.9582164,
+    "seen": 1793812477.6963768,
+    "ast_hash": "61050b2d994dda6a94057af96b02f988",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-desktop-audit.png": {
+    "mtime": 1793770014.9525385,
+    "seen": 1793812477.6963768,
+    "ast_hash": "a61c163b172eb33f3705f80b88e5c687",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-desktop-dashboards-my-progress.png": {
+    "mtime": 1793770008.6356127,
+    "seen": 1793812477.6963768,
+    "ast_hash": "0b78ec82a8989575055ab14ea7c940f7",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-desktop-dashboards.png": {
+    "mtime": 1793770006.5115664,
+    "seen": 1793812477.697355,
+    "ast_hash": "da9a7e9aa59fef09ef6bc57df443bf96",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-desktop-docs.png": {
+    "mtime": 1793770004.394749,
+    "seen": 1793812477.697355,
+    "ast_hash": "2a97f7c5747c27587aa5171be9a377c8",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-desktop-home.png": {
+    "mtime": 1793769988.2906513,
+    "seen": 1793812477.697355,
+    "ast_hash": "e877a229bbd2646374fba3db0ee9c7d7",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-desktop-inbox.png": {
+    "mtime": 1793769990.1688578,
+    "seen": 1793812477.697355,
+    "ast_hash": "0c202a56af9f7a331da4cc90bd3c28d3",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-desktop-my-tasks.png": {
+    "mtime": 1793769992.178047,
+    "seen": 1793812477.697355,
+    "ast_hash": "535a28f0a6ae7089e2367c69ddc75e7c",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-desktop-projects.png": {
+    "mtime": 1793769996.1651268,
+    "seen": 1793812477.697355,
+    "ast_hash": "def4ce863e58862be94634b5077a56db",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-desktop-reports-daily.png": {
+    "mtime": 1793770002.36822,
+    "seen": 1793812477.697355,
+    "ast_hash": "6df8d86c6438edadd5c86e3f13a67faa",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-desktop-reports-hourly.png": {
+    "mtime": 1793770000.4377675,
+    "seen": 1793812477.697355,
+    "ast_hash": "f2b98ff7a5a0a93c94b26ee6951f28ba",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-desktop-settings.png": {
+    "mtime": 1793770017.0559664,
+    "seen": 1793812477.697355,
+    "ast_hash": "d655e7adb5d6d51fdca6f39aecd4e186",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-desktop-tasks.png": {
+    "mtime": 1793769994.320156,
+    "seen": 1793812477.697355,
+    "ast_hash": "a53c151073f89f43ad45a3b381b2f8b4",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-desktop-team.png": {
+    "mtime": 1793770012.8220592,
+    "seen": 1793812477.697355,
+    "ast_hash": "e1b2347c84289f98372fd9e5d5b7f676",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-desktop-teams.png": {
+    "mtime": 1793770010.7724228,
+    "seen": 1793812477.697355,
+    "ast_hash": "872b928e053e49ac516cf74f87720267",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-desktop-timesheet.png": {
+    "mtime": 1793769998.245012,
+    "seen": 1793812477.697355,
+    "ast_hash": "2ef08a017bee2cad7b0b35c81116d990",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-phone-audit.png": {
+    "mtime": 1793769947.7285244,
+    "seen": 1793812477.697355,
+    "ast_hash": "240b3f9af9fd77a9c5cb6f4fb80ee87f",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-phone-dashboards-my-progress.png": {
+    "mtime": 1793769941.7405548,
+    "seen": 1793812477.697355,
+    "ast_hash": "3853ab47db0a9dde11007bdbb8648bab",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-phone-dashboards.png": {
+    "mtime": 1793769939.9050322,
+    "seen": 1793812477.697355,
+    "ast_hash": "6ae2655a3f5b0f5c249f6b8b9cbad8a1",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-phone-docs.png": {
+    "mtime": 1793769937.9503872,
+    "seen": 1793812477.697355,
+    "ast_hash": "c0afb9a71de4115f4db4104674a9b2b2",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-phone-home.png": {
+    "mtime": 1793769922.0042598,
+    "seen": 1793812477.697355,
+    "ast_hash": "7f168a7440f7b15eafc14326200a5a6b",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-phone-inbox.png": {
+    "mtime": 1793769923.9300375,
+    "seen": 1793812477.697355,
+    "ast_hash": "77bf1f4e3369d1a5863025a3fc14e814",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-phone-my-tasks.png": {
+    "mtime": 1793769925.908529,
+    "seen": 1793812477.697355,
+    "ast_hash": "4e9462ed6e327f96ffccb75ebb565ebe",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-phone-projects.png": {
+    "mtime": 1793769929.8375058,
+    "seen": 1793812477.697355,
+    "ast_hash": "034f2d1a07ec03bc617e2f28063b9da2",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-phone-reports-daily.png": {
+    "mtime": 1793769936.0177617,
+    "seen": 1793812477.697355,
+    "ast_hash": "087247559df16f8f370cee82e3563bef",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-phone-reports-hourly.png": {
+    "mtime": 1793769933.8220131,
+    "seen": 1793812477.697355,
+    "ast_hash": "bcd6a2ab83558fff40551348dc4e9a0c",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-phone-settings.png": {
+    "mtime": 1793769949.733064,
+    "seen": 1793812477.697355,
+    "ast_hash": "f6f016f45d4b88dd1136abeb8095d8c8",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-phone-tasks.png": {
+    "mtime": 1793769927.9158792,
+    "seen": 1793812477.697355,
+    "ast_hash": "75269df83eb46e0f916736789374f114",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-phone-team.png": {
+    "mtime": 1793769945.799212,
+    "seen": 1793812477.697355,
+    "ast_hash": "d64c545342677ddc9e876aeca044202d",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-phone-teams.png": {
+    "mtime": 1793769943.7309852,
+    "seen": 1793812477.697355,
+    "ast_hash": "9f968288df3d4d6c1c6bb58ca75b0d66",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-phone-timesheet.png": {
+    "mtime": 1793769931.816432,
+    "seen": 1793812477.697355,
+    "ast_hash": "90d0fe8e8cfe6c0a2fa48b5cff6b0d41",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-tablet-audit.png": {
+    "mtime": 1793769980.9455695,
+    "seen": 1793812477.697355,
+    "ast_hash": "4312149daef477035b0be2e18591de6b",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-tablet-dashboards-my-progress.png": {
+    "mtime": 1793769974.9265208,
+    "seen": 1793812477.697355,
+    "ast_hash": "aed427de488890d58fc4f33d197a925b",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-tablet-dashboards.png": {
+    "mtime": 1793769972.9015596,
+    "seen": 1793812477.697355,
+    "ast_hash": "94b24e55025d8bc00b1c38f26a5d84df",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-tablet-docs.png": {
+    "mtime": 1793769970.9440374,
+    "seen": 1793812477.697355,
+    "ast_hash": "f0d4f041633a38991ad8e162aaf02d31",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-tablet-home.png": {
+    "mtime": 1793769954.863631,
+    "seen": 1793812477.697355,
+    "ast_hash": "738a204d110ea66a7382c4764bd5f369",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-tablet-inbox.png": {
+    "mtime": 1793769956.8649921,
+    "seen": 1793812477.697355,
+    "ast_hash": "68f6935680373e1f5c3617a4a25780bf",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-tablet-my-tasks.png": {
+    "mtime": 1793769958.913872,
+    "seen": 1793812477.697355,
+    "ast_hash": "21f783656f717a9d57cc04b4edff748e",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-tablet-projects.png": {
+    "mtime": 1793769962.9000175,
+    "seen": 1793812477.697355,
+    "ast_hash": "8ef1f93eb710d0e7d95b5e47e6cb252c",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-tablet-reports-daily.png": {
+    "mtime": 1793769968.9596412,
+    "seen": 1793812477.697355,
+    "ast_hash": "f383f3e583a7501690c6b0dfb609cbd9",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-tablet-reports-hourly.png": {
+    "mtime": 1793769966.9702034,
+    "seen": 1793812477.697355,
+    "ast_hash": "b766988efeb0ef6209560e19181994dd",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-tablet-settings.png": {
+    "mtime": 1793769983.0366504,
+    "seen": 1793812477.697355,
+    "ast_hash": "0928a904dea424fdcd8f7ba8ddc2e350",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-tablet-tasks.png": {
+    "mtime": 1793769960.9179542,
+    "seen": 1793812477.697355,
+    "ast_hash": "dae844987ec1989da93535cbe5952efe",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-tablet-team.png": {
+    "mtime": 1793769978.9604652,
+    "seen": 1793812477.697355,
+    "ast_hash": "9454f325cb34017d19d8dba3a4a3ff62",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-tablet-teams.png": {
+    "mtime": 1793769976.9674704,
+    "seen": 1793812477.697355,
+    "ast_hash": "eac4ada6150e856a5b375d684c52d977",
+    "semantic_hash": ""
+  },
+  "proof/qa/admin-light-tablet-timesheet.png": {
+    "mtime": 1793769964.928752,
+    "seen": 1793812477.697355,
+    "ast_hash": "4553c51ed10c8a87c7a5a62a162fefcb",
+    "semantic_hash": ""
+  },
+  "proof/qa/dark-desktop-forgot.png": {
+    "mtime": 1793768175.767623,
+    "seen": 1793812477.697355,
+    "ast_hash": "d39656e97d268b416a62b97c00fdfab7",
+    "semantic_hash": ""
+  },
+  "proof/qa/dark-desktop-login.png": {
+    "mtime": 1793768174.975432,
+    "seen": 1793812477.697355,
+    "ast_hash": "3d4414a6ea67a1c8033549ac26f170ac",
+    "semantic_hash": ""
+  },
+  "proof/qa/dark-desktop-reset.png": {
+    "mtime": 1793768176.5932386,
+    "seen": 1793812477.697355,
+    "ast_hash": "09e0a031c9bbc0ca28b056f08e8593b1",
+    "semantic_hash": ""
+  },
+  "proof/qa/dark-phone-forgot.png": {
+    "mtime": 1793768165.1742089,
+    "seen": 1793812477.697355,
+    "ast_hash": "30888527de3c486e091b854afda90826",
+    "semantic_hash": ""
+  },
+  "proof/qa/dark-phone-login.png": {
+    "mtime": 1793768164.3860376,
+    "seen": 1793812477.697355,
+    "ast_hash": "ea137feb0120a03fc3f5a30f5bfb4325",
+    "semantic_hash": ""
+  },
+  "proof/qa/dark-phone-reset.png": {
+    "mtime": 1793768165.941485,
+    "seen": 1793812477.697355,
+    "ast_hash": "8b609fc122fc25da95a85a583095379c",
+    "semantic_hash": ""
+  },
+  "proof/qa/dark-tablet-forgot.png": {
+    "mtime": 1793768170.2811387,
+    "seen": 1793812477.697355,
+    "ast_hash": "73464df0b552fa40e039745cdc0e37d4",
+    "semantic_hash": ""
+  },
+  "proof/qa/dark-tablet-login.png": {
+    "mtime": 1793768169.479333,
+    "seen": 1793812477.697355,
+    "ast_hash": "80b9f176a830d7e306e4c8bc2a038249",
+    "semantic_hash": ""
+  },
+  "proof/qa/dark-tablet-reset.png": {
+    "mtime": 1793768171.0909407,
+    "seen": 1793812477.697355,
+    "ast_hash": "54f13a642a74f31efddd2abde5abd027",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-clock-after-in.png": {
+    "mtime": 1793770080.538119,
+    "seen": 1793812477.697355,
+    "ast_hash": "11196a40dff3a1181885fbe3ba1bd371",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-dark-desktop-home.png": {
+    "mtime": 1793770057.3288164,
+    "seen": 1793812477.697355,
+    "ast_hash": "44e6d3bcab4e181aee7a2a8978df6311",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-dark-desktop-my-tasks.png": {
+    "mtime": 1793770059.330297,
+    "seen": 1793812477.697355,
+    "ast_hash": "ce513155c5a2ff58a32ad92a63924ca1",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-dark-desktop-reports-daily.png": {
+    "mtime": 1793770065.4553752,
+    "seen": 1793812477.697355,
+    "ast_hash": "2f846393fd3d8bd2b7023b4203dbfdc3",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-dark-desktop-reports-hourly.png": {
+    "mtime": 1793770063.4810748,
+    "seen": 1793812477.697355,
+    "ast_hash": "100e55917ca4065120c20b558a0b670c",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-dark-desktop-settings.png": {
+    "mtime": 1793770069.560495,
+    "seen": 1793812477.697355,
+    "ast_hash": "409ec5f104c3972aae34245de59b8701",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-dark-desktop-teams.png": {
+    "mtime": 1793770067.4880786,
+    "seen": 1793812477.697355,
+    "ast_hash": "2d92924a975fb3fd70c3a545f4ac18fc",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-dark-desktop-timesheet.png": {
+    "mtime": 1793770061.4084313,
+    "seen": 1793812477.697355,
+    "ast_hash": "b2d597a99ccd94e7511743f64212f7da",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-dark-phone-home.png": {
+    "mtime": 1793770022.656542,
+    "seen": 1793812477.697355,
+    "ast_hash": "4d0edeecd36a23f47bab3ee599137ae0",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-dark-phone-my-tasks.png": {
+    "mtime": 1793770024.7604485,
+    "seen": 1793812477.697355,
+    "ast_hash": "7bfaa26c04b7051d8b6f503b6dc5ba2b",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-dark-phone-reports-daily.png": {
+    "mtime": 1793770030.7998867,
+    "seen": 1793812477.697355,
+    "ast_hash": "9078560f73f727731d1e108e74023f3e",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-dark-phone-reports-hourly.png": {
+    "mtime": 1793770028.8166509,
+    "seen": 1793812477.697355,
+    "ast_hash": "6a20eeb85936174c77f036de839c4ada",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-dark-phone-settings.png": {
+    "mtime": 1793770034.7652614,
+    "seen": 1793812477.697355,
+    "ast_hash": "3d639974453ea8794fb51cddef9532f7",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-dark-phone-teams.png": {
+    "mtime": 1793770032.7767272,
+    "seen": 1793812477.697355,
+    "ast_hash": "7eb1c996efa01aa69c5bc76254671482",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-dark-phone-timesheet.png": {
+    "mtime": 1793770026.7882633,
+    "seen": 1793812477.697355,
+    "ast_hash": "4cb399e097f9765ad5624c621fdc1e42",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-dark-tablet-home.png": {
+    "mtime": 1793770040.0119464,
+    "seen": 1793812477.697355,
+    "ast_hash": "d24c1924b4564b2d16a843d3b1cdac55",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-dark-tablet-my-tasks.png": {
+    "mtime": 1793770041.9929433,
+    "seen": 1793812477.697355,
+    "ast_hash": "be7933de194baea9f444d30e6e9b6da8",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-dark-tablet-reports-daily.png": {
+    "mtime": 1793770048.0928407,
+    "seen": 1793812477.697355,
+    "ast_hash": "a974e1edeecc98106444193c63827257",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-dark-tablet-reports-hourly.png": {
+    "mtime": 1793770046.0944948,
+    "seen": 1793812477.697355,
+    "ast_hash": "4db3fb4bc6effccc03fe2b89610f993f",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-dark-tablet-settings.png": {
+    "mtime": 1793770052.1106708,
+    "seen": 1793812477.697355,
+    "ast_hash": "6f8a806d1e4878f9374e4ef58afcd089",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-dark-tablet-teams.png": {
+    "mtime": 1793770050.0512972,
+    "seen": 1793812477.697355,
+    "ast_hash": "7ccc2351dc1daa55e49e3c70a6815289",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-dark-tablet-timesheet.png": {
+    "mtime": 1793770043.9967737,
+    "seen": 1793812477.697355,
+    "ast_hash": "ec8c5ca0855da5710c08a7505930ac7a",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-light-desktop-home.png": {
+    "mtime": 1793770120.135257,
+    "seen": 1793812477.697355,
+    "ast_hash": "71d5d6a2d6b0e07947e07196817be217",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-light-desktop-my-tasks.png": {
+    "mtime": 1793770122.208676,
+    "seen": 1793812477.697355,
+    "ast_hash": "2b3064118c22228ac0cbd28c8ce0dbf2",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-light-desktop-reports-daily.png": {
+    "mtime": 1793770128.3725624,
+    "seen": 1793812477.697355,
+    "ast_hash": "05ffe68a7be7edd76e9297fa5b76b0ec",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-light-desktop-reports-hourly.png": {
+    "mtime": 1793770126.280295,
+    "seen": 1793812477.697355,
+    "ast_hash": "80f2a02e88ef31bcd4410d2bace678ac",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-light-desktop-settings.png": {
+    "mtime": 1793770132.5396054,
+    "seen": 1793812477.697355,
+    "ast_hash": "6bd007816949ca1322b3520ffa5358ba",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-light-desktop-teams.png": {
+    "mtime": 1793770130.3858736,
+    "seen": 1793812477.697355,
+    "ast_hash": "17a505453a26a261605f39fa1507196c",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-light-desktop-timesheet.png": {
+    "mtime": 1793770124.2298932,
+    "seen": 1793812477.697355,
+    "ast_hash": "cd19b835665f7e20640cd8ee87641a24",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-light-phone-home.png": {
+    "mtime": 1793770085.8186026,
+    "seen": 1793812477.697355,
+    "ast_hash": "5bd5815ddcb497c71fd4780ff8ef7c2a",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-light-phone-my-tasks.png": {
+    "mtime": 1793770087.6962757,
+    "seen": 1793812477.697355,
+    "ast_hash": "ac7475556e082a8c0dc0ec0b2743c552",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-light-phone-reports-daily.png": {
+    "mtime": 1793770093.7445564,
+    "seen": 1793812477.697355,
+    "ast_hash": "bb6e225ecad86fb22d51bb9a8b065623",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-light-phone-reports-hourly.png": {
+    "mtime": 1793770091.8129776,
+    "seen": 1793812477.697355,
+    "ast_hash": "9c21cbac86634371395348e14bf4130c",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-light-phone-settings.png": {
+    "mtime": 1793770097.6808329,
+    "seen": 1793812477.697355,
+    "ast_hash": "1c14cbb3e717ac3279102f5e512c7877",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-light-phone-teams.png": {
+    "mtime": 1793770095.7104647,
+    "seen": 1793812477.697355,
+    "ast_hash": "670c6f35852ead537ef906f56639f584",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-light-phone-timesheet.png": {
+    "mtime": 1793770089.789169,
+    "seen": 1793812477.697355,
+    "ast_hash": "4ebe2263bed7cbe35b8145f4fa43197f",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-light-tablet-home.png": {
+    "mtime": 1793770102.8605587,
+    "seen": 1793812477.697355,
+    "ast_hash": "eeaa4c06d2a00d811026a245fc857ac5",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-light-tablet-my-tasks.png": {
+    "mtime": 1793770104.8306525,
+    "seen": 1793812477.697355,
+    "ast_hash": "62d96c9a1fa29f885807020a447b58f1",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-light-tablet-reports-daily.png": {
+    "mtime": 1793770110.9115286,
+    "seen": 1793812477.697355,
+    "ast_hash": "9921b76f3f5fc895303688457d5daeb7",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-light-tablet-reports-hourly.png": {
+    "mtime": 1793770108.811252,
+    "seen": 1793812477.697355,
+    "ast_hash": "121e050cde5aedaab8a58a287bd735f8",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-light-tablet-settings.png": {
+    "mtime": 1793770114.90491,
+    "seen": 1793812477.697355,
+    "ast_hash": "567e3fc1e807223e5953058588c82d85",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-light-tablet-teams.png": {
+    "mtime": 1793770112.8858523,
+    "seen": 1793812477.697355,
+    "ast_hash": "37ca3581fbbe99871c7cca266832b9cb",
+    "semantic_hash": ""
+  },
+  "proof/qa/employee-light-tablet-timesheet.png": {
+    "mtime": 1793770106.8262186,
+    "seen": 1793812477.697355,
+    "ast_hash": "d16db71a0137cd9eebf5155049b26c0a",
+    "semantic_hash": ""
+  },
+  "proof/qa/light-desktop-forgot.png": {
+    "mtime": 1793768191.059506,
+    "seen": 1793812477.697355,
+    "ast_hash": "6de64137a7d9e3676084b9f835e8360d",
+    "semantic_hash": ""
+  },
+  "proof/qa/light-desktop-login.png": {
+    "mtime": 1793768190.2340477,
+    "seen": 1793812477.697355,
+    "ast_hash": "d85f7d118cdcc9e40531162d74073bc6",
+    "semantic_hash": ""
+  },
+  "proof/qa/light-desktop-reset.png": {
+    "mtime": 1793768191.9052253,
+    "seen": 1793812477.697355,
+    "ast_hash": "1a31cd05a03547630b8c16d884e00097",
+    "semantic_hash": ""
+  },
+  "proof/qa/light-phone-forgot.png": {
+    "mtime": 1793768180.7649791,
+    "seen": 1793812477.697355,
+    "ast_hash": "bab4dad9fd156681b582d3506621342c",
+    "semantic_hash": ""
+  },
+  "proof/qa/light-phone-login.png": {
+    "mtime": 1793768179.985149,
+    "seen": 1793812477.697355,
+    "ast_hash": "45f423df173c615151e8c6e10b700db6",
+    "semantic_hash": ""
+  },
+  "proof/qa/light-phone-reset.png": {
+    "mtime": 1793768181.5181446,
+    "seen": 1793812477.697355,
+    "ast_hash": "dfef56d8f0347fb2cfad7f7c031fcb0c",
+    "semantic_hash": ""
+  },
+  "proof/qa/light-tablet-forgot.png": {
+    "mtime": 1793768186.008024,
+    "seen": 1793812477.697355,
+    "ast_hash": "1d4e51634ab9e1c9a02dd0a0be62a3de",
+    "semantic_hash": ""
+  },
+  "proof/qa/light-tablet-login.png": {
+    "mtime": 1793768184.9364595,
+    "seen": 1793812477.697355,
+    "ast_hash": "8b57b4d73b8a5fcecb0f74329064c4d5",
+    "semantic_hash": ""
+  },
+  "proof/qa/light-tablet-reset.png": {
+    "mtime": 1793768186.830011,
+    "seen": 1793812477.697355,
+    "ast_hash": "207cd9aba2bc9755236454fcaf9000a3",
+    "semantic_hash": ""
+  },
+  "proof/qa/outsider-teams.png": {
+    "mtime": 1793770139.0573802,
+    "seen": 1793812477.697355,
+    "ast_hash": "06b1a226673c6957bfc557e2bda9dc52",
+    "semantic_hash": ""
+  },
+  "proof/qa/single-session-kicked.png": {
+    "mtime": 1793770145.3815484,
+    "seen": 1793812477.697355,
+    "ast_hash": "5ea5539483bfaed7d85b50a850f27fae",
+    "semantic_hash": ""
+  },
+  "proof/ui/brand-name.png": {
+    "mtime": 1793732320.1949909,
+    "seen": 1793812477.697355,
+    "ast_hash": "089c8a3b5c63540f9269fbf9b667a891",
+    "semantic_hash": ""
+  },
+  "proof/ui/brand-settings-dark.png": {
+    "mtime": 1793731546.5289524,
+    "seen": 1793812477.697355,
+    "ast_hash": "e18e596cafc2d2eab75946cbd54844e2",
+    "semantic_hash": ""
+  },
+  "proof/ui/brand-settings-light.png": {
+    "mtime": 1793731548.4975069,
+    "seen": 1793812477.697355,
+    "ast_hash": "3cad3c95f62757c00532ff72f25b6aa5",
+    "semantic_hash": ""
+  },
+  "proof/ui/brand-shell-dark.png": {
+    "mtime": 1793731547.3556912,
+    "seen": 1793812477.697355,
+    "ast_hash": "d01b9db384032b33d4dd2d4c28342755",
+    "semantic_hash": ""
+  },
+  "proof/ui/brand-shell-light.png": {
+    "mtime": 1793731547.748902,
+    "seen": 1793812477.697355,
+    "ast_hash": "7698d60c65edee5087d25568d089dcec",
+    "semantic_hash": ""
+  },
+  "proof/ui/clean-board.png": {
+    "mtime": 1793737959.5093155,
+    "seen": 1793812477.697355,
+    "ast_hash": "9caf9b34e4907a10d0585a06bb707565",
+    "semantic_hash": ""
+  },
+  "proof/ui/clean-empty.png": {
+    "mtime": 1793737958.5756419,
+    "seen": 1793812477.697355,
+    "ast_hash": "1c0b5b32a9b9acaae64f8b35c7d8c897",
+    "semantic_hash": ""
+  },
+  "proof/ui/clean-home.png": {
+    "mtime": 1793737957.6519015,
+    "seen": 1793812477.697355,
+    "ast_hash": "1584b085be5e8bf071c1f4270901e624",
+    "semantic_hash": ""
+  },
+  "proof/ui/login-v2.jpg": {
+    "mtime": 1793763313.8934615,
+    "seen": 1793812477.697355,
+    "ast_hash": "aaf6b5abc1dc0921414918b3bb67ab3e",
+    "semantic_hash": ""
+  },
+  "proof/ui/logo-v1.jpg": {
+    "mtime": 1793764143.716841,
+    "seen": 1793812477.697355,
+    "ast_hash": "7bfdd5a085cc1a2d6e4ad4832d959a79",
+    "semantic_hash": ""
+  },
+  "proof/ui/logo-v2.jpg": {
+    "mtime": 1793764902.644364,
+    "seen": 1793812477.697355,
+    "ast_hash": "9053a7fefb5ab86fa02e0a3b661fc373",
+    "semantic_hash": ""
+  },
+  "proof/ui/logo-v3.jpg": {
+    "mtime": 1793765615.603841,
+    "seen": 1793812477.697355,
+    "ast_hash": "a82a78dde59f840ac6016e109b36acf5",
+    "semantic_hash": ""
+  },
+  "proof/ui/motion/reload-1.png": {
+    "mtime": 1793770698.5058737,
+    "seen": 1793812477.697355,
+    "ast_hash": "67efc305523a46ea0b7f8aea55d7c63d",
+    "semantic_hash": ""
+  },
+  "proof/ui/motion/reload-2.png": {
+    "mtime": 1793770699.485,
+    "seen": 1793812477.697355,
+    "ast_hash": "67efc305523a46ea0b7f8aea55d7c63d",
+    "semantic_hash": ""
+  },
+  "proof/ui/motion/reload-3.png": {
+    "mtime": 1793770700.4716198,
+    "seen": 1793812477.697355,
+    "ast_hash": "67efc305523a46ea0b7f8aea55d7c63d",
+    "semantic_hash": ""
+  },
+  "proof/ui/motion/reload-4.png": {
+    "mtime": 1793770701.5555015,
+    "seen": 1793812477.697355,
+    "ast_hash": "67efc305523a46ea0b7f8aea55d7c63d",
+    "semantic_hash": ""
+  },
+  "proof/ui/motion/reload-5.png": {
+    "mtime": 1793770702.8101532,
+    "seen": 1793812477.697355,
+    "ast_hash": "67efc305523a46ea0b7f8aea55d7c63d",
+    "semantic_hash": ""
+  },
+  "proof/ui/p04-forgot.png": {
+    "mtime": 1793744436.5485737,
+    "seen": 1793812477.697355,
+    "ast_hash": "d17f55490354bb51d4e4cd44de7f6cca",
+    "semantic_hash": ""
+  },
+  "proof/ui/p04-login.png": {
+    "mtime": 1793744436.3443727,
+    "seen": 1793812477.697355,
+    "ast_hash": "2d2e4f2c2692505fc62912f04490acbe",
+    "semantic_hash": ""
+  },
+  "proof/ui/reset-code-v2.jpg": {
+    "mtime": 1793763313.917527,
+    "seen": 1793812477.697355,
+    "ast_hash": "14a28e4750396fae0c7e842bd862aef6",
+    "semantic_hash": ""
+  },
+  "proof/ui/set-password-dialog.png": {
+    "mtime": 1793772054.4358742,
+    "seen": 1793812477.697355,
+    "ast_hash": "dd5a832df255c3a18ba6a4a9c884bb8a",
+    "semantic_hash": ""
+  },
+  "proof/ui/set-password-done.png": {
+    "mtime": 1793772057.354262,
+    "seen": 1793812477.697355,
+    "ast_hash": "a46ef05ac7eebd5c919380404854a342",
+    "semantic_hash": ""
+  },
+  "proof/ui/timezones-desktop.png": {
+    "mtime": 1793811736.992238,
+    "seen": 1793812477.697355,
+    "ast_hash": "eeb943daf911568db7a6ede400e6ebf7",
+    "semantic_hash": ""
+  },
+  "proof/ui/timezones-phone.png": {
+    "mtime": 1793811742.116995,
+    "seen": 1793812477.697355,
+    "ast_hash": "6cfb1a84563ace3e4f36b23d9deb0ba5",
+    "semantic_hash": ""
+  },
+  "proof/ui/u1-collapsed-dark.png": {
+    "mtime": 1793730547.4228196,
+    "seen": 1793812477.697355,
+    "ast_hash": "8f8ef3fbfc1c5e9bf01e6cfc6b4beae2",
+    "semantic_hash": ""
+  },
+  "proof/ui/u1-collapsed-light.png": {
+    "mtime": 1793730553.8736124,
+    "seen": 1793812477.697355,
+    "ast_hash": "123cc83865ca470022d8d88ec437c3cf",
+    "semantic_hash": ""
+  },
+  "proof/ui/u1-home-dark.png": {
+    "mtime": 1793730545.1706288,
+    "seen": 1793812477.697355,
+    "ast_hash": "84c6f62f73960daf7246dd64be822d26",
+    "semantic_hash": ""
+  },
+  "proof/ui/u1-home-light.png": {
+    "mtime": 1793730551.7595935,
+    "seen": 1793812477.697355,
+    "ast_hash": "eef4a34dbf2d7937000ec66e0e868737",
+    "semantic_hash": ""
+  },
+  "proof/ui/u1-list-dark.png": {
+    "mtime": 1793730545.8059852,
+    "seen": 1793812477.697355,
+    "ast_hash": "5e67411a0f3a484ad5f1dac0324cd793",
+    "semantic_hash": ""
+  },
+  "proof/ui/u1-list-light.png": {
+    "mtime": 1793730552.385991,
+    "seen": 1793812477.697355,
+    "ast_hash": "a158b04835dd1d66cc82136b088af085",
+    "semantic_hash": ""
+  },
+  "proof/ui/u1-palette-dark.png": {
+    "mtime": 1793730546.5507944,
+    "seen": 1793812477.697355,
+    "ast_hash": "506e5433373f4ea4eef5244355053da6",
+    "semantic_hash": ""
+  },
+  "proof/ui/u1-palette-light.png": {
+    "mtime": 1793730553.056433,
+    "seen": 1793812477.697355,
+    "ast_hash": "a27d9680b6f9e1b9b4ff293bcedb0431",
+    "semantic_hash": ""
+  },
+  "proof/ui/u2-board-dark.png": {
+    "mtime": 1793731199.75026,
+    "seen": 1793812477.697355,
+    "ast_hash": "ae0949856a37e7634e7aecd8cdcc8aa1",
+    "semantic_hash": ""
+  },
+  "proof/ui/u2-board-dragging-dark.png": {
+    "mtime": 1793731200.479632,
+    "seen": 1793812477.697355,
+    "ast_hash": "6ebe0457d4259c63bc140f9bd00bd96d",
+    "semantic_hash": ""
+  },
+  "proof/ui/u2-calendar-dark.png": {
+    "mtime": 1793731203.2148564,
+    "seen": 1793812477.697355,
+    "ast_hash": "1c88206cb4d622727355f85ab5a82d05",
+    "semantic_hash": ""
+  },
+  "proof/ui/u2-confirm-dark.png": {
+    "mtime": 1793731203.9701796,
+    "seen": 1793812477.697355,
+    "ast_hash": "d0e8abf7676e7b95fde8ad29d20ed071",
+    "semantic_hash": ""
+  },
+  "proof/ui/u2-list-created-dark.png": {
+    "mtime": 1793731199.069946,
+    "seen": 1793812477.697355,
+    "ast_hash": "74583ff57db27a1b098d53deab14249e",
+    "semantic_hash": ""
+  },
+  "proof/ui/u2-list-dark.png": {
+    "mtime": 1793731197.0309918,
+    "seen": 1793812477.697355,
+    "ast_hash": "54426f727dcc685cbc3b9714eaa504ac",
+    "semantic_hash": ""
+  },
+  "proof/ui/u2-list-light.png": {
+    "mtime": 1793731197.7972944,
+    "seen": 1793812477.697355,
+    "ast_hash": "6be654feafc75402099e3ba77f073521",
+    "semantic_hash": ""
+  },
+  "proof/ui/u2-panel-dark.png": {
+    "mtime": 1793731201.9320529,
+    "seen": 1793812477.697355,
+    "ast_hash": "29ebc77ba84b74d157fabc349ac9c844",
+    "semantic_hash": ""
+  },
+  "proof/ui/u2-panel-light.png": {
+    "mtime": 1793731206.0429058,
+    "seen": 1793812477.697355,
+    "ast_hash": "00e57bb68a3b2bf3a9a003cdaa500750",
+    "semantic_hash": ""
+  },
+  "proof/vercel-main.png": {
+    "mtime": 1793729698.1908996,
+    "seen": 1793812477.697355,
+    "ast_hash": "d9afc5f08199e27fc6cae36a3fd47dc6",
+    "semantic_hash": ""
+  },
+  "proof/vercel-prod-login-2026-11-03.png": {
+    "mtime": 1793729698.1908996,
+    "seen": 1793812477.697355,
+    "ast_hash": "d9afc5f08199e27fc6cae36a3fd47dc6",
+    "semantic_hash": ""
+  },
+  "proof/ui/motion/login-entrance.webm": {
+    "mtime": 1793770702.8911543,
+    "seen": 1793812477.697355,
+    "ast_hash": "913b9eb77531a9987d97eb83d9199010",
+    "semantic_hash": ""
+  }
+}

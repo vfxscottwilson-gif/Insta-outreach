@@ -1,5 +1,0 @@
-openpyxl
-pandas
-httpx
-wordninja
-gender-guesser

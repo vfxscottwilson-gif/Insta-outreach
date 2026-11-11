@@ -1,0 +1,1 @@
+consistency: 707 leads, tiles = Leads filters = Automations table for 4 ranges x 2 day bases; fail-safe and admin cap hold
