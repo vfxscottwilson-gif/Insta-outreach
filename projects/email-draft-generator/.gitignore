@@ -1,0 +1,8 @@
+proof/*.xlsx
+proof/*.db
+proof/*.db-*
+tests/*.xlsx
+*.state.db
+*.state.db-*
+secrets/
+__pycache__/
