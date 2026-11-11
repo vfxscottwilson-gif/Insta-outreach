@@ -17,7 +17,7 @@ ctas = [
  "Let me know if you would like to go ahead.",
  "Shall I prepare it for you?",
  "Would a sample be a good place to start?",
- "Is that something worth testing on one project?",
+ "Is that something worth a quick test?",
  "A short reply is all it takes to get started.",
 ]
 
@@ -100,7 +100,7 @@ fu_options_question = [
 fu_last = [
  "This is my last follow-up, so I will leave it here.\n\nIf the timing is not right, that is completely fine, and there is no need to respond. Should growing {biz_or} become a priority later, a short note is all it takes to pick this back up.\n\nWishing you continued success.",
  "Closing the loop on my side.\n\nTiming is often the only thing standing between an idea and a yes, and that is easy to respect. If the goal of reaching more people comes into focus later, my inbox is open.\n\nAll the best with everything ahead.",
- "Last message from me on this.\n\nNo reply usually means the timing was off, and that is easy to understand, so there is no pressure at all. A short note from {biz_or} is welcome whenever the moment is right.\n\nThank you for reading, and best of luck with it.",
+ "Last message from me on this.\n\nNo reply usually means the timing was off, and that is easy to understand, so there is no pressure at all. A short note is welcome whenever the moment is right.\n\nThank you for reading, and best of luck with it.",
  "I will not keep filling your inbox after this one.\n\nIf building {biz_or} further is on the agenda down the line, a short reply will bring me straight back. Until then, every success with everything else on your plate.\n\nWith appreciation for your time.",
  "Final note from me.\n\nTiming is everything, and it may simply not be the right moment. Whenever growth for {biz_or} comes into focus, a short note is welcome at any time. Thank you for taking the time to read my earlier messages.\n\nWarm wishes for the weeks ahead.",
  "Wrapping up my notes here.\n\nIf now is not the moment, I understand completely, and I will not follow up again. Whenever {biz_or} is ready to take the next step, a single line is enough to restart the conversation.\n\nAll the best.",
