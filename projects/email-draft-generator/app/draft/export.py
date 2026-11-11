@@ -35,4 +35,12 @@ def write(path, ready, review, report):
     _sheet(ws3, ["Item", "Value"], report, [46, 70])
     tmp = str(path) + ".tmp"
     wb.save(tmp)
-    os.replace(tmp, path)
+    try:
+        os.replace(tmp, path)
+    except PermissionError:
+        import time
+        alt = os.path.splitext(str(path))[0] + time.strftime("_saved_%H%M%S") + ".xlsx"
+        os.replace(tmp, alt)
+        print(f"WARNING: {path} is open in Excel, so this save went to {alt}. Close the file and re-run to refresh it.")
+        return alt
+    return str(path)

@@ -115,6 +115,8 @@ def main():
 
     t0 = time.time()
     all_leads, stats = L.read_input(a.input, settings, a.sheet)
+    if not all_leads:
+        raise SystemExit(f"No usable emails found in {stats['rows_in']} rows ({stats['no_email']} had no email).")
     if a.limit:
         all_leads = all_leads[:a.limit]
     fp = f"{file_hash(a.input)}:{config.fingerprint(a.config)}:{a.limit}"
@@ -127,17 +129,38 @@ def main():
           f"{total - len(pend)} already done, {len(pend)} to go.")
     use_scrape = settings["scrape"]["enabled"] and not a.no_scrape
     t_run = time.time()
+    try:
+        _loop(pend, templates, settings, store, use_scrape, llm_cfg, llm_up, comp, a, stats, t0, t_run)
+    except KeyboardInterrupt:
+        write_out(a.out, store, stats, t0, comp)
+        print("\nStopped. Everything finished so far is saved. Run the same command again to continue.")
+        sys.exit(130)
+    write_out(a.out, store, stats, t0, comp, final=True)
+
+
+def _loop(pend, templates, settings, store, use_scrape, llm_cfg, llm_up, comp, a, stats, t0, t_run):
     for n, (i, raw) in enumerate(pend, 1):
-        gpu.wait_if_hot(settings["gpu"]) if llm_up else None
-        lead, niche = build_lead(raw, templates, settings, store, use_scrape, llm_cfg, llm_up)
-        res = comp.compose(lead, niche, i)
-        review = res["violations"]
-        if llm_up and not review:
-            if llm.might_offend(llm_cfg, res["subject"] + "\n\n" + res["body"]):
-                review = ["model flagged possible offence"]
-        payload = dict(email=lead.email, name=lead.first or "Team", niche=niche, subject=res["subject"],
-                       body=res["body"], fus=res["fus"], kind=res["kind"], uses_i=res["uses_i"],
-                       company=lead.company_email, review=review, multi=lead.multi)
+        if llm_up:
+            gpu.wait_if_hot(settings["gpu"])
+        email = json.loads(raw).get("email", "")
+        if os.environ.get("DRAFT_INTERRUPT_AFTER") and n == int(os.environ["DRAFT_INTERRUPT_AFTER"]):
+            raise KeyboardInterrupt
+        try:
+            if os.environ.get("DRAFT_FAIL_EMAIL") == email:
+                raise RuntimeError("simulated failure (test only)")
+            lead, niche = build_lead(raw, templates, settings, store, use_scrape, llm_cfg, llm_up)
+            res = comp.compose(lead, niche, i)
+            review = res["violations"]
+            if llm_up and not review:
+                if llm.might_offend(llm_cfg, res["subject"] + "\n\n" + res["body"]):
+                    review = ["model flagged possible offence"]
+            payload = dict(email=lead.email, name=lead.first or "Team", niche=niche, subject=res["subject"],
+                           body=res["body"], fus=res["fus"], kind=res["kind"], uses_i=res["uses_i"],
+                           company=lead.company_email, review=review, multi=lead.multi)
+        except Exception as e:  # noqa: BLE001  one bad lead must never stop the run
+            payload = dict(email=email, name="Team", niche="unknown", subject="", body="", fus=["", "", "", ""],
+                           kind="error", uses_i=False, company=False,
+                           review=[f"draft failed: {type(e).__name__}: {str(e)[:120]}"], multi=False)
         store.save(i, "review" if review else "ok", json.dumps(payload), comp.counts)
         if os.environ.get("DRAFT_CRASH_AFTER") and n == int(os.environ["DRAFT_CRASH_AFTER"]):
             raise SystemExit("simulated crash (test only)")
@@ -146,7 +169,6 @@ def main():
             print(f"  {n}/{len(pend)} done, about {per * (len(pend) - n) / 60:.1f} min left")
         if n % settings["run"]["save_every"] == 0:
             write_out(a.out, store, stats, t0, comp)
-    write_out(a.out, store, stats, t0, comp, final=True)
 
 
 def write_out(out, store, stats, t0, comp, final=False):
@@ -183,10 +205,10 @@ def write_out(out, store, stats, t0, comp, final=False):
         ["Minutes taken (this session)", round((time.time() - t0) / 60, 1)],
         ["Finished", "yes" if final else "partial save"],
     ]
-    export.write(out, ready, review, report)
+    saved = export.write(out, ready, review, report)
     if final:
         print("\n".join(f"{a}: {b}" for a, b in report))
-        print(f"Saved: {out}")
+        print(f"Saved: {saved}")
 
 
 if __name__ == "__main__":

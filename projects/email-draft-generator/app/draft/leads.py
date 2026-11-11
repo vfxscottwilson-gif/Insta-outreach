@@ -85,10 +85,23 @@ def cuisine_phrase(c):
 
 def read_input(path, settings, sheet=None):
     path = str(path)
-    if path.lower().endswith(".csv"):
-        df = pd.read_csv(path, dtype=str, keep_default_na=False)
-    else:
-        df = pd.read_excel(path, sheet_name=sheet if sheet is not None else 0, dtype=str, keep_default_na=False)
+    import os
+    if not os.path.exists(path):
+        raise SystemExit(f"Input file not found: {path}")
+    try:
+        if path.lower().endswith(".csv"):
+            try:
+                df = pd.read_csv(path, dtype=str, keep_default_na=False, encoding="utf-8-sig")
+            except UnicodeDecodeError:
+                df = pd.read_csv(path, dtype=str, keep_default_na=False, encoding="latin-1")
+        else:
+            df = pd.read_excel(path, sheet_name=sheet if sheet is not None else 0, dtype=str, keep_default_na=False)
+    except ValueError as e:
+        raise SystemExit(f"Could not read the sheet ({e}). Check the --sheet name, or that the file is a real xlsx or csv.")
+    except Exception as e:  # noqa: BLE001
+        raise SystemExit(f"Could not open the file ({type(e).__name__}: {e}). Is it open in Excel, or damaged?")
+    if len(df) == 0:
+        raise SystemExit("The sheet has a header but no rows below it.")
     cols = detect_columns(list(df.columns), settings.get("columns", {}))
     if "email" not in cols:
         raise SystemExit("No email column found. Add a header called Email, or map it in settings.toml [columns].")

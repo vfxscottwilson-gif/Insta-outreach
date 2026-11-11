@@ -8,17 +8,24 @@ class Store:
         import os
         if fresh and os.path.exists(path):
             os.remove(path)
+        try:
+            self._open(path)
+        except sqlite3.DatabaseError:
+            raise SystemExit(f"The memory file {path} is damaged. Run again with --fresh to start over.")
+        old = self.meta("fp")
+        if old and old != fingerprint:
+            raise SystemExit("The input sheet or the config changed since this run started.\n"
+                             "Re-run with --fresh to start over, or restore the old files to resume.")
+        self.set_meta("fp", fingerprint)
+
+    def _open(self, path):
         self.db = sqlite3.connect(path)
         self.db.execute("PRAGMA journal_mode=WAL")
         self.db.executescript(
             "CREATE TABLE IF NOT EXISTS meta(k TEXT PRIMARY KEY, v TEXT);"
             "CREATE TABLE IF NOT EXISTS leads(i INTEGER PRIMARY KEY, email TEXT UNIQUE, status TEXT, payload TEXT);"
             "CREATE TABLE IF NOT EXISTS cache(k TEXT PRIMARY KEY, v TEXT);")
-        old = self.meta("fp")
-        if old and old != fingerprint:
-            raise SystemExit("The input sheet or the config changed since this run started.\n"
-                             "Re-run with --fresh to start over, or restore the old files to resume.")
-        self.set_meta("fp", fingerprint)
+        self.db.execute("SELECT COUNT(*) FROM meta")
 
     def meta(self, k, default=None):
         r = self.db.execute("SELECT v FROM meta WHERE k=?", (k,)).fetchone()
