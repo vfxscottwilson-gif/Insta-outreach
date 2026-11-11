@@ -1,0 +1,137 @@
+﻿Setting,Value,What It Does
+LOCAL_LLM_MODEL,,"Your local AI model name, e.g. llama3.1:8b (Ollama) or the name shown in LM Studio. Blank = no AI: Lead Insight is built from facts only."
+LOCAL_LLM_URL,http://localhost:11434/v1,"Address of the local AI server. Ollama = http://localhost:11434/v1, LM Studio = http://localhost:1234/v1."
+LEADS_TARGET_PER_COUNTRY,100,The run moves to the next country after this many NEW leads.
+MAX_HOURS_PER_RUN,4,Hard time limit for one whole run (all countries). The run stops cleanly and saves.
+ONLY_EXPORT_PROVEN_INSTAGRAM_ACTIVE,No,"Yes = the Excel file keeps ONLY leads whose Instagram posts in the last 30 days are measured and >= MIN_POSTS_30D. Needs an Instagram token or Apify key, otherwise the file will be empty."
+PLACES_MAX_REQUESTS_PER_MONTH,950,"Google Places safety cap (requests per calendar month, counted in the Searches tab). Text Search Enterprise is free up to 1,000/month, then US$35 per 1,000. ALSO set a daily quota of 32 in Google Cloud > Quotas."
+SOURCE,auto,"Where leads come from. auto = Google Places only if you added PLACES_API_KEYS, otherwise FREE OpenStreetMap. osm = always free OSM. places = Google Places (needs a billing-enabled key). serper = Google Maps results via SERPER_API_KEY (then OSM). apify = Google Maps via Apify (then OSM)."
+REQUIRE_WEBSITE_OSM,Yes,OpenStreetMap leads without a website have no way to find an email: skip them (recommended).
+OSM_LIMIT,150,Max businesses returned per free map search.
+OSM_DELAY_SEC,6,Pause between free map searches (be polite to the free servers).
+MIN_BUDGET_AUD,500,Niches whose 'Budget Low AUD' is below this are skipped. Your floor for one project.
+MIN_REVIEWS,8,Fewer Google reviews than this = too new/tiny. Skipped.
+MAX_REVIEWS,600,More reviews than this = probably a large brand/chain. Skipped (you want mid-tier).
+MIN_RATING,3.5,Skip businesses rated below this.
+CHAIN_LOCATIONS,3,Same business name or website in this many places inside one search = a chain. Skipped.
+BLOCK_NAME_WORDS,"hospital,public health,council,medicare,bunnings,harvey norman,domayne,freedom furniture,fantastic furniture,nick scali,ikea,super amart,bupa,pacific smiles,dental corp,maven dental,my dentist,specsavers,priceline,1300smiles,national dental care,abano,anytime fitness,snap fitness,jetts,kfc,mcdonald,hilton,marriott,novotel,ibis,mercure,quest apartment,goodstart,g8 education,affinity education,guardian childcare,michael hill,pandora,prouds,angus & coote",Skip businesses whose name contains any of these (comma list). Add big chains you keep seeing.
+BLOCK_NAME_WORDS_WORLD,"f45,orangetheory,planet fitness,crunch fitness,24 hour fitness,la fitness,gold's gym,golds gym,equinox,midtown athletic,lifetime fitness,life time fitness,puregym,pure gym,the gym group,david lloyd,virgin active,nuffield health,fitness first,goodlife fitness,fit4less,club pilates,barry's,solidcore,pure barre,corepower,stretchlab,9round,curves,plus fitness,genesis health,world gym,ymca,foxtons,savills,knight frank,purplebricks,connells,countrywide,redfin,zillow,exp realty,keller williams,coldwell banker,century 21,re/max,remax,starbucks,costa coffee,pret a manger,greggs,subway,domino,pizza hut,nando,wagamama,five guys,chipotle,burger king,wendy's,taco bell,tim hortons,dunkin,aspen dental,heartland dental,mydentist,bupa dental,smile direct,boots,walgreens,cvs,holiday inn,hyatt,sheraton,westin,radisson,best western,premier inn,travelodge",International chains/franchises skipped everywhere (added in v3; same rule as BLOCK_NAME_WORDS).
+EXCLUDE_TYPES,"hospital,local_government_office,courthouse,police,embassy,library,post_office,city_hall,school,primary_school,secondary_school",Google place types to skip.
+REQUIRE_WEBSITE,No,Yes = only businesses with a website (easier to find emails).
+REQUIRE_CONTACT,email_or_social,email = only leads with an email. email_or_social = email OR Instagram/Facebook/LinkedIn/X. any = also phone-only.
+MIN_ICP_SCORE,7,QUALITY GATE. Leads below this ICP score (out of 10) are NOT added. 10 = perfect client who pays $1k/month at the first meeting.
+TIER_A_ICP,8.5,ICP score for Tier A (contact first).
+TIER_B_ICP,7.5,ICP score for Tier B. Below = Tier C (still >= MIN_ICP_SCORE).
+PITCH_MIN_AUD,500,Suggested monthly pitch for a business lead at the minimum ICP score (in PITCH_CURRENCY per month).
+PITCH_MAX_AUD,1000,Suggested monthly pitch for a perfect business lead (in PITCH_CURRENCY per month).
+PITCH_YT_MIN_AUD,1000,Suggested monthly pitch for a YouTube channel at the minimum ICP score.
+PITCH_YT_MAX_AUD,2000,Suggested monthly pitch for a perfect YouTube channel.
+PITCH_CURRENCY,USD,Currency of ALL the PITCH_* numbers above (the names say AUD for history; set USD/GBP... if you price in that). Written to 'Pitch Currency'.
+TIMEZONE,Asia/Karachi,"YOUR timezone for sheet dates ('Lead Added On', Dashboard 'today'), e.g. Asia/Karachi, Australia/Sydney, America/New_York."
+REJECT_OSM_BRANDS,Yes,"Free map businesses tagged with a chain brand (brand / brand:wikidata, e.g. Anytime Fitness, Ray White HQ) are skipped as franchises."
+OSM_FAIL_STOP,3,"After this many map searches in a row fail (all free Overpass servers busy), stop map searches for this run."
+YT_SOURCE,auto,YouTube discovery. auto = free no-key YouTube page reader (default; falls back to the API if a key exists). free = never use the API. api = YouTube Data API only (needs YOUTUBE_API_KEYS).
+YT_COUNTRIES,"AU,US,GB,CA,NZ,IE,AE",YouTube: keep channels whose country is one of these codes. Blank = any country.
+YT_ALLOW_UNKNOWN_COUNTRY,Yes,"YouTube: Yes = also keep English channels that do not state a country (Country stays blank, never guessed). More leads, weaker ICP."
+YT_FREE_DELAY_SEC,2.5,Free YouTube reader: pause between page requests (polite; YouTube blocks fast scrapers).
+YT_FREE_MAX_CHANNELS_PER_RUN,150,Free YouTube reader: max channel pages opened per run (each = 2 requests).
+YT_SEARCH_PAGES,2,Free YouTube reader: result pages per search (about 20 channels each).
+IMPORT_FOLDER,imports,Repo folder with scraper exports (.csv/.json). WARNING: in a PUBLIC repo these files are public - use the 'Import' tab instead.
+IMPORT_LEADS_PER_RUN,300,Max new leads per run from scraper imports (on top of NEW_LEADS_PER_RUN).
+IMPORT_MAX_ROWS_PER_RUN,4000,Max NEW import rows looked at per run (already-seen rows are skipped instantly).
+IMPORT_DEFAULT_NICHE,,Niche for imported rows that have no 'niche' column and no category match. Blank = 'Imported Leads'.
+FIND_DECISION_MAKER,Yes,"Look for the owner/founder/director name on the website (team/about pages, structured data). Facts only, never guessed."
+USE_HUNTER_FINDER,Yes,If a decision maker name is known but no personal email: ask Hunter's email finder (uses Hunter credits).
+MAX_HUNTER_FINDER_PER_RUN,5,Cap on Hunter email-finder calls per run.
+YT_MIN_SUBS,20000,YouTube: skip channels with fewer subscribers.
+YT_MAX_SUBS,500000,YouTube niches: skip channels bigger than this (they have in-house teams).
+YT_MAX_DAYS_SINCE_UPLOAD,14,YouTube: the last upload must be within this many days.
+YT_MIN_VIEWS,20000,YouTube: median views of the last ~5 videos must be at least this.
+YT_RESULTS_PER_SEARCH,25,"Channels per YouTube search (1 search = 100 of your 10,000 free daily units)."
+NEW_LEADS_PER_RUN,120,Maximum new leads per run AND per parallel job (split between niches searched).
+MAX_SEARCH_REQUESTS_PER_RUN,40,Searches per run/job (free OSM: each is one area+niche; Google Places: each is one paid request).
+PARALLEL_SITE_READS,10,Websites read at the same time (faster runs = more leads per day). 1 = one by one. Max 16.
+MAX_PAGES_PER_SEARCH,2,Pages per search (1-3). 2 pages = up to 40 businesses per search.
+RECHECK_DAYS,120,A rejected business can be re-checked after this many days. Added leads are never re-added.
+READ_WEBSITES,Yes,"Read the business website (honours robots.txt) for emails and social links. FREE, built in."
+USE_SERPER,Yes,If SERPER_API_KEY is set: look up the Google rating + review count of free-map leads (1 query each).
+MAX_SERPER_PLACES_PER_RUN,25,"Cap on Serper Google-rating lookups per run AND per parallel job (2,500 free queries in total)."
+USE_WEB_SEARCH,Yes,"If SERPER_API_KEY or BRAVE_API_KEY is set: find the website of businesses listed without one, and the owner on LinkedIn."
+MAX_WEB_SEARCH_PER_RUN,25,Cap on website-finder searches per run/job.
+MAX_LINKEDIN_SEARCH_PER_RUN,15,Cap on LinkedIn owner searches per run/job (only for leads that can still reach the ICP gate).
+SERPER_MAPS_SEARCHES_PER_RUN,30,Only with SOURCE=serper: Google Maps searches through Serper per run/job (then free OSM).
+USE_ZENROWS,Yes,If ZENROWS_API_KEY is set: read blocked / JavaScript-only home pages through ZenRows.
+MAX_ZENROWS_PER_RUN,30,"Cap on ZenRows page reads per run/job (5 credits each; free plan 5,000 credits/month)."
+USE_ABN_LOOKUP,Yes,"Australia: if ABN_LOOKUP_GUID is set, check the ABN with the official register (free)."
+MAX_ABN_PER_RUN,300,Cap on ABN Lookup calls per run/job.
+USE_APIFY_MAPS,No,Yes = a few Google Maps searches per run through Apify (uses APIFY_API_TOKEN credit).
+APIFY_MAPS_SEARCHES_PER_RUN,2,Apify Google Maps searches per run/job (each ~40 places ~ US$0.06).
+APIFY_MAPS_PER_SEARCH,40,Places per Apify Google Maps search.
+SITE_TIME_LIMIT_SEC,25,Stop reading a slow website after this many seconds (keeps the pages already read).
+MAX_SITE_PAGES,5,Pages read per website (home + the contact/about/team pages it links to). Team/about pages are where owner names are.
+USE_JINA_MAX,40,"Max Jina Reader fallbacks per run (free, keyless, rate limited). Used only when the normal site read finds little."
+MAX_VERIFY_PER_RUN,80,Max email verification calls per run (ZeroBounce/Hunter credits if keys exist; free MX check otherwise).
+USE_APIFY,No,Optional: Apify Instagram fallback. Uses your Apify free monthly credit. Off by default.
+MAX_APIFY_PER_RUN,10,Cap on Apify lookups per run.
+USE_HUNTER,Yes,"If HUNTER_API_KEY is set (free plan: ~25 searches/month), look up emails by domain when the site shows none."
+MAX_HUNTER_PER_RUN,8,Hunter free plan is tiny (~25 searches/month).
+USE_APOLLO,Yes,"If APOLLO_API_KEY is set, fill Employee Count / company name by domain."
+MAX_APOLLO_PER_RUN,20,Cap on Apollo lookups per run.
+USE_INSTAGRAM_STATS,Yes,"If IG_ACCESS_TOKEN + IG_USER_ID are set, measure their Instagram activity (business/creator accounts only)."
+MAX_IG_PER_RUN,40,Meta allows ~200 lookups/hour.
+USE_AI_INSIGHT,Yes,"One small AI call per QUALIFIED lead writes 'Lead Insight' (3-4 lines: who they are + likely pains). No key, quota hit (429) or error = fact-only insight. The lead bot never writes email drafts (outreach bot does)."
+MAX_AI_INSIGHTS_PER_RUN,60,Cap on Lead Insight AI calls per job (keeps free AI keys inside their daily limits).
+USE_DISIFY,No,"Free disposable-email check (disify.com, no key, rate-limited). Yes = check each email first."
+USE_REACHER,Yes,Use your self-hosted Reacher (secret REACHER_URL) for mailbox checks. No URL = off.
+USE_NZBN,Yes,New Zealand: NZBN register lookup when the NZBN_API_KEY secret exists (exact name match only).
+MAX_NZBN_PER_RUN,60,Cap on NZBN register lookups per job.
+USE_PROSPEO,Yes,Prospeo email finder for leads >= MIN_ICP_SCORE with a known decision maker (needs PROSPEO_API_KEY).
+MAX_PROSPEO_PER_RUN,10,Cap on Prospeo lookups per job (free credits are small: check vendor page).
+USE_SNOV,Yes,Snov.io email finder for leads >= MIN_ICP_SCORE with a known decision maker (needs SNOV_CLIENT_ID + SNOV_CLIENT_SECRET).
+MAX_SNOV_PER_RUN,10,Cap on Snov.io lookups per job (free credits are small: check vendor page).
+CELL_LIMIT_STOP,9500000,"Stop adding rows when the sheet nears Google's 10,000,000-cell limit (logged as an ERROR in Run health)."
+USE_AI_PITCH,No,No = pitch lines come from the Niches tab templates (zero AI credit). Yes = AI rewrites each pitch line.
+MAX_AI_PER_RUN,40,Cap on pitch-rewrite AI calls per run.
+SORT_TABS,No,v5: ignored. Lead tabs are append-only (never sorted) so Status / My Notes never move.
+MAX_RUNTIME_MIN,20,The bot stops cleanly after this many minutes and saves what it found (GitHub job limit is 60).
+SEGMENT_SCORING,Yes,"Yes = v4 high-quality scoring (R revenue proxy x S social gap x A agency, segments). No = the older v3 score."
+PRIME_R_MIN,7,Segment PRIME / PRIME-REVIEW needs a revenue proxy R >= this (0-10).
+PRIME_S_MAX,4,Segment PRIME needs social strength S <= this (0-10; low = weak social = they need you).
+AGENCY_REVIEW_MIN,30,Agency score A from this up to AGENCY_HAS_MIN = PRIME-REVIEW (check by hand for 1 minute).
+AGENCY_HAS_MIN,50,Agency score A >= this = HAS-AGENCY (named credit / in-house role found).
+GROWING_R_MIN,4,GROWING = R from this up to PRIME_R_MIN with S <= GROWING_S_MAX.
+GROWING_S_MAX,6.5,S above this = POLISHED-NO-SIGNAL (probably in-house already).
+REJECT_R_BELOW,3,R below this = rejected (cannot afford $500-1k/month).
+SIDE_SEGMENT_R_MIN,6,HAS-AGENCY and POLISHED-NO-SIGNAL rows are written only when R >= this (worth a replacement pitch).
+FREE_MODE_NICHE_WEIGHT,0.3,"No review count (free mode): weight of the niche's Budget Fit inside R, next to locations / ad + booking tools / team size. Such rows say 'free signals (unverified)' and are never PRIME (max PRIME-REVIEW)."
+S_UNMEASURED,4.0,S used when a social profile exists but cannot be measured (no IG token / Apify).
+MIN_MONTHLY_REVENUE,10000,"BENCHMARK (v6). A lead whose revenue is KNOWN (review-velocity formula) to be below this per month is rejected. 10,000/mo = 120,000/yr: US$500/mo is 5% of that, the conservative marketing-budget share (SBA 7-8%, Gartner 7.7%, CMO Survey 9%). Unknown revenue is never guessed: the lead stays and shows '?' in Benchmark Check."
+MIN_POSTS_30D,2,"BENCHMARK (v6). A lead whose Instagram/YouTube activity is MEASURED and below this many posts/uploads in 30 days is rejected (inactive account). Unmeasured = kept, shown as '?'."
+PREFERRED_POSTS_30D,4,BENCHMARK (v6). Posts/uploads in 30 days that count as 'active' (about one a week). Shown as a check mark in Benchmark Check.
+READ_FACEBOOK_PAGES,Yes,"v6: read the public Facebook page the business links to (email, phone, website). Respects robots.txt, so Facebook often returns nothing without a ZenRows key."
+REV_BAND_MID,15000,"Revenue band: below this per month (local currency) = Low. 15,000 = the 10,000 floor plus room for ad spend on top of the agency fee."
+REV_BAND_HIGH,60000,Revenue band: above this per month = High (between = Mid).
+REVIEW_FACTOR_US,1.0,Review thresholds x this in the US (smaller markets get lower thresholds).
+REVIEW_FACTOR_GB,0.7,"Review threshold factor, UK."
+REVIEW_FACTOR_CA,0.8,"Review threshold factor, Canada."
+REVIEW_FACTOR_AU,0.8,"Review threshold factor, Australia."
+REVIEW_FACTOR_NZ,0.5,"Review threshold factor, New Zealand."
+REVIEW_FACTOR_IE,0.5,"Review threshold factor, Ireland."
+MAX_INHOUSE_SEARCH_PER_RUN,15,With SERPER/BRAVE: LinkedIn search for an in-house social media / marketing person (PRIME candidates only).
+W3_REVENUE,35,v4 ICP weight: revenue proxy R.
+W3_SOCIAL_GAP,25,v4 ICP weight: social gap (10 - S).
+W3_NICHE_BUDGET,15,v4 ICP weight: Budget Fit column.
+W3_CONTACT,15,v4 ICP weight: reachable (personal email best).
+W3_DECISION_MAKER,5,v4 ICP weight: decision maker known.
+W3_REPUTATION,3,v4 ICP weight: Google rating.
+W3_LOCATION,2,v4 ICP weight: location priority.
+W3_AGENCY_PENALTY,15,v4 ICP penalty: minus (A/100) x this when A < AGENCY_HAS_MIN.
+W2_NICHE_BUDGET,30,ICP weight: how big a budget this niche usually has (Budget Fit column).
+W2_ESTABLISHED,15,ICP weight: established but not huge (reviews / YouTube subscribers).
+W2_CONTACT,20,ICP weight: reachable. Personal email > generic email > social only.
+W2_DECISION_MAKER,10,ICP weight: we know the decision maker's name (fact from website/Hunter).
+W2_SOCIAL_GAP,10,ICP weight: weak/irregular social = they need you.
+W2_SPEND_SIGNAL,5,ICP weight: website runs Google Ads / Meta Pixel / booking = already pays for marketing.
+W2_WEBSITE,5,ICP weight: has a working website.
+W2_REPUTATION,3,ICP weight: Google rating.
+W2_LOCATION,2,ICP weight: priority of the location (metro first).

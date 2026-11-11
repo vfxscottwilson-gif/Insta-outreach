@@ -1,0 +1,98 @@
+﻿Country,State,City,Search Area,Enabled (Yes/No),Priority (1-3),Latitude,Longitude,Radius km
+Australia,NSW,Sydney,Sydney NSW,Yes,1,-33.8688,151.2093,6
+Australia,NSW,Sydney,North Sydney NSW,Yes,1,-33.8403,151.207,4
+Australia,NSW,Sydney,Parramatta NSW,Yes,1,-33.8151,151.0011,6
+Australia,NSW,Sydney,Bondi Junction NSW,Yes,1,-33.8915,151.2477,4
+Australia,NSW,Sydney,Chatswood NSW,Yes,1,-33.7969,151.183,4
+Australia,NSW,Sydney,Penrith NSW,Yes,2,-33.7507,150.6944,7
+Australia,NSW,Sydney,Liverpool NSW,Yes,2,-33.92,150.923,7
+Australia,NSW,Sydney,Sutherland NSW,Yes,2,-34.031,151.057,6
+Australia,VIC,Melbourne,Melbourne VIC,Yes,1,-37.8136,144.9631,6
+Australia,VIC,Melbourne,South Yarra VIC,Yes,1,-37.8386,144.9926,4
+Australia,VIC,Melbourne,Box Hill VIC,Yes,1,-37.8189,145.1219,5
+Australia,VIC,Melbourne,Richmond VIC,Yes,1,-37.823,144.998,4
+Australia,VIC,Melbourne,Doncaster VIC,Yes,2,-37.7878,145.126,5
+Australia,VIC,Melbourne,Footscray VIC,Yes,2,-37.8,144.9,5
+Australia,VIC,Melbourne,Dandenong VIC,Yes,2,-37.987,145.215,6
+Australia,VIC,Melbourne,Brighton VIC,Yes,2,-37.917,144.999,5
+Australia,QLD,Brisbane,Brisbane QLD,Yes,1,-27.4698,153.0251,6
+Australia,QLD,Brisbane,Chermside QLD,Yes,1,-27.386,153.034,5
+Australia,QLD,Brisbane,Indooroopilly QLD,Yes,2,-27.499,152.973,5
+Australia,QLD,Brisbane,Sunnybank QLD,Yes,2,-27.578,153.058,5
+Australia,QLD,Gold Coast,Gold Coast QLD,Yes,1,-28.0027,153.431,9
+Australia,QLD,Sunshine Coast,Sunshine Coast QLD,Yes,2,-26.658,153.09,10
+Australia,WA,Perth,Perth WA,Yes,1,-31.9505,115.8605,6
+Australia,WA,Perth,Subiaco WA,Yes,1,-31.947,115.824,4
+Australia,WA,Perth,Joondalup WA,Yes,2,-31.745,115.766,6
+Australia,WA,Perth,Fremantle WA,Yes,2,-32.0569,115.7439,5
+Australia,SA,Adelaide,Adelaide SA,Yes,1,-34.9285,138.6007,6
+Australia,SA,Adelaide,Norwood SA,Yes,2,-34.921,138.632,4
+Australia,ACT,Canberra,Canberra ACT,Yes,2,-35.2809,149.13,8
+Australia,NSW,Newcastle,Newcastle NSW,Yes,2,-32.9283,151.7817,8
+Australia,NSW,Wollongong,Wollongong NSW,Yes,2,-34.4278,150.8931,8
+Australia,VIC,Geelong,Geelong VIC,Yes,2,-38.1499,144.3617,8
+Australia,TAS,Hobart,Hobart TAS,Yes,3,-42.8821,147.3272,8
+Australia,QLD,Townsville,Townsville QLD,Yes,3,-19.259,146.8169,8
+Australia,QLD,Cairns,Cairns QLD,Yes,3,-16.9186,145.7781,8
+Australia,NT,Darwin,Darwin NT,Yes,3,-12.4634,130.8456,8
+Australia,QLD,Toowoomba,Toowoomba QLD,Yes,3,-27.5598,151.9507,7
+Australia,VIC,Ballarat,Ballarat VIC,Yes,3,-37.5622,143.8503,7
+Australia,VIC,Bendigo,Bendigo VIC,Yes,3,-36.757,144.2794,7
+United States,NY,New York,Manhattan NY,Yes,1,40.7831,-73.9712,4
+United States,NY,New York,Brooklyn NY,Yes,2,40.6782,-73.9442,5
+United States,CA,Los Angeles,Los Angeles CA,Yes,1,34.0522,-118.2437,7
+United States,CA,Los Angeles,Beverly Hills & Santa Monica CA,Yes,1,34.05,-118.45,5
+United States,IL,Chicago,Chicago IL,Yes,1,41.8781,-87.6298,6
+United States,TX,Houston,Houston TX,Yes,1,29.7604,-95.3698,8
+United States,TX,Dallas,Dallas TX,Yes,1,32.7767,-96.797,8
+United States,TX,Austin,Austin TX,Yes,2,30.2672,-97.7431,7
+United States,FL,Miami,Miami FL,Yes,1,25.7617,-80.1918,6
+United States,FL,Tampa,Tampa FL,Yes,2,27.9506,-82.4572,7
+United States,FL,Orlando,Orlando FL,Yes,2,28.5383,-81.3792,7
+United States,AZ,Phoenix,Scottsdale AZ,Yes,1,33.4942,-111.9261,7
+United States,CA,San Diego,San Diego CA,Yes,2,32.7157,-117.1611,7
+United States,CA,San Francisco,San Francisco CA,Yes,1,37.7749,-122.4194,5
+United States,WA,Seattle,Seattle WA,Yes,2,47.6062,-122.3321,6
+United States,CO,Denver,Denver CO,Yes,2,39.7392,-104.9903,7
+United States,GA,Atlanta,Atlanta GA,Yes,1,33.749,-84.388,7
+United States,MA,Boston,Boston MA,Yes,2,42.3601,-71.0589,5
+United States,DC,Washington,Washington DC,Yes,2,38.9072,-77.0369,6
+United States,PA,Philadelphia,Philadelphia PA,Yes,2,39.9526,-75.1652,6
+United States,TN,Nashville,Nashville TN,Yes,2,36.1627,-86.7816,7
+United States,NC,Charlotte,Charlotte NC,Yes,2,35.2271,-80.8431,7
+United States,NV,Las Vegas,Las Vegas NV,Yes,3,36.1699,-115.1398,8
+United Kingdom,England,London,Central London,Yes,1,51.5074,-0.1278,4
+United Kingdom,England,London,Kensington & Chelsea London,Yes,1,51.499,-0.175,3
+United Kingdom,England,London,Camden & Islington London,Yes,2,51.539,-0.1426,3
+United Kingdom,England,London,Wimbledon & Richmond London,Yes,2,51.44,-0.25,5
+United Kingdom,England,Manchester,Manchester,Yes,1,53.4808,-2.2426,7
+United Kingdom,England,Birmingham,Birmingham,Yes,2,52.4862,-1.8904,7
+United Kingdom,England,Leeds,Leeds,Yes,2,53.8008,-1.5491,7
+United Kingdom,England,Bristol,Bristol,Yes,2,51.4545,-2.5879,6
+United Kingdom,England,Liverpool,Liverpool,Yes,3,53.4084,-2.9916,6
+United Kingdom,England,Brighton,Brighton,Yes,3,50.8225,-0.1372,5
+United Kingdom,Scotland,Edinburgh,Edinburgh,Yes,2,55.9533,-3.1883,6
+United Kingdom,Scotland,Glasgow,Glasgow,Yes,2,55.8642,-4.2518,7
+Canada,ON,Toronto,Toronto ON,Yes,1,43.6532,-79.3832,6
+Canada,ON,Toronto,North York ON,Yes,2,43.7615,-79.4111,5
+Canada,ON,Toronto,Mississauga ON,Yes,2,43.589,-79.6441,7
+Canada,BC,Vancouver,Vancouver BC,Yes,1,49.2827,-123.1207,6
+Canada,AB,Calgary,Calgary AB,Yes,2,51.0447,-114.0719,7
+Canada,AB,Edmonton,Edmonton AB,Yes,3,53.5461,-113.4938,7
+Canada,ON,Ottawa,Ottawa ON,Yes,3,45.4215,-75.6972,7
+New Zealand,Auckland,Auckland,Auckland,Yes,1,-36.8485,174.7633,8
+New Zealand,Wellington,Wellington,Wellington,Yes,2,-41.2865,174.7762,6
+New Zealand,Canterbury,Christchurch,Christchurch,Yes,2,-43.5321,172.6362,7
+New Zealand,Bay of Plenty,Tauranga,Tauranga,Yes,3,-37.6878,176.1651,6
+Ireland,Leinster,Dublin,Dublin,Yes,1,53.3498,-6.2603,7
+Ireland,Munster,Cork,Cork,Yes,2,51.8985,-8.4756,6
+Ireland,Connacht,Galway,Galway,Yes,3,53.2707,-9.0568,5
+Saudi Arabia,Riyadh,Riyadh,Riyadh (Olaya & King Fahd Rd),Yes,1,24.6995,46.685,8
+Saudi Arabia,Makkah,Jeddah,Jeddah (Al Rawdah & Corniche),Yes,2,21.565,39.15,8
+Saudi Arabia,Eastern Province,Khobar,Al Khobar & Dammam,Yes,3,26.29,50.2,9
+Qatar,Doha,Doha,Doha West Bay & Lusail,Yes,1,25.34,51.52,7
+Qatar,Doha,Doha,Doha (Al Sadd & Old Airport),Yes,2,25.27,51.52,6
+United Arab Emirates,Dubai,Dubai,Downtown & Business Bay Dubai,Yes,1,25.1972,55.2744,6
+United Arab Emirates,Dubai,Dubai,Dubai Marina & JLT,Yes,1,25.08,55.14,5
+United Arab Emirates,Abu Dhabi,Abu Dhabi,Abu Dhabi,Yes,2,24.4539,54.3773,7
+United Arab Emirates,Sharjah,Sharjah,Sharjah,Yes,3,25.3463,55.4209,6

@@ -1,0 +1,16 @@
+2026-11-11 22:33:57  Local AI: off (LOCAL_LLM_MODEL is blank). Lead Insight will be built from facts only.
+2026-11-11 22:34:03  === United States (whole country): 0 leads already saved, target +8 ===
+Hair Transplant & Hair Loss Clinics | Los Angeles CA: {'rej: no website': 1, 'places': 1}
+Specialist Doctors & Private Clinics | Miami FL: {'rej: blocked name (chain/public/excluded for niche)': 1, 'places': 1}
+[Enrichment Skipped] Jina API unavailable (HTTP 422)
+Beauty, Nail & Lash Studios | San Francisco CA: {'rej: no website': 122, 'rej: no way to contact': 10, 'rej: ICP below minimum': 15, 'rej: chain brand (OSM brand tag)': 2, 'places': 149}
+Buyers Agents & Property Advisors | Houston TX: {'places': 0}
+Solar & Energy Installers | Manhattan NY: {'places': 0}
+Boutique Hotels & Luxury Stays | Manhattan NY: {'rej: ICP below minimum': 29, 'rej: no website': 24, 'rej: chain brand (OSM brand tag)': 49, 'rej: no way to contact': 8, 'rej: blocked name (chain/public/excluded for niche)': 16, 'rej: chain (same website in many places)': 1, 'added': 1, 'places': 146}
+Migration Agents & Immigration Lawyers | Beverly Hills & Santa Monica CA: {'places': 0}
+Real Estate Agencies (Independent) | Beverly Hills & Santa Monica CA: {'places': 28}
+Done: sheet[US] job[imports,input,maps US] added=1, businesses_seen=325, searches=9, minutes=12.4 | rejected: no website=147; chain brand (OSM brand tag)=51; ICP below minimum=44; no way to contact=18; blocked name (chain/public/excluded for niche)=17; chain (same website in many places)=1 | enrich skipped: jina=4, site-read=2
+2026-11-11 22:46:28  United States: pass done, +1 leads (total new this run: 1)
+2026-11-11 22:46:29  United States: 1 leads in F:\Github Repos\projects\offline-data-scraping\Output\United States Leads.xlsx
+2026-11-11 22:46:29  Run finished. Open the Output folder.
+exit 0
